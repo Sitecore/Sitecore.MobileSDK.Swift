@@ -1,0 +1,498 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E006F2D9219ECD0D00011E66 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E006F2D8219ECD0D00011E66 /* AppDelegate.swift */; };
+		E006F2DB219ECD0D00011E66 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E006F2DA219ECD0D00011E66 /* ViewController.swift */; };
+		E006F2DE219ECD0D00011E66 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E006F2DC219ECD0D00011E66 /* Main.storyboard */; };
+		E006F2E0219ECD1200011E66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E006F2DF219ECD1200011E66 /* Assets.xcassets */; };
+		E006F2E3219ECD1200011E66 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E006F2E1219ECD1200011E66 /* LaunchScreen.storyboard */; };
+		E006F2EE219ECD1200011E66 /* SitecoreSSC_WhitelabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E006F2ED219ECD1200011E66 /* SitecoreSSC_WhitelabelTests.swift */; };
+		E0DC022921AC1F5B00EB99A4 /* SitecoreSSC_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0DC022821AC1F5B00EB99A4 /* SitecoreSSC_SDK.framework */; };
+		E0DC022A21AC1F5B00EB99A4 /* SitecoreSSC_SDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0DC022821AC1F5B00EB99A4 /* SitecoreSSC_SDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E006F2EA219ECD1200011E66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E006F2CD219ECD0D00011E66 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E006F2D4219ECD0D00011E66;
+			remoteInfo = SitecoreSSC_Whitelabel;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E0DC022B21AC1F5B00EB99A4 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E0DC022A21AC1F5B00EB99A4 /* SitecoreSSC_SDK.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		E006F2D5219ECD0D00011E66 /* SitecoreSSC_Whitelabel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SitecoreSSC_Whitelabel.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E006F2D8219ECD0D00011E66 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E006F2DA219ECD0D00011E66 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E006F2DD219ECD0D00011E66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E006F2DF219ECD1200011E66 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E006F2E2219ECD1200011E66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E006F2E4219ECD1200011E66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E006F2E9219ECD1200011E66 /* SitecoreSSC_WhitelabelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SitecoreSSC_WhitelabelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E006F2ED219ECD1200011E66 /* SitecoreSSC_WhitelabelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SitecoreSSC_WhitelabelTests.swift; sourceTree = "<group>"; };
+		E006F2EF219ECD1200011E66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E006F304219ECD9C00011E66 /* SitecoreSSC_SDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SitecoreSSC_SDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0DC022821AC1F5B00EB99A4 /* SitecoreSSC_SDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SitecoreSSC_SDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E006F2D2219ECD0D00011E66 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0DC022921AC1F5B00EB99A4 /* SitecoreSSC_SDK.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E006F2E6219ECD1200011E66 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E006F2CC219ECD0D00011E66 = {
+			isa = PBXGroup;
+			children = (
+				E0DC022821AC1F5B00EB99A4 /* SitecoreSSC_SDK.framework */,
+				E006F2D7219ECD0D00011E66 /* SitecoreSSC_Whitelabel */,
+				E006F2EC219ECD1200011E66 /* SitecoreSSC_WhitelabelTests */,
+				E006F2D6219ECD0D00011E66 /* Products */,
+				E006F303219ECD9C00011E66 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		E006F2D6219ECD0D00011E66 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E006F2D5219ECD0D00011E66 /* SitecoreSSC_Whitelabel.app */,
+				E006F2E9219ECD1200011E66 /* SitecoreSSC_WhitelabelTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E006F2D7219ECD0D00011E66 /* SitecoreSSC_Whitelabel */ = {
+			isa = PBXGroup;
+			children = (
+				E006F2D8219ECD0D00011E66 /* AppDelegate.swift */,
+				E006F2DA219ECD0D00011E66 /* ViewController.swift */,
+				E006F2DC219ECD0D00011E66 /* Main.storyboard */,
+				E006F2DF219ECD1200011E66 /* Assets.xcassets */,
+				E006F2E1219ECD1200011E66 /* LaunchScreen.storyboard */,
+				E006F2E4219ECD1200011E66 /* Info.plist */,
+			);
+			path = SitecoreSSC_Whitelabel;
+			sourceTree = "<group>";
+		};
+		E006F2EC219ECD1200011E66 /* SitecoreSSC_WhitelabelTests */ = {
+			isa = PBXGroup;
+			children = (
+				E006F2ED219ECD1200011E66 /* SitecoreSSC_WhitelabelTests.swift */,
+				E006F2EF219ECD1200011E66 /* Info.plist */,
+			);
+			path = SitecoreSSC_WhitelabelTests;
+			sourceTree = "<group>";
+		};
+		E006F303219ECD9C00011E66 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E006F304219ECD9C00011E66 /* SitecoreSSC_SDK.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E006F2D4219ECD0D00011E66 /* SitecoreSSC_Whitelabel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E006F2F2219ECD1200011E66 /* Build configuration list for PBXNativeTarget "SitecoreSSC_Whitelabel" */;
+			buildPhases = (
+				E006F2D1219ECD0D00011E66 /* Sources */,
+				E006F2D2219ECD0D00011E66 /* Frameworks */,
+				E006F2D3219ECD0D00011E66 /* Resources */,
+				E0DC022B21AC1F5B00EB99A4 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SitecoreSSC_Whitelabel;
+			productName = SitecoreSSC_Whitelabel;
+			productReference = E006F2D5219ECD0D00011E66 /* SitecoreSSC_Whitelabel.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E006F2E8219ECD1200011E66 /* SitecoreSSC_WhitelabelTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E006F2F5219ECD1200011E66 /* Build configuration list for PBXNativeTarget "SitecoreSSC_WhitelabelTests" */;
+			buildPhases = (
+				E006F2E5219ECD1200011E66 /* Sources */,
+				E006F2E6219ECD1200011E66 /* Frameworks */,
+				E006F2E7219ECD1200011E66 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E006F2EB219ECD1200011E66 /* PBXTargetDependency */,
+			);
+			name = SitecoreSSC_WhitelabelTests;
+			productName = SitecoreSSC_WhitelabelTests;
+			productReference = E006F2E9219ECD1200011E66 /* SitecoreSSC_WhitelabelTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E006F2CD219ECD0D00011E66 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = Igor;
+				TargetAttributes = {
+					E006F2D4219ECD0D00011E66 = {
+						CreatedOnToolsVersion = 10.1;
+					};
+					E006F2E8219ECD1200011E66 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = E006F2D4219ECD0D00011E66;
+					};
+				};
+			};
+			buildConfigurationList = E006F2D0219ECD0D00011E66 /* Build configuration list for PBXProject "SitecoreSSC_Whitelabel" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E006F2CC219ECD0D00011E66;
+			productRefGroup = E006F2D6219ECD0D00011E66 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E006F2D4219ECD0D00011E66 /* SitecoreSSC_Whitelabel */,
+				E006F2E8219ECD1200011E66 /* SitecoreSSC_WhitelabelTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E006F2D3219ECD0D00011E66 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E006F2E3219ECD1200011E66 /* LaunchScreen.storyboard in Resources */,
+				E006F2E0219ECD1200011E66 /* Assets.xcassets in Resources */,
+				E006F2DE219ECD0D00011E66 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E006F2E7219ECD1200011E66 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E006F2D1219ECD0D00011E66 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E006F2DB219ECD0D00011E66 /* ViewController.swift in Sources */,
+				E006F2D9219ECD0D00011E66 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E006F2E5219ECD1200011E66 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E006F2EE219ECD1200011E66 /* SitecoreSSC_WhitelabelTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E006F2EB219ECD1200011E66 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E006F2D4219ECD0D00011E66 /* SitecoreSSC_Whitelabel */;
+			targetProxy = E006F2EA219ECD1200011E66 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E006F2DC219ECD0D00011E66 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E006F2DD219ECD0D00011E66 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E006F2E1219ECD1200011E66 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E006F2E2219ECD1200011E66 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E006F2F0219ECD1200011E66 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E006F2F1219ECD1200011E66 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E006F2F3219ECD1200011E66 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = SitecoreSSC_Whitelabel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sitecore.SitecoreSSC-Whitelabel";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E006F2F4219ECD1200011E66 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = SitecoreSSC_Whitelabel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sitecore.SitecoreSSC-Whitelabel";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E006F2F6219ECD1200011E66 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = SitecoreSSC_WhitelabelTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sitecore.SitecoreSSC-WhitelabelTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SitecoreSSC_Whitelabel.app/SitecoreSSC_Whitelabel";
+			};
+			name = Debug;
+		};
+		E006F2F7219ECD1200011E66 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = SitecoreSSC_WhitelabelTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sitecore.SitecoreSSC-WhitelabelTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SitecoreSSC_Whitelabel.app/SitecoreSSC_Whitelabel";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E006F2D0219ECD0D00011E66 /* Build configuration list for PBXProject "SitecoreSSC_Whitelabel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E006F2F0219ECD1200011E66 /* Debug */,
+				E006F2F1219ECD1200011E66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E006F2F2219ECD1200011E66 /* Build configuration list for PBXNativeTarget "SitecoreSSC_Whitelabel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E006F2F3219ECD1200011E66 /* Debug */,
+				E006F2F4219ECD1200011E66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E006F2F5219ECD1200011E66 /* Build configuration list for PBXNativeTarget "SitecoreSSC_WhitelabelTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E006F2F6219ECD1200011E66 /* Debug */,
+				E006F2F7219ECD1200011E66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E006F2CD219ECD0D00011E66 /* Project object */;
+}
