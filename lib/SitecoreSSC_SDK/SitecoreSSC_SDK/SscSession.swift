@@ -8,6 +8,9 @@
 
 import Foundation
 
+public typealias SCDidFinishItemsRequestHandler = (IItemsResponse?, Error?) -> ()
+
+
 public class SscSession : NSObject, URLSessionDelegate
 {
     private let sessionConfig: ISessionConfig
@@ -59,7 +62,7 @@ extension SscSession: ISscAuthSession
 
 extension SscSession: ISscReadOnlySession
 {
-    public func sendGetItemsRequest(request: IGetByPathRequest, completion: @escaping (IItemsResponse?, Error?) -> ()) {
+    public func sendGetItemsRequest(request: IGetByPathRequest, completion: @escaping SCDidFinishItemsRequestHandler) {
         //TODO: @igk check for authentication
         // self.proceedLoginAction()
         
@@ -91,7 +94,7 @@ extension SscSession: ISscReadOnlySession
 
     }
     
-    public func sendGetItemsRequest(request: IGetChildrenRequest, completion: @escaping (IItemsResponse?, Error?) -> ()) {
+    public func sendGetItemsRequest(request: IGetChildrenRequest, completion: @escaping SCDidFinishItemsRequestHandler) {
         //TODO: @igk check for authentication
         // self.proceedLoginAction()
         
@@ -123,15 +126,15 @@ extension SscSession: ISscReadOnlySession
         }
     }
     
-    func sendGetItemsRequest(request: ISitecoreSearchRequest, completion: @escaping (IItemsResponse?, Error?) -> ()) {
+    func sendGetItemsRequest(request: ISitecoreSearchRequest, completion: @escaping SCDidFinishItemsRequestHandler) {
         
     }
     
-    func sendGetItemsRequest(request: IStoredSitecoreSearchRequest, completion: @escaping (IItemsResponse?, Error?) -> ()) {
+    func sendGetItemsRequest(request: IStoredSitecoreSearchRequest, completion: @escaping SCDidFinishItemsRequestHandler) {
         
     }
     
-    public func sendGetItemsRequest(request: IGetByIdRequest, completion:@escaping (IItemsResponse?, Error?) -> ()){
+    public func sendGetItemsRequest(request: IGetByIdRequest, completion:@escaping SCDidFinishItemsRequestHandler){
         
         //TODO: @igk check for authentication
         // self.proceedLoginAction()
@@ -179,12 +182,12 @@ protocol ISscAuthSession {
 
 protocol ISscReadOnlySession {
     
-    func sendGetItemsRequest(request: IGetByIdRequest, completion:@escaping (IItemsResponse?, Error?) -> ())
-    func sendGetItemsRequest(request: IGetByPathRequest, completion:@escaping (IItemsResponse?, Error?) -> ())
-    func sendGetItemsRequest(request: IGetChildrenRequest, completion:@escaping (IItemsResponse?, Error?) -> ())
+    func sendGetItemsRequest(request: IGetByIdRequest, completion:@escaping SCDidFinishItemsRequestHandler)
+    func sendGetItemsRequest(request: IGetByPathRequest, completion:@escaping SCDidFinishItemsRequestHandler)
+    func sendGetItemsRequest(request: IGetChildrenRequest, completion:@escaping SCDidFinishItemsRequestHandler)
     
-    func sendGetItemsRequest(request: ISitecoreSearchRequest, completion:@escaping (IItemsResponse?, Error?) -> ())
-    func sendGetItemsRequest(request: IStoredSitecoreSearchRequest, completion:@escaping (IItemsResponse?, Error?) -> ())
+    func sendGetItemsRequest(request: ISitecoreSearchRequest, completion:@escaping SCDidFinishItemsRequestHandler)
+    func sendGetItemsRequest(request: IStoredSitecoreSearchRequest, completion:@escaping SCDidFinishItemsRequestHandler)
     
 }
 

@@ -21,13 +21,3 @@ class ErrorDescriptions
     
     
 }
-
-
-//func someFunction() throws {
-//    throw SscError("some message")
-//}
-//do {
-//    try someFunction()
-//} catch SscError.runtimeError(let errorMessage) {
-//    print(errorMessage)
-//}

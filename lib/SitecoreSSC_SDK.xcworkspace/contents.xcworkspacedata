@@ -5,6 +5,9 @@
       location = "group:../ItemsBrowser/SitecoreSSC_Whitelabel/SitecoreSSC_Whitelabel.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:ScItemBrowser/ScItemBrowser.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:SitecoreSSC_SDK/SitecoreSSC_SDK.xcodeproj">
    </FileRef>
 </Workspace>

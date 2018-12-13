@@ -9,6 +9,7 @@
 import Foundation
 
 class LoginResponse: ILoginResponse {
+    
     required init(json: Data, source: IItemSource?) {
         
     }

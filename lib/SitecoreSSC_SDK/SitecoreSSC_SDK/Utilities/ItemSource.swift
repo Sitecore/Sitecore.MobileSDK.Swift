@@ -36,9 +36,7 @@ public class ItemSource: IItemSource {
         self.language = language
         self.versionNumber = versionNumber
     }
-    
-    
-    
+
     public let database: String
     public let language: String
     public let versionNumber: Int?

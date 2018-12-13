@@ -58,7 +58,7 @@ public class GetByPathRequest: BaseGetItemRequest, IGetByPathRequest
         let url = sessionConfig!.instanceUrl
             + sessionConfig!.requestSyntax.ItemSSCEndpoint
             + sessionConfig!.requestSyntax.ItemSSCItemsEndpoint
-            + sessionConfig!.requestSyntax.urlPathAndParametersSeparator
+             + sessionConfig!.requestSyntax.urlPathAndParametersSeparator
             + sessionConfig!.requestSyntax.ItemPathParameterName
             + sessionConfig!.requestSyntax.urlParmeterAssignSign
             + escapedPath
