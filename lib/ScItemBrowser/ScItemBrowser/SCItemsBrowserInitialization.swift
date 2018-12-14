@@ -12,7 +12,7 @@ import SitecoreSSC_SDK
 /**
  Basic initialization methods for any items browser controller.
  */
-protocol SCItemsBrowserInitialization {
+public protocol SCItemsBrowserInitialization {
     /**
      @return The session to communicate with the Sitecore instance.
      */

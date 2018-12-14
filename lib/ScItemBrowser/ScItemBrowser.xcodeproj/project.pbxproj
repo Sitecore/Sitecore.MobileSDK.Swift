@@ -15,6 +15,8 @@
 		E05589EF21B7C83A0053ECB6 /* SIBListModeCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05589EE21B7C83A0053ECB6 /* SIBListModeCellFactory.swift */; };
 		E05589F221B7D1F60053ECB6 /* SCItemsFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05589F121B7D1F60053ECB6 /* SCItemsFileManager.swift */; };
 		E05589F421B7D3010053ECB6 /* SCLevelsHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05589F321B7D3010053ECB6 /* SCLevelsHistory.swift */; };
+		E07BB85021C3F85800395FE6 /* SIBAllChildrenRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07BB84E21C3F85700395FE6 /* SIBAllChildrenRequestBuilder.swift */; };
+		E07BB85221C4011100395FE6 /* SCItemListTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07BB85121C4011100395FE6 /* SCItemListTextCell.swift */; };
 		E088E64F21B6B2DB00ACD94A /* ScItemBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E088E64521B6B2DB00ACD94A /* ScItemBrowser.framework */; };
 		E088E65421B6B2DB00ACD94A /* ScItemBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E088E65321B6B2DB00ACD94A /* ScItemBrowserTests.swift */; };
 		E088E65621B6B2DB00ACD94A /* ScItemBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = E088E64821B6B2DB00ACD94A /* ScItemBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -50,6 +52,8 @@
 		E05589EE21B7C83A0053ECB6 /* SIBListModeCellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SIBListModeCellFactory.swift; sourceTree = "<group>"; };
 		E05589F121B7D1F60053ECB6 /* SCItemsFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCItemsFileManager.swift; sourceTree = "<group>"; };
 		E05589F321B7D3010053ECB6 /* SCLevelsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCLevelsHistory.swift; sourceTree = "<group>"; };
+		E07BB84E21C3F85700395FE6 /* SIBAllChildrenRequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SIBAllChildrenRequestBuilder.swift; sourceTree = "<group>"; };
+		E07BB85121C4011100395FE6 /* SCItemListTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCItemListTextCell.swift; sourceTree = "<group>"; };
 		E088E64521B6B2DB00ACD94A /* ScItemBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ScItemBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E088E64821B6B2DB00ACD94A /* ScItemBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScItemBrowser.h; sourceTree = "<group>"; };
 		E088E64921B6B2DB00ACD94A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -110,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				E05589E921B7C1D80053ECB6 /* SCItemListBrowser.swift */,
+				E07BB85121C4011100395FE6 /* SCItemListTextCell.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -135,6 +140,14 @@
 			path = FileManager;
 			sourceTree = "<group>";
 		};
+		E07BB84C21C3F83900395FE6 /* RequestBuilder */ = {
+			isa = PBXGroup;
+			children = (
+				E07BB84E21C3F85700395FE6 /* SIBAllChildrenRequestBuilder.swift */,
+			);
+			path = RequestBuilder;
+			sourceTree = "<group>";
+		};
 		E088E63B21B6B2DB00ACD94A = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +170,7 @@
 		E088E64721B6B2DB00ACD94A /* ScItemBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				E07BB84C21C3F83900395FE6 /* RequestBuilder */,
 				E0C7ACDC21BFF670001F6371 /* ItemsBrowser */,
 				E0B7747B21B95ECA00429A47 /* operations!!! */,
 				E05589F021B7C9680053ECB6 /* FileManager */,
@@ -322,6 +336,7 @@
 				E05589F221B7D1F60053ECB6 /* SCItemsFileManager.swift in Sources */,
 				E05589F421B7D3010053ECB6 /* SCLevelsHistory.swift in Sources */,
 				E088E66921B6CC6100ACD94A /* SCItemsBrowserProtocol.swift in Sources */,
+				E07BB85221C4011100395FE6 /* SCItemListTextCell.swift in Sources */,
 				E0C7ACDF21BFF691001F6371 /* SCAbstractItemsBrowser.swift in Sources */,
 				E088E66521B6C7A000ACD94A /* SCItemsLevelRequestBuilder.swift in Sources */,
 				E05589ED21B7C7000053ECB6 /* SIBGridModeCellFactory.swift in Sources */,
@@ -329,6 +344,7 @@
 				E05589E521B7C0A90053ECB6 /* SCItemGridBrowser.swift in Sources */,
 				E0B7747A21B95EB000429A47 /* SCExtendedOperations.swift in Sources */,
 				E0B7747421B9575800429A47 /* SCLevelInfoPOD.swift in Sources */,
+				E07BB85021C3F85800395FE6 /* SIBAllChildrenRequestBuilder.swift in Sources */,
 				E088E66321B6B32100ACD94A /* SCItemsBrowserDelegate.swift in Sources */,
 				E05589EF21B7C83A0053ECB6 /* SIBListModeCellFactory.swift in Sources */,
 				E05589E721B7C1500053ECB6 /* SIBListModeAppearance.swift in Sources */,

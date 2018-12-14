@@ -11,7 +11,7 @@ import Foundation
 /**
  This protocol describes data load methods that should be supported by each viewController.
  */
-protocol SCItemsBrowserProtocol {
+public protocol SCItemsBrowserProtocol {
     /**
      Reloads items using default settings of SCApiSession.
      */

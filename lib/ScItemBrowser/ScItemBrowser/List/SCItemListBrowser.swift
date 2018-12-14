@@ -16,22 +16,24 @@ public class SCItemListBrowser: SCAbstractItemsBrowser {
     var listModeTheme: SIBListModeAppearance?
     var listModeCellBuilder: SIBListModeCellFactory?
 
-    func setTableView(_ tableView: UITableView){
+    public func setTableView(_ tableView: UITableView){
         self.tableView = tableView
-        self.tableView?.delegate = self
-        self.tableView?.dataSource = self
+        self.tableView!.delegate = self
+        self.tableView!.dataSource = self
     }
     
-    func setListModeTheme(_ listModeTheme: SIBListModeAppearance){
+    public func setListModeTheme(_ listModeTheme: SIBListModeAppearance){
         self.listModeTheme = listModeTheme
     }
     
-    func setListModeCellBuilder(_ listModeCellBuilder: SIBListModeCellFactory){
+    public func setListModeCellBuilder(_ listModeCellBuilder: SIBListModeCellFactory){
         self.listModeCellBuilder = listModeCellBuilder
     }
     
     override func reloadContentView(){
-        self.tableView?.reloadData()
+        DispatchQueue.main.async {
+            self.tableView?.reloadData()
+        }
     }
     
     override func reloadDataIgnoringCache(_ shouldIgnoreCache: Bool){
@@ -48,7 +50,8 @@ public class SCItemListBrowser: SCAbstractItemsBrowser {
 
 extension SCItemListBrowser: UITableViewDelegate {
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+    private func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItemIndex: Int = indexPath.row
         let selectedItem = self.loadedLevel?.levelContentItems[selectedItemIndex]
         

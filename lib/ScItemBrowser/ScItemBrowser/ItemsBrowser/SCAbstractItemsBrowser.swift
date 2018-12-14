@@ -41,6 +41,11 @@ public class SCAbstractItemsBrowser: NSObject {
         
         if (isLevelUpItem){
             self.itemsFileManager!.goToLevelUpNotifyingCallbacks(callbacks)
+        } else {
+            let shouldGoDeeper: Bool = (self.delegate?.itemsBrowser(self, shouldLoadLevelForItem: selectedItem))!
+            if (shouldGoDeeper){
+                self.itemsFileManager?.loadLevelForItem(selectedItem, callbacks: callbacks, ignoringCache: false)
+            }
         }
         
     }
@@ -98,9 +103,8 @@ extension SCAbstractItemsBrowser  {
             return nil
         }
         
-        guard self._itemsFileManager != nil else {
+        if (self._itemsFileManager == nil) {
             self._itemsFileManager = SCItemsFileManager(apiSession: self._apiSession!, nextLevelRequestBuilder: self._nextLevelRequestBuilder!)
-            return nil
         }
         
         return self._itemsFileManager!
@@ -114,15 +118,15 @@ extension SCAbstractItemsBrowser  {
 
 extension SCAbstractItemsBrowser: SCItemsBrowserProtocol {
     
-    func reloadData() {
+    public func reloadData() {
         self.reloadDataIgnoringCache(false)
     }
     
-    func forceRefreshData() {
+    public func forceRefreshData() {
         self.reloadDataIgnoringCache(true)
     }
     
-    func navigateToRootItem() {
+    public func navigateToRootItem() {
         self.disposeLazyItemsFileManager()
         let fmCallbacks: SCItemsFileManagerCallbacks = self.newCallbacksForItemsFileManager()
         
@@ -134,38 +138,38 @@ extension SCAbstractItemsBrowser: SCItemsBrowserProtocol {
 
 extension SCAbstractItemsBrowser: SCItemsBrowserInitialization {
     
-    var apiSession: SscSession? {
+    public var apiSession: SscSession? {
         return self._apiSession
     }
     
-    func setApiSession(_ apiSession: SscSession) {
+    public func setApiSession(_ apiSession: SscSession) {
         assert(nil == self._apiSession, "apiSession can be assigned only once")
         self._apiSession = apiSession
     }
     
-    var rootItem: ISitecoreItem? {
+    public var rootItem: ISitecoreItem? {
         return self._rootItem
     }
     
-    func setRootItem(_ rootItem: ISitecoreItem) {
+    public func setRootItem(_ rootItem: ISitecoreItem) {
         assert(nil == self._rootItem, "rootItem can be assigned only once")
         self._rootItem = rootItem
     }
     
-    var nextLevelRequestBuilder: SCItemsLevelRequestBuilder? {
+    public var nextLevelRequestBuilder: SCItemsLevelRequestBuilder? {
         return self._nextLevelRequestBuilder
     }
     
-    func setNextLevelRequestBuilder(_ nextLevelRequestBuilder: SCItemsLevelRequestBuilder) {
+    public func setNextLevelRequestBuilder(_ nextLevelRequestBuilder: SCItemsLevelRequestBuilder) {
         assert(nil == self._nextLevelRequestBuilder, "nextLevelRequestBuilder can be assigned only once")
         self._nextLevelRequestBuilder = nextLevelRequestBuilder
     }
     
-    var delegate: SCItemsBrowserDelegate? {
+    public var delegate: SCItemsBrowserDelegate? {
         return self._delegate
     }
     
-    func setDelegate(_ delegate: SCItemsBrowserDelegate) {
+    public func setDelegate(_ delegate: SCItemsBrowserDelegate) {
         assert(nil == self._delegate, "delegate can be assigned only once")
         self._delegate = delegate
     }

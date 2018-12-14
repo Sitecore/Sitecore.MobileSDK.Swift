@@ -17,12 +17,74 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lIE-Zc-YUH">
+                                <rect key="frame" x="0.0" y="129" width="375" height="538"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9XB-hR-xe3">
+                                <rect key="frame" x="16" y="20" width="92" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="92" id="IPt-Cz-rjQ"/>
+                                    <constraint firstAttribute="height" constant="30" id="OAE-u5-aCv"/>
+                                </constraints>
+                                <state key="normal" title="Root"/>
+                                <connections>
+                                    <action selector="RootTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vJM-cR-n64"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="do7-v2-BhS">
+                                <rect key="frame" x="271" y="20" width="88" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="88" id="T6Q-oE-a3K"/>
+                                    <constraint firstAttribute="height" constant="30" id="uuN-JO-dMk"/>
+                                </constraints>
+                                <state key="normal" title="Reload"/>
+                                <connections>
+                                    <action selector="ReloadTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="r9s-G2-EmJ"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="/sitecore/content/home" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RjG-tB-gIB">
+                                <rect key="frame" x="16" y="58" width="343" height="63"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="63" id="jNH-hH-eSy"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Grc-hX-2Bs">
+                                <rect key="frame" x="177" y="323" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="do7-v2-BhS" secondAttribute="trailing" constant="16" id="0tg-au-FT1"/>
+                            <constraint firstItem="RjG-tB-gIB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="7Ue-me-Z4W"/>
+                            <constraint firstItem="lIE-Zc-YUH" firstAttribute="top" secondItem="RjG-tB-gIB" secondAttribute="bottom" constant="8" id="CcK-Wa-KEf"/>
+                            <constraint firstItem="9XB-hR-xe3" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="DUO-Bh-crh"/>
+                            <constraint firstItem="lIE-Zc-YUH" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Ep9-7V-1V4"/>
+                            <constraint firstItem="RjG-tB-gIB" firstAttribute="top" secondItem="9XB-hR-xe3" secondAttribute="bottom" constant="8" id="b4y-wb-Hh0"/>
+                            <constraint firstItem="lIE-Zc-YUH" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="d1V-vi-dJy"/>
+                            <constraint firstItem="lIE-Zc-YUH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="dWp-b5-JUp"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="RjG-tB-gIB" secondAttribute="trailing" constant="16" id="nLE-wW-iHF"/>
+                            <constraint firstItem="9XB-hR-xe3" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="oTC-c2-Ikn"/>
+                            <constraint firstItem="do7-v2-BhS" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="xmB-cF-hPf"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="itemPathLabel" destination="RjG-tB-gIB" id="k0T-1D-AAx"/>
+                        <outlet property="loadingProgress" destination="Grc-hX-2Bs" id="8aB-lI-fPp"/>
+                        <outlet property="reloadButton" destination="do7-v2-BhS" id="VUD-6b-Fvk"/>
+                        <outlet property="rootButton" destination="9XB-hR-xe3" id="pjP-F6-Om9"/>
+                        <outlet property="tableView" destination="lIE-Zc-YUH" id="yJ7-6Y-Rjo"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="133.59999999999999" y="133.5832083958021"/>
         </scene>
     </scenes>
 </document>

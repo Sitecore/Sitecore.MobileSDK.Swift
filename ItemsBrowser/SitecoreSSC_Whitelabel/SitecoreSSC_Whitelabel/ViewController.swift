@@ -14,64 +14,121 @@ class ViewController: UIViewController, URLSessionDelegate, UITableViewDelegate 
 
     let LEVEL_UP_CELL_ID = "net.sitecore.MobileSdk.ItemsBrowser.list.LevelUpCell"
     let ITEM_CELL_ID     = "net.sitecore.MobileSdk.ItemsBrowser.list.ItemCell"
-    let IMAGE_CELL_ID     = "net.sitecore.MobileSdk.ItemsBrowser.list.ItemCell.image"
+    let IMAGE_CELL_ID    = "net.sitecore.MobileSdk.ItemsBrowser.list.ItemCell.image"
     
     var sscSession: SscSession?
     var urlSession: URLSession?
     
-    var itemsBrowserController: SCItemListBrowser?
-    //var allChildrenRequestBuilder: SIBAllChildrenRequestBuilder?
-    var itemPathTextView: UITextView?
-    var loadingProgress: UIActivityIndicatorView?
-    var rootButton: UIButton?
-    var reloadButton: UIButton?
+    
+    
+    let itemsBrowserController: SCItemListBrowser = SCItemListBrowser()
+    @IBOutlet weak var itemPathLabel: UILabel!
+    @IBOutlet weak var tableView: UITableView!
+    
+    var allChildrenRequestBuilder: SIBAllChildrenRequestBuilder = SIBAllChildrenRequestBuilder()
+    @IBOutlet var loadingProgress: UIActivityIndicatorView?
+    @IBOutlet var rootButton: UIButton?
+    @IBOutlet var reloadButton: UIButton?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        self.itemsBrowserController.setTableView(self.tableView)
+        self.itemsBrowserController.setDelegate(self)
+        self.itemsBrowserController.setListModeCellBuilder(self)
+        self.itemsBrowserController.setListModeTheme(self)
+        self.itemsBrowserController.setNextLevelRequestBuilder(allChildrenRequestBuilder)
+        
+        self.createSession {
+            self.downloadRootItem()
+        }
+       
+        
+    }
+    
+    func createSession(completion: @escaping () -> ()){
         urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
         sscSession = SscSession(url: "https://tst90170928.test24dk1.dk.sitecore.net", urlSession: urlSession!)
         
         let credentials = ScCredentials(username: "admin", password: "b", domain: "Sitecore")
-        let itemSource = ItemSource(database: "web", language: "en")
         
         let loginRequest = LoginRequest(credentils: credentials)
         
         self.sscSession!.sendLoginRequest(request: loginRequest) { (response, error) in
             print("\(String(describing: response))")
-            
-            
-            let getItemRequest = GetByIdRequest(
-                itemId: "110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9",
-                itemSource: itemSource,
-                sessionConfig: nil,
-                queryParameters: nil,
-                standardFields: false
-            )
-
-            self.sscSession!.sendGetItemsRequest(request: getItemRequest) { (response, error) in
-                print("\(response?.items[0].displayName))")
-            }
-            
-            let getChildren = GetChildrenRequest(
-                parentId: "110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9",
-                pagingParameters: nil,
-                itemSource: itemSource,
-                sessionConfig: nil,
-                queryParameters: nil,
-                standardFields:false
-            )
-            
-            self.sscSession!.sendGetItemsRequest(request: getChildren) { (response, error) in
-                print("GET CHILDREN, COUNT: \(response?.items.count)")
-                print("\(response?.items[0].displayName))")
-            }
-            
+            completion()
+        }
+    }
+    
+    func downloadRootItem(){
+        
+        guard let sscSession = self.sscSession else {
+            print("create session first!")
+            return
+        }
+        self.itemsBrowserController.setApiSession(self.sscSession!)
+        self.startLoading()
+        
+        let itemSource = ItemSource(database: "web", language: "en")
+        
+        let getItemRequest = GetByIdRequest(
+            itemId: "110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9",
+            itemSource: itemSource,
+            sessionConfig: nil,
+            queryParameters: nil,
+            standardFields: false
+        )
+        
+        sscSession.sendGetItemsRequest(request: getItemRequest) { (response, error) in
+            print("\(response?.items[0].displayName))")
+            self.endLoading()
+            self.didLoadRootItem((response?.items[0])!)
         }
         
-       
+        
+    }
+    
+    func didLoadRootItem(_ item: ISitecoreItem){
+        self.itemsBrowserController.setRootItem(item)
+        self.itemsBrowserController.reloadData()
     }
 
+    func testDownload(){
+
+        guard let sscSession = self.sscSession else {
+            print("create session first!")
+            return
+        }
+        
+        let itemSource = ItemSource(database: "web", language: "en")
+
+        let getItemRequest = GetByIdRequest(
+            itemId: "110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9",
+            itemSource: itemSource,
+            sessionConfig: nil,
+            queryParameters: nil,
+            standardFields: false
+        )
+        
+        sscSession.sendGetItemsRequest(request: getItemRequest) { (response, error) in
+            print("\(response?.items[0].displayName))")
+        }
+        
+        let getChildren = GetChildrenRequest(
+            parentId: "110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9",
+            pagingParameters: nil,
+            itemSource: itemSource,
+            sessionConfig: nil,
+            queryParameters: nil,
+            standardFields:false
+        )
+        
+        sscSession.sendGetItemsRequest(request: getChildren) { (response, error) in
+            print("GET CHILDREN, COUNT: \(response?.items.count)")
+            print("\(response?.items[0].displayName))")
+        }
+    }
     
     #warning ("!!!IGNORING SSL VERIFICATION!!!")
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
@@ -86,16 +143,27 @@ class ViewController: UIViewController, URLSessionDelegate, UITableViewDelegate 
     
     func startLoading()
     {
-        self.loadingProgress!.isHidden = false
-        self.loadingProgress!.startAnimating()
+        DispatchQueue.main.async {
+            self.loadingProgress!.isHidden = false
+            self.loadingProgress!.startAnimating()
+        }
     }
     
     func endLoading()
     {
-        self.loadingProgress!.stopAnimating()
-        self.loadingProgress!.isHidden = true
+        DispatchQueue.main.async {
+            self.loadingProgress!.stopAnimating()
+            self.loadingProgress!.isHidden = true
+        }
     }
 
+    @IBAction func RootTouched(_ sender: Any) {
+        
+    }
+    
+    @IBAction func ReloadTouched(_ sender: Any) {
+        
+    }
 }
 
 extension ViewController: SCItemsBrowserDelegate{
@@ -114,10 +182,14 @@ extension ViewController: SCItemsBrowserDelegate{
     
     func itemsBrowser(_ itemsBrowser: Any, didLoadLevelForItem levelParentItem: ISitecoreItem) {
         self.endLoading()
-        self.itemPathTextView!.text = levelParentItem.path
+        DispatchQueue.main.async {
+            self.itemPathLabel.text = levelParentItem.path
+        }
         let topPath = IndexPath(row: 0, section: 0)
-        let tableView: UITableView = self.itemsBrowserController!.tableView!
-        tableView.scrollToRow(at: topPath, at: UITableView.ScrollPosition.top, animated: false)
+        let tableView: UITableView = self.itemsBrowserController.tableView!
+        DispatchQueue.main.async {
+            tableView.scrollToRow(at: topPath, at: UITableView.ScrollPosition.top, animated: false)
+        }
     }
     
 }
@@ -168,15 +240,16 @@ extension ViewController: SIBListModeCellFactory{
     
     func createLevelUpCellForListModeOfItemsBrowser(_ sender: SCItemListBrowser) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: LEVEL_UP_CELL_ID)
-        cell.textLabel?.text = "LEVEL_UP_CELL_ID"
+        DispatchQueue.main.async {
+            cell.textLabel?.text = "LEVEL_UP_CELL_ID"
+        }
         return cell
     }
     
     func itemsBrowser(_ sender: SCItemListBrowser, createListModeCellFor item: ISitecoreItem) -> (UITableViewCell & SCItemCell) {
-        let cellId: String = self.itemsBrowser(self.itemsBrowserController!, itemCellReuseIdentifierFor: item)
-        #warning("@igk implement SCItemListTextCell")
-        let cell = UITableViewCell(style: .default, reuseIdentifier: cellId)
-        return cell as! (UITableViewCell & SCItemCell)
+        let cellId: String = self.itemsBrowser(self.itemsBrowserController, itemCellReuseIdentifierFor: item)
+        let cell = SCItemListTextCell(style: .default, reuseIdentifier: cellId)
+        return cell
     }
     
     func reuseIdentifierForLevelUpCellOfItemsBrowser(_ sender: SCItemListBrowser) -> String {
