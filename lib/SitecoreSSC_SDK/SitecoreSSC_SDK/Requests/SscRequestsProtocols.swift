@@ -9,58 +9,75 @@
 import Foundation
 
 
+@objc public protocol IOdataRequest: IBaseGetItemsRequest {
+    var odataQuery: String { get }
+}
 
-public protocol IGetByIdRequest: IBaseGetItemsRequest {
+@objc public protocol IGetByIdRequest: IBaseGetItemsRequest {
     var itemId: UUID { get }
 }
 
-public protocol IGetByPathRequest: IBaseGetItemsRequest {
+@objc public protocol IGetByPathRequest: IBaseGetItemsRequest {
     var itemPath: String { get }
 }
 
-public protocol IGetChildrenRequest: IBaseGetPaggedItemsRequest {
+@objc public protocol IGetChildrenRequest: IBaseGetPaggedItemsRequest {
     var parentId: UUID { get }
 }
 
-public protocol ISitecoreSearchRequest: IBaseGetPaggedItemsRequest {
+@objc public protocol ISitecoreSearchRequest: IBaseGetPaggedItemsRequest {
     
 }
 
-public protocol IStoredSitecoreSearchRequest: IBaseGetPaggedItemsRequest {
+@objc public protocol IStoredSitecoreSearchRequest: IBaseGetPaggedItemsRequest {
     
 }
 
-public protocol IBaseGetPaggedItemsRequest: IBaseGetItemsRequest {
+@objc public protocol IBaseGetPaggedItemsRequest: IBaseGetItemsRequest {
     var pagingParameters: IPagingParameters? { get }
 }
 
-public protocol IBaseGetItemsRequest: IBaseRequest {
+@objc public protocol IBaseGetItemsRequest: IBaseRequest {
     
     var itemSource: IItemSource { get }
     var queryParameters: IQueryParameters? { get }
     var includeStandardTemplateFields: Bool { get }
     
+    var ignoreCache: Bool { get }
+    
 }
 
-public protocol IBasePostRequest: IBaseRequest {
+@objc public protocol IBasePostRequest: IBaseRequest {
     
     func buildRequestBody() -> Data
     
 }
 
-public protocol IBaseRequest {
-    
-    var sessionConfig: ISessionConfig? { get }
+@objc public protocol IBaseRequest: IScRequest {
+
+    #warning ("@igk separate request builder required!")
     func buildHTTPRequest() throws -> URLRequest
-    func buildUrl() -> String //TODO: @igk make it internal!!!!
+    
 }
 
+@objc public protocol IGetImageRequest: IScRequest {
+    
+    var mediaItem: ISitecoreItem { get }
+    
+}
 
-public protocol IQueryParameters {
+@objc public protocol IScRequest {
+    
+    var sessionConfig: ISessionConfig? { get }
+    func buildUrl() -> String //TODO: @igk make it internal!!!!
+    
+}
+
+@objc public protocol IQueryParameters {
     var fields: [String] { get }
 }
 
-public protocol IPagingParameters {
+@objc public protocol IPagingParameters {
     
     var itemsPerPageCount: Int { get }
     var pageNumber: Int { get }

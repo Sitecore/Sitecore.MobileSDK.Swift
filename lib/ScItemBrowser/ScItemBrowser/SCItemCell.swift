@@ -12,7 +12,7 @@ import SitecoreSSC_SDK
 /**
  SCItemCell protocol represents object capable of rendering an item.
  */
-public protocol SCItemCell {
+@objc public protocol SCItemCell {
     
     /**
      Override this method to get information required for rendering out of the item. Please avoid storing the item itself if possible.

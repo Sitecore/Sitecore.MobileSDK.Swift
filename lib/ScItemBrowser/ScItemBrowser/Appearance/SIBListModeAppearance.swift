@@ -15,7 +15,8 @@ import SitecoreSSC_SDK
  Override methods of this protocol to forward your values to the UITableView and customize its appearance.
  */
 #warning ("@igk all this should be optional")
-public protocol SIBListModeAppearance {
+@objc public protocol SIBListModeAppearance: NSObjectProtocol
+{
     /**
      Sets the title to the header of the only table view section. If [SIBListModeAppearance levelHeaderViewForTableViewSectionOfItemsBrowser:] is specified this one will be ignored.
      See [UITableViewDataSource tableView:titleForHeaderInSection:] for details.
@@ -24,7 +25,7 @@ public protocol SIBListModeAppearance {
      
      @return header title. It will be forwarded to [UITableViewDataSource tableView:titleForHeaderInSection:]
      */
-    func levelHeaderTitleForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> String
+    @objc optional func levelHeaderTitleForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> String
     
     /**
      Sets the title to the footer of the only table view section. If [SIBListModeAppearance levelFooterViewForTableViewSectionOfItemsBrowser:] is specified this one will be ignored.
@@ -34,7 +35,7 @@ public protocol SIBListModeAppearance {
      
      @return header title. It will be forwarded to [UITableViewDataSource tableView:titleForFooterInSection:]
      */
-    func levelFooterTitleForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> String
+    @objc optional func levelFooterTitleForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> String
     
     /**
      Custom view for header. Will be adjusted to default or specified header height.
@@ -43,7 +44,7 @@ public protocol SIBListModeAppearance {
      
      @return A custom view for the section header. It will be forwarded to [UITableViewDelegate tableView:viewForHeaderInSection:]
      */
-    func levelHeaderViewForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> UIView
+    @objc optional func levelHeaderViewForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> UIView
     
     /**
      Custom view for footer. Will be adjusted to default or specified footer height.
@@ -52,7 +53,7 @@ public protocol SIBListModeAppearance {
      
      @return A custom view for the section footer. It will be forwarded to [UITableViewDelegate tableView:viewForFooterInSection:]
      */
-    func levelFooterViewForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> UIView
+    @objc optional func levelFooterViewForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> UIView
     
     /**
      Height of the section header.
@@ -61,7 +62,7 @@ public protocol SIBListModeAppearance {
      
      @return Height of the section header. It will be forwarded to [UITableViewDelegate tableView:heightForHeaderInSection:]
      */
-    func levelHeaderHeightForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> CGFloat
+    @objc optional func levelHeaderHeightForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> CGFloat
     
     /**
      Height of the section footer.
@@ -70,7 +71,7 @@ public protocol SIBListModeAppearance {
      
      @return Height of the section footer. It will be forwarded to [UITableViewDelegate tableView:heightForFooterInSection:]
      */
-    func levelFooterHeightForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> CGFloat
+    @objc optional func levelFooterHeightForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> CGFloat
 
     /**
      Height of the level up cell.
@@ -80,7 +81,7 @@ public protocol SIBListModeAppearance {
      
      @return Height of the level up cell. It will be forwarded to [UITableViewDelegate tableView:heightForRowAtIndexPath:]
      */
-    func itemsBrowser(_ sender: SCItemListBrowser, levelUpCellHeigtAt indexPath: NSIndexPath) -> CGFloat
+    @objc optional func itemsBrowser(_ sender: SCItemListBrowser, levelUpCellHeigtAt indexPath: IndexPath) -> CGFloat
     
     /**
      Height of the item cell. Feel free to make it different for various types of items.
@@ -91,5 +92,5 @@ public protocol SIBListModeAppearance {
      
      @return Height of the item cell. It will be forwarded to [UITableViewDelegate tableView:heightForRowAtIndexPath:]
      */
-    func itemsBrowser(_ sender: SCItemListBrowser, heightOfCellFor item: ISitecoreItem, at indexPath: NSIndexPath) -> CGFloat
+    @objc optional func itemsBrowser(_ sender: SCItemListBrowser, heightOfCellFor item: ISitecoreItem, at indexPath: IndexPath) -> CGFloat
 }

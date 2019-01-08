@@ -20,7 +20,7 @@ import SitecoreSSC_SDK
  - SIBBlackListTemplateRequestBuilder
  
  */
-public protocol SCItemsLevelRequestBuilder {
+@objc public protocol SCItemsLevelRequestBuilder: NSObjectProtocol {
     /**
      Override this method to set the parent-child or filtering relationships for the items being browsed.
      
@@ -33,5 +33,5 @@ public protocol SCItemsLevelRequestBuilder {
      
      @return A request that defines the scope of child items.
      */
-    func itemsBrowser(_ itemsBrowser: Any, levelDownRequestFor item: ISitecoreItem) -> IGetChildrenRequest
+    func itemsBrowser(_ itemsBrowser: Any, levelDownRequestFor item: ISitecoreItem, ignoreCache: Bool) -> IBaseGetItemsRequest
 }

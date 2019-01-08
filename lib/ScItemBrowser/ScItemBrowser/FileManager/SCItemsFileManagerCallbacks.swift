@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import SitecoreSSC_SDK
 
-typealias OnLevelLoadedBlock = (SCLevelResponse?, Error?) -> Void
+typealias OnLevelLoadedBlock = (SCLevelResponse?, SscError?) -> Void
 typealias OnLevelProgressBlock = (Any?) -> Void
 
 class SCItemsFileManagerCallbacks {

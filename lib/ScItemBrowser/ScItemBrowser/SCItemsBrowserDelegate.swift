@@ -12,7 +12,7 @@ import SitecoreSSC_SDK
 /**
  Implement this protocol to receive items browsing events from the controller.
  */
-public protocol SCItemsBrowserDelegate {
+@objc public protocol SCItemsBrowserDelegate: NSObjectProtocol {
     
     /**
      This event is called whenever some event in request processing occurs. For example,
@@ -40,7 +40,7 @@ public protocol SCItemsBrowserDelegate {
      
      @param error An error object received from the Mobile SDK.
      */
-    func itemsBrowser(_ itemsBrowser: Any, levelLoadingFailedWithError error: Error?)
+    func itemsBrowser(_ itemsBrowser: Any, levelLoadingFailedWithError error: NSError?)
     
     /**
      This method is called to determine whether the browser should navigate down for this item.

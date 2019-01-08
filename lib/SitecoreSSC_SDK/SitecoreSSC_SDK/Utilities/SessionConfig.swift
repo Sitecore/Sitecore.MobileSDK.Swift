@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol ISessionConfig
+@objc public protocol ISessionConfig
 {
     var instanceUrl: String { get }
     var requestSyntax: ISscUrlParameters { get } //TODO: @igk make it private

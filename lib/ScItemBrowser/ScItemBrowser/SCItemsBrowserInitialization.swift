@@ -46,7 +46,7 @@ public protocol SCItemsBrowserInitialization {
     /**
      @return A delegate that gets notifications about levels loading.
      */
-    var delegate: SCItemsBrowserDelegate? { get }
+    var delegate: SCItemsBrowserDelegate { get }
     
     /**
      @param delegate A delegate that gets notifications about levels loading.

@@ -13,8 +13,8 @@ public class SCAbstractItemsBrowser: NSObject {
     
     private var _apiSession: SscSession? = nil
     private var _rootItem: ISitecoreItem? = nil
-    private var _nextLevelRequestBuilder: SCItemsLevelRequestBuilder? = nil
-    private var _delegate: SCItemsBrowserDelegate? = nil
+    @IBOutlet public weak var  _nextLevelRequestBuilder: SCItemsLevelRequestBuilder!
+    @IBOutlet public weak var  _delegate: SCItemsBrowserDelegate!
     
     
     private var _itemsFileManager: SCItemsFileManager? = nil
@@ -42,7 +42,7 @@ public class SCAbstractItemsBrowser: NSObject {
         if (isLevelUpItem){
             self.itemsFileManager!.goToLevelUpNotifyingCallbacks(callbacks)
         } else {
-            let shouldGoDeeper: Bool = (self.delegate?.itemsBrowser(self, shouldLoadLevelForItem: selectedItem))!
+            let shouldGoDeeper: Bool = self.delegate.itemsBrowser(self, shouldLoadLevelForItem: selectedItem)
             if (shouldGoDeeper){
                 self.itemsFileManager?.loadLevelForItem(selectedItem, callbacks: callbacks, ignoringCache: false)
             }
@@ -63,7 +63,7 @@ public class SCAbstractItemsBrowser: NSObject {
             }
             
             callbacks.onLevelProgressBlock = { progressInfo in
-                self.delegate!.itemsBrowser(self, didReceiveLevelProgressNotification: progressInfo!)
+                self.delegate.itemsBrowser(self, didReceiveLevelProgressNotification: progressInfo!)
             }
             
         }
@@ -72,18 +72,20 @@ public class SCAbstractItemsBrowser: NSObject {
 
     }
     
-    func onLevelReloadFailedWithError(_ levelError: Error) {
-        self.delegate!.itemsBrowser(self, levelLoadingFailedWithError: levelError)
+    func onLevelReloadFailedWithError(_ levelError: SscError) {
+        self.delegate.itemsBrowser(self, levelLoadingFailedWithError: levelError as NSError)
     }
     
-    func onLevelReloaded(_ levelResponse: SCLevelResponse) {
-        assert(nil != levelResponse.levelParentItem, "Invalid parameter not satisfying: nil != levelResponse?.levelParentItem")
-        
+    func onLevelReloaded(_ levelResponse: SCLevelResponse) {        
         // @adk : order matters
-        self.loadedLevel = levelResponse
-        self.reloadContentView()
         
-        self.delegate!.itemsBrowser(self, didLoadLevelForItem: loadedLevel!.levelParentItem)
+            self.loadedLevel = levelResponse
+        
+        DispatchQueue.main.async {
+            self.reloadContentView()
+        }
+        
+        self.delegate.itemsBrowser(self, didLoadLevelForItem: loadedLevel!.levelParentItem)
     }
 
     func reloadContentView() {
@@ -127,7 +129,9 @@ extension SCAbstractItemsBrowser: SCItemsBrowserProtocol {
     }
     
     public func navigateToRootItem() {
+        
         self.disposeLazyItemsFileManager()
+        
         let fmCallbacks: SCItemsFileManagerCallbacks = self.newCallbacksForItemsFileManager()
         
         self.lazyItemsFileManager!.loadLevelForItem(self.rootItem!, callbacks: fmCallbacks, ignoringCache: false)
@@ -165,7 +169,7 @@ extension SCAbstractItemsBrowser: SCItemsBrowserInitialization {
         self._nextLevelRequestBuilder = nextLevelRequestBuilder
     }
     
-    public var delegate: SCItemsBrowserDelegate? {
+    public var delegate: SCItemsBrowserDelegate {
         return self._delegate
     }
     
@@ -178,7 +182,9 @@ extension SCAbstractItemsBrowser: SCItemsBrowserInitialization {
 }
 
 
-class SCLevelUpItem : ISitecoreItem {
+class SCLevelUpItem : NSObject, ISitecoreItem {
+    
+    var isMediaImage: Bool = false
     
     var source: IItemSource? = nil
     

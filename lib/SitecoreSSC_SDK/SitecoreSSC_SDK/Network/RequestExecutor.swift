@@ -8,60 +8,56 @@
 
 import Foundation
 
-enum RequestExecutorError: Error {
-    case nilDataError
-}
-
 protocol IRequestExecutor {
     
-    static func executeGetRequest<T: IBaseGetItemsRequest, R: IItemsResponse>(_ dumpT: T.Type, _ dumpR: R.Type, _ parameters: T, session: URLSession, completion: @escaping (R?, Error?) -> () )
-    
-    static func executePostRequest<T: IBasePostRequest, R: IBaseResponse>(_ dumpT: T.Type, _ dumpR: R.Type, _ parameters: T, session: URLSession, completion: @escaping (R?, Error?) -> () )
+    static func executePostRequest<T: IBaseResponse>(_ parameters: IBasePostRequest, session: URLSession, completion: @escaping (T?, SscError?) -> () )
+
+    static func executeGetRequest(_ parameters: IBaseGetItemsRequest, session: URLSession, completion: @escaping (IItemsResponse?, SscError?) -> () )
+
 }
 
 class RequestExecutor: IRequestExecutor {
     
-    
-    
-    static func executeGetRequest<T: IBaseGetItemsRequest, R: IItemsResponse>(_ dumpT: T.Type, _ dumpR: R.Type, _ parameters: T, session: URLSession, completion: @escaping (R?, Error?) -> () )
+    static func executeGetRequest(_ parameters: IBaseGetItemsRequest, session: URLSession, completion: @escaping (IItemsResponse?, SscError?) -> () )
     {
         var request: URLRequest
         
         do {
             request = try parameters.buildHTTPRequest()
         } catch {
-            completion(nil, error)
+            completion(nil, SscError.unknownNetworkError(error.localizedDescription))
             return
         }
         
-        
         let task = session.dataTask(with: request) { data, response, error in
             
-            //TODO: @igk some king of check should be here
-            
-            guard let data = data else {
-                print("something went wrong")
-                completion(nil, RequestExecutorError.nilDataError)
+            if (error != nil) {
+                completion(nil, SscError.networkError(error))
                 return
             }
             
-            let result = R(json: data, source: parameters.itemSource)
+            guard let data = data else {
+                print("something went wrong")
+                completion(nil, SscError.unknownNetworkError("status code: \(String(describing: response?.statusCode))"))
+                return
+            }
+            
+            let result = ItemsResponse(json: data, source: parameters.itemSource)
             completion(result, nil)
         }
         
         task.resume()
         
-        
     }
     
-    static func executePostRequest<T: IBasePostRequest, R: IBaseResponse>(_ dumpT: T.Type, _ dumpR: R.Type, _ parameters: T, session: URLSession, completion: @escaping (R?, Error?) -> () )
+    static func executePostRequest<T: IBaseResponse>(_ parameters: IBasePostRequest, session: URLSession, completion: @escaping (T?, SscError?) -> () )
     {
         var request: URLRequest
         
         do {
             request = try parameters.buildHTTPRequest()
         } catch {
-            completion(nil, error)
+            completion(nil, SscError.requesBuilderError(error))
             return
         }
         
@@ -72,15 +68,18 @@ class RequestExecutor: IRequestExecutor {
         
         let task = session.dataTask(with: request) { data, response, error in
             
-            //TODO: @igk some king of check should be here
-            
-            guard let data = data else {
-                print("something went wrong")
-                completion(nil, RequestExecutorError.nilDataError)
+            if (error != nil) {
+                completion(nil, SscError.networkError(error))
                 return
             }
             
-            let result = R(json: data, source: nil)
+            guard let data = data else {
+                print("something went wrong")
+                completion(nil, SscError.unknownNetworkError("status code: \(String(describing: response?.statusCode))"))
+                return
+            }
+            
+            let result = T(json: data, source: nil)
             
             let cookies: [HTTPCookie]?
             let rp = response as! HTTPURLResponse
@@ -100,3 +99,12 @@ class RequestExecutor: IRequestExecutor {
     
 }
 
+extension URLResponse {
+    
+    var statusCode: Int? {
+        if let httpResponse = self as? HTTPURLResponse {
+            return httpResponse.statusCode
+        }
+        return nil
+    }
+}

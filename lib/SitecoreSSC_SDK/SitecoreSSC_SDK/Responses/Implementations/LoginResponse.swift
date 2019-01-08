@@ -14,7 +14,7 @@ class LoginResponse: ILoginResponse {
         
     }
     
-    //TODO: @igk not implemented!!!
+    #warning("@igk not implemented!!!")
     func isSuccessful() -> Bool {
         return true
     }

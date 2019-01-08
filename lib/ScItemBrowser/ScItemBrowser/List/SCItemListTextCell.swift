@@ -9,15 +9,28 @@
 import Foundation
 import SitecoreSSC_SDK
 
-public class SCItemListTextCell: UITableViewCell, SCItemCell {
-    
-    var itemName: String?
+public class SCItemListCell : UITableViewCell, SCItemCell {
     
     public func setModel(item: ISitecoreItem) {
-        self.itemName = item.displayName
+        self.doesNotRecognizeSelector(#function)
     }
     
     public func reloadData() {
+        self.doesNotRecognizeSelector(#function)
+    }
+    
+    
+}
+
+public class SCItemListTextCell: SCItemListCell {
+    
+    var itemName: String?
+    
+    public override func setModel(item: ISitecoreItem) {
+        self.itemName = item.displayName
+    }
+    
+    public override func reloadData() {
         DispatchQueue.main.async {
             self.textLabel?.text = self.itemName
         }

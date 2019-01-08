@@ -17,7 +17,7 @@ class SCLevelsHistory {
         self.levelStorage = Array()
     }
     
-    func pushRequest(_ request: IGetChildrenRequest, for item: ISitecoreItem)
+    func pushRequest(_ request: IBaseGetItemsRequest, for item: ISitecoreItem)
     {
         let record = SCLevelInfoPOD(levelRequest: request, item: item)
         self.levelStorage.append(record)
@@ -40,7 +40,7 @@ class SCLevelsHistory {
         return self.currentLevel >= 2
     }
     
-    var lastRequest: IGetChildrenRequest {
+    var lastRequest: IBaseGetItemsRequest {
         return (self.levelStorage.last?.levelRequest)!
     }
     
@@ -59,7 +59,7 @@ class SCLevelsHistory {
         return self.levelStorage[index]
     }
     
-    var levelUpRequest: IGetChildrenRequest? {
+    var levelUpRequest: IBaseGetItemsRequest? {
         return self.levelUpRecord?.levelRequest
     }
     

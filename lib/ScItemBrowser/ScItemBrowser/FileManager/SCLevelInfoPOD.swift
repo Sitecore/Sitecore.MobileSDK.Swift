@@ -11,10 +11,10 @@ import SitecoreSSC_SDK
 
 class SCLevelInfoPOD {
 
-    let levelRequest: IGetChildrenRequest
+    let levelRequest: IBaseGetItemsRequest
     let levelParentItem: ISitecoreItem
     
-    init(levelRequest: IGetChildrenRequest, item: ISitecoreItem) {
+    init(levelRequest: IBaseGetItemsRequest, item: ISitecoreItem) {
         self.levelRequest = levelRequest
         self.levelParentItem = item
     }

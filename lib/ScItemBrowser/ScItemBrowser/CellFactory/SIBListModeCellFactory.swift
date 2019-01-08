@@ -14,7 +14,7 @@ import SitecoreSSC_SDK
  
  You should not invoke dequeueReusableCellWithIdentifier: explicitly. SCItemListBrowser is responsible for doing so.
  */
-public protocol SIBListModeCellFactory {
+@objc public protocol SIBListModeCellFactory: class {
     
     /**
      Constructs a new cell for the level up item.

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol ISscUrlParameters {
+@objc public protocol ISscUrlParameters {
     
     var ItemSSCAuthEndpoint:                        String { get }
     var ItemSSCItemsEndpoint:                       String { get }

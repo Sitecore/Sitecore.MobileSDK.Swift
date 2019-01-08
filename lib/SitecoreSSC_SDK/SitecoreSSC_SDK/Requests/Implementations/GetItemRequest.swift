@@ -80,12 +80,13 @@ public class GetChildrenRequest: BaseGetItemRequest, IGetChildrenRequest
         itemSource: IItemSource,
         sessionConfig: ISessionConfig?,
         queryParameters: IQueryParameters?,
-        standardFields: Bool
+        standardFields: Bool,
+        ignoreCache: Bool
         )
     {
         self.parentId = UUID(uuidString: parentId)!
         self.pagingParameters = pagingParameters
-        super.init(itemSource: itemSource, sessionConfig: sessionConfig, queryParameters: queryParameters, standardFields: standardFields)
+        super.init(itemSource: itemSource, sessionConfig: sessionConfig, queryParameters: queryParameters, standardFields: standardFields, ignoreCache: ignoreCache)
     }
     
     public override func buildUrl() -> String {
@@ -103,6 +104,8 @@ public class GetChildrenRequest: BaseGetItemRequest, IGetChildrenRequest
 
 public class BaseGetItemRequest: IBaseGetItemsRequest
 {
+    public let ignoreCache: Bool
+    
     public let itemSource: IItemSource
     public let queryParameters: IQueryParameters?
     public let includeStandardTemplateFields: Bool
@@ -112,7 +115,8 @@ public class BaseGetItemRequest: IBaseGetItemsRequest
         itemSource: IItemSource,
         sessionConfig: ISessionConfig?,
         queryParameters: IQueryParameters?,
-        standardFields: Bool
+        standardFields: Bool,
+        ignoreCache: Bool = false
         )
     {
         //TODO: @igk check all input data
@@ -120,6 +124,7 @@ public class BaseGetItemRequest: IBaseGetItemsRequest
         self.sessionConfig = sessionConfig
         self.queryParameters = queryParameters
         self.includeStandardTemplateFields = standardFields
+        self.ignoreCache = ignoreCache
     }
     
     public func buildUrl() -> String {
@@ -129,6 +134,16 @@ public class BaseGetItemRequest: IBaseGetItemsRequest
     public func buildHTTPRequest() -> URLRequest {
         //TODO: @igk check for errors
         let urlString = self.buildUrl()
-        return URLRequest(url: URL(string: urlString)!)
+        var request = URLRequest(url: URL(string: urlString)!)
+        
+        if (self.ignoreCache) {
+            request.cachePolicy = .reloadIgnoringLocalCacheData
+        } else {
+            request.cachePolicy = .returnCacheDataElseLoad
+        }
+        
+        return request
     }
+    
+    
 }

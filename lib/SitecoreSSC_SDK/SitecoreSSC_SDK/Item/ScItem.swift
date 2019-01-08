@@ -8,7 +8,8 @@
 
 import Foundation
 
-public class ScItem: ISitecoreItem {
+public class ScItem: NSObject, ISitecoreItem {
+    
     
     public var source: IItemSource?
     
@@ -18,30 +19,47 @@ public class ScItem: ISitecoreItem {
             return self.fields["DisplayName"]! as! String
         }
     }
+    
+    public var isMediaImage: Bool
+    {
+        get
+        {
+            guard let mimeType: String = self.fields["Mime Type"] as? String else {
+                return false
+            }
+            
+            return mimeType.hasPrefix("image/")
+        }
+    }
+    
     public var hasChildren: Bool
     {
         get{
             return NSString(string: self.fields["HasChildren"]! as! String).boolValue
         }
     }
+    
     public var id: String
     {
         get{
             return self.fields["ItemID"]! as! String
         }
     }
+    
     public var path: String
     {
         get{
             return self.fields["ItemPath"]! as! String
         }
     }
+    
     public var templateId: String
     {
         get{
             return self.fields["TemplateID"]! as! String
         }
     }
+    
     public var fieldsCount: Int
     {
         get{
@@ -60,17 +78,19 @@ public class ScItem: ISitecoreItem {
     
 }
 
-public protocol ISitecoreItem {
+@objc public protocol ISitecoreItem: NSObjectProtocol {
     
-    var source:         IItemSource? { get }
-    var displayName:    String      { get }
-    var hasChildren:    Bool        { get }
-    var id:             String      { get }
-    var path:           String      { get }
-    var templateId:     String      { get }
-    var fieldsCount:    Int         { get }
+    var source:       IItemSource? { get }
+    var displayName:  String      { get }
+    var hasChildren:  Bool        { get }
+    var id:           String      { get }
+    var path:         String      { get }
+    var templateId:   String      { get }
+    var fieldsCount:  Int         { get }
     
-    var fields:         [String: Any]   { get }
+    var fields:       [String: Any] { get }
+    
+    var isMediaImage: Bool         { get }
     
 }
 

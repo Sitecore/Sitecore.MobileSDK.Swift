@@ -10,12 +10,15 @@
 		E006F2BC219ECCB900011E66 /* SitecoreSSC_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E006F2B2219ECCB900011E66 /* SitecoreSSC_SDK.framework */; };
 		E006F2C1219ECCB900011E66 /* SitecoreSSC_SDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E006F2C0219ECCB900011E66 /* SitecoreSSC_SDKTests.swift */; };
 		E006F2C3219ECCB900011E66 /* SitecoreSSC_SDK.h in Headers */ = {isa = PBXBuildFile; fileRef = E006F2B5219ECCB900011E66 /* SitecoreSSC_SDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E01E833A21DE56F30057B595 /* ScImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01E833921DE56F30057B595 /* ScImageLoader.swift */; };
+		E01E833C21DE5ECF0057B595 /* GetImageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01E833B21DE5ECF0057B595 /* GetImageRequest.swift */; };
 		E03B8F0E21B02759001630A7 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B8F0D21B02759001630A7 /* Errors.swift */; };
 		E03B8F1121B03759001630A7 /* ScCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B8F1021B03759001630A7 /* ScCredentials.swift */; };
 		E03B8F1321B03A02001630A7 /* ItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B8F1221B03A02001630A7 /* ItemSource.swift */; };
 		E03B8F1521B03C23001630A7 /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B8F1421B03C23001630A7 /* LoginResponse.swift */; };
 		E050573E21A8371F00A78521 /* ScItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E050573D21A8371F00A78521 /* ScItem.swift */; };
 		E050574021A8438A00A78521 /* SscAuthRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E050573F21A8438A00A78521 /* SscAuthRequests.swift */; };
+		E06C814A21CBCEF0002120B9 /* RequestMerger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06C814921CBCEF0002120B9 /* RequestMerger.swift */; };
 		E0A2965521A6EC9200E22754 /* SscSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2965421A6EC9200E22754 /* SscSession.swift */; };
 		E0A2965921A6F7B000E22754 /* SscRequestsProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2965821A6F7B000E22754 /* SscRequestsProtocols.swift */; };
 		E0A2965B21A6F85500E22754 /* SscResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2965A21A6F85500E22754 /* SscResponses.swift */; };
@@ -43,12 +46,15 @@
 		E006F2BB219ECCB900011E66 /* SitecoreSSC_SDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SitecoreSSC_SDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E006F2C0219ECCB900011E66 /* SitecoreSSC_SDKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SitecoreSSC_SDKTests.swift; sourceTree = "<group>"; };
 		E006F2C2219ECCB900011E66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E01E833921DE56F30057B595 /* ScImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScImageLoader.swift; sourceTree = "<group>"; };
+		E01E833B21DE5ECF0057B595 /* GetImageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetImageRequest.swift; sourceTree = "<group>"; };
 		E03B8F0D21B02759001630A7 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		E03B8F1021B03759001630A7 /* ScCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScCredentials.swift; sourceTree = "<group>"; };
 		E03B8F1221B03A02001630A7 /* ItemSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSource.swift; sourceTree = "<group>"; };
 		E03B8F1421B03C23001630A7 /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
 		E050573D21A8371F00A78521 /* ScItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScItem.swift; sourceTree = "<group>"; };
 		E050573F21A8438A00A78521 /* SscAuthRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SscAuthRequests.swift; sourceTree = "<group>"; };
+		E06C814921CBCEF0002120B9 /* RequestMerger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestMerger.swift; sourceTree = "<group>"; };
 		E0A2965421A6EC9200E22754 /* SscSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SscSession.swift; sourceTree = "<group>"; };
 		E0A2965821A6F7B000E22754 /* SscRequestsProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SscRequestsProtocols.swift; sourceTree = "<group>"; };
 		E0A2965A21A6F85500E22754 /* SscResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SscResponses.swift; sourceTree = "<group>"; };
@@ -154,6 +160,7 @@
 				E0DC023421AC3CCB00EB99A4 /* Implementations */,
 				E0A2965821A6F7B000E22754 /* SscRequestsProtocols.swift */,
 				E050573F21A8438A00A78521 /* SscAuthRequests.swift */,
+				E06C814921CBCEF0002120B9 /* RequestMerger.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -162,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				E0DC022C21AC270F00EB99A4 /* RequestExecutor.swift */,
+				E01E833921DE56F30057B595 /* ScImageLoader.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -179,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				E0DC023521AC3CDC00EB99A4 /* GetItemRequest.swift */,
+				E01E833B21DE5ECF0057B595 /* GetImageRequest.swift */,
 			);
 			path = Implementations;
 			sourceTree = "<group>";
@@ -307,10 +316,13 @@
 				E050573E21A8371F00A78521 /* ScItem.swift in Sources */,
 				E03B8F1321B03A02001630A7 /* ItemSource.swift in Sources */,
 				E0A2965B21A6F85500E22754 /* SscResponses.swift in Sources */,
+				E01E833A21DE56F30057B595 /* ScImageLoader.swift in Sources */,
 				E03B8F1521B03C23001630A7 /* LoginResponse.swift in Sources */,
+				E06C814A21CBCEF0002120B9 /* RequestMerger.swift in Sources */,
 				E050574021A8438A00A78521 /* SscAuthRequests.swift in Sources */,
 				E0A2965521A6EC9200E22754 /* SscSession.swift in Sources */,
 				E0A2965921A6F7B000E22754 /* SscRequestsProtocols.swift in Sources */,
+				E01E833C21DE5ECF0057B595 /* GetImageRequest.swift in Sources */,
 				E0DC023621AC3CDC00EB99A4 /* GetItemRequest.swift in Sources */,
 				E0DC023121AC2D4000EB99A4 /* SessionConfig.swift in Sources */,
 				E03B8F1121B03759001630A7 /* ScCredentials.swift in Sources */,

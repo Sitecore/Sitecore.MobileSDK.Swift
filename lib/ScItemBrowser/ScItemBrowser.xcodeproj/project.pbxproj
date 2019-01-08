@@ -15,6 +15,8 @@
 		E05589EF21B7C83A0053ECB6 /* SIBListModeCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05589EE21B7C83A0053ECB6 /* SIBListModeCellFactory.swift */; };
 		E05589F221B7D1F60053ECB6 /* SCItemsFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05589F121B7D1F60053ECB6 /* SCItemsFileManager.swift */; };
 		E05589F421B7D3010053ECB6 /* SCLevelsHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05589F321B7D3010053ECB6 /* SCLevelsHistory.swift */; };
+		E06C814C21CBD8C7002120B9 /* SCMediaItemListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06C814B21CBD8C7002120B9 /* SCMediaItemListCell.swift */; };
+		E06C814F21CBDFAA002120B9 /* SCMediaCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06C814E21CBDFAA002120B9 /* SCMediaCellController.swift */; };
 		E07BB85021C3F85800395FE6 /* SIBAllChildrenRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07BB84E21C3F85700395FE6 /* SIBAllChildrenRequestBuilder.swift */; };
 		E07BB85221C4011100395FE6 /* SCItemListTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07BB85121C4011100395FE6 /* SCItemListTextCell.swift */; };
 		E088E64F21B6B2DB00ACD94A /* ScItemBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E088E64521B6B2DB00ACD94A /* ScItemBrowser.framework */; };
@@ -52,6 +54,8 @@
 		E05589EE21B7C83A0053ECB6 /* SIBListModeCellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SIBListModeCellFactory.swift; sourceTree = "<group>"; };
 		E05589F121B7D1F60053ECB6 /* SCItemsFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCItemsFileManager.swift; sourceTree = "<group>"; };
 		E05589F321B7D3010053ECB6 /* SCLevelsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCLevelsHistory.swift; sourceTree = "<group>"; };
+		E06C814B21CBD8C7002120B9 /* SCMediaItemListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCMediaItemListCell.swift; sourceTree = "<group>"; };
+		E06C814E21CBDFAA002120B9 /* SCMediaCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCMediaCellController.swift; sourceTree = "<group>"; };
 		E07BB84E21C3F85700395FE6 /* SIBAllChildrenRequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SIBAllChildrenRequestBuilder.swift; sourceTree = "<group>"; };
 		E07BB85121C4011100395FE6 /* SCItemListTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCItemListTextCell.swift; sourceTree = "<group>"; };
 		E088E64521B6B2DB00ACD94A /* ScItemBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ScItemBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,6 +119,7 @@
 			children = (
 				E05589E921B7C1D80053ECB6 /* SCItemListBrowser.swift */,
 				E07BB85121C4011100395FE6 /* SCItemListTextCell.swift */,
+				E06C814B21CBD8C7002120B9 /* SCMediaItemListCell.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -138,6 +143,14 @@
 				E0B7747721B95D6100429A47 /* SCLevelResponse.swift */,
 			);
 			path = FileManager;
+			sourceTree = "<group>";
+		};
+		E06C814D21CBDF97002120B9 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				E06C814E21CBDFAA002120B9 /* SCMediaCellController.swift */,
+			);
+			path = Media;
 			sourceTree = "<group>";
 		};
 		E07BB84C21C3F83900395FE6 /* RequestBuilder */ = {
@@ -170,6 +183,7 @@
 		E088E64721B6B2DB00ACD94A /* ScItemBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				E06C814D21CBDF97002120B9 /* Media */,
 				E07BB84C21C3F83900395FE6 /* RequestBuilder */,
 				E0C7ACDC21BFF670001F6371 /* ItemsBrowser */,
 				E0B7747B21B95ECA00429A47 /* operations!!! */,
@@ -331,6 +345,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E06C814F21CBDFAA002120B9 /* SCMediaCellController.swift in Sources */,
 				E05589EA21B7C1D80053ECB6 /* SCItemListBrowser.swift in Sources */,
 				E088E66721B6CBA300ACD94A /* SCItemCell.swift in Sources */,
 				E05589F221B7D1F60053ECB6 /* SCItemsFileManager.swift in Sources */,
@@ -344,6 +359,7 @@
 				E05589E521B7C0A90053ECB6 /* SCItemGridBrowser.swift in Sources */,
 				E0B7747A21B95EB000429A47 /* SCExtendedOperations.swift in Sources */,
 				E0B7747421B9575800429A47 /* SCLevelInfoPOD.swift in Sources */,
+				E06C814C21CBD8C7002120B9 /* SCMediaItemListCell.swift in Sources */,
 				E07BB85021C3F85800395FE6 /* SIBAllChildrenRequestBuilder.swift in Sources */,
 				E088E66321B6B32100ACD94A /* SCItemsBrowserDelegate.swift in Sources */,
 				E05589EF21B7C83A0053ECB6 /* SIBListModeCellFactory.swift in Sources */,

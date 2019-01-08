@@ -8,16 +8,27 @@
 
 import Foundation
 
-enum SscError: Error {
+public enum SscError: Error {
     case runtimeError(String)
+    case requesBuilderError(Error)
+    case unknownNetworkError(String)
+    case networkError(Error?)
 }
 
-class ErrorDescriptions
+public class ErrorDescriptions
 {
     static func canNotBuilUrlFor(_ request: String) -> String
     {
        return "Can not build url for \(request) request"
     }
     
+    static func unknownNetworkError(userInfo: String) -> String
+    {
+        return "Unknown network error, user info: \(userInfo)"
+    }
     
+    static func requesBuilderErrorError(userInfo: String) -> String
+    {
+        return "Can not build request, user info: \(userInfo)"
+    }
 }

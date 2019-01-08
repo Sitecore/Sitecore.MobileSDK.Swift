@@ -10,7 +10,7 @@ import Foundation
 import SitecoreSSC_SDK
 
 typealias UpdateHistoryActionBlock = () -> Void
-typealias UpdateHistoryActionFromRequest = (IGetChildrenRequest?) -> UpdateHistoryActionBlock
+typealias UpdateHistoryActionFromRequest = (IBaseGetItemsRequest?) -> UpdateHistoryActionBlock
 
 protocol ISCItemsFileManager {
     var levelsHistory: SCLevelsHistory { get }
@@ -38,7 +38,7 @@ class SCItemsFileManager : ISCItemsFileManager
         let pushLevelActionFromRequest: UpdateHistoryActionFromRequest = { request in
             let pushLevelAction = {
                 self.levelsHistory.pushRequest(request!, for: item)
-                }
+            }
             return pushLevelAction
         }
         
@@ -53,19 +53,48 @@ class SCItemsFileManager : ISCItemsFileManager
     {
         #warning("@igk add checks for all nil objects")
         
-        let request: IGetChildrenRequest? = buildLevelRequest(for: item, ignoringCache: shouldIgnoreCache)
+        callbacks.onLevelProgressBlock!(self)
+        
+        let request: IBaseGetItemsRequest? = buildLevelRequest(for: item, ignoringCache: shouldIgnoreCache)
+        
+        let pushLevelAction = actionFromRequest(request)
+        
         levelLoader(from: request!) { (response, error) in
             
-            let levelResponse = SCLevelResponse(levelParentItem: item, levelContentItems: (response?.items)!)
+            guard let urlResponse = response else {
+                callbacks.onLevelLoadedBlock!(nil, error)
+                return
+            }
+            
+            pushLevelAction()
+
+            let levelResponse = self.levelResponseWithLevelUpItemWith(response: urlResponse, levelParentItem: item)
             
             callbacks.onLevelLoadedBlock!(levelResponse, error)
             
         }
     }
     
-    func buildLevelRequest(for item: ISitecoreItem, ignoringCache shouldIgnoreCache: Bool) -> IGetChildrenRequest?
+    func levelResponseWithLevelUpItemWith(response: IItemsResponse, levelParentItem: ISitecoreItem) -> SCLevelResponse
     {
-        let request: IGetChildrenRequest = nextLevelRequestBuilder.itemsBrowser(self, levelDownRequestFor: item)
+        var  loadedItems: [ISitecoreItem]
+        
+        if (self.levelsHistory.isLevelUpAvailable)
+        {
+            let fakeLevelUp: ISitecoreItem = SCLevelUpItem()
+            loadedItems = [ fakeLevelUp ]
+            loadedItems += response.items
+        } else {
+            loadedItems = response.items
+        }
+        
+        return SCLevelResponse(levelParentItem: levelParentItem, levelContentItems: loadedItems)
+        
+    }
+    
+    func buildLevelRequest(for item: ISitecoreItem, ignoringCache shouldIgnoreCache: Bool) -> IBaseGetItemsRequest?
+    {
+        let request: IBaseGetItemsRequest = nextLevelRequestBuilder.itemsBrowser(self, levelDownRequestFor: item, ignoreCache: shouldIgnoreCache)
         
         if shouldIgnoreCache {
             #warning ("@igk implement http caching control in sdk!")
@@ -75,12 +104,12 @@ class SCItemsFileManager : ISCItemsFileManager
         return request
     }
     
-    func levelLoader(from request: IGetChildrenRequest, completion: @escaping SCDidFinishItemsRequestHandler) {
+    func levelLoader(from request: IBaseGetItemsRequest, completion: @escaping SCDidFinishItemsRequestHandler) {
         
         #warning ("@igk not implemented")
         #warning ("@igk replace GetChildrenRequest with factory")
         
-        apiSession.sendGetItemsRequest(request: request as! GetChildrenRequest, completion: completion)
+        apiSession.sendGetItemsRequest(request, completion: completion)
         
     
     }
@@ -105,17 +134,19 @@ class SCItemsFileManager : ISCItemsFileManager
     
     func goToLevelUpNotifyingCallbacks(_ callbacks: SCItemsFileManagerCallbacks) {
         
-        let request: IGetChildrenRequest = self.levelsHistory.levelUpRequest!
-        let levelUpParentItem: ISitecoreItem = self.levelsHistory.levelUpParentItem!
-        
-        let levelsHistory: SCLevelsHistory = self.levelsHistory
-        
-        levelLoader(from: request) { (response, error) in
+        if (self.levelsHistory.isLevelUpAvailable)
+        {
+            let request: IBaseGetItemsRequest = self.levelsHistory.levelUpRequest!
+            let levelUpParentItem: ISitecoreItem = self.levelsHistory.levelUpParentItem!
             
-            let levelResponse = SCLevelResponse(levelParentItem: levelUpParentItem, levelContentItems: (response?.items)!)
-            
-            callbacks.onLevelLoadedBlock!(levelResponse, error)
-            
+            levelLoader(from: request) { (response, error) in
+ 
+                self.levelsHistory.popRequest()
+
+                let levelResponse = self.levelResponseWithLevelUpItemWith(response: response!, levelParentItem: levelUpParentItem)
+                
+                callbacks.onLevelLoadedBlock!(levelResponse, error)
+            }
         }
     }
 

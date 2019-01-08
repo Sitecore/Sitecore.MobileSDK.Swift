@@ -10,8 +10,8 @@ import UIKit
 import SitecoreSSC_SDK
 import ScItemBrowser
 
-class ViewController: UIViewController, URLSessionDelegate, UITableViewDelegate {
-
+class ViewController: UIViewController, URLSessionDelegate {
+    let ODATA_API_KEY    = "5EECEACF-9B11-46D6-8DD4-EC440298BA47"
     let LEVEL_UP_CELL_ID = "net.sitecore.MobileSdk.ItemsBrowser.list.LevelUpCell"
     let ITEM_CELL_ID     = "net.sitecore.MobileSdk.ItemsBrowser.list.ItemCell"
     let IMAGE_CELL_ID    = "net.sitecore.MobileSdk.ItemsBrowser.list.ItemCell.image"
@@ -21,11 +21,9 @@ class ViewController: UIViewController, URLSessionDelegate, UITableViewDelegate 
     
     
     
-    let itemsBrowserController: SCItemListBrowser = SCItemListBrowser()
+    @IBOutlet weak var itemsBrowserController: SCItemListBrowser!
     @IBOutlet weak var itemPathLabel: UILabel!
-    @IBOutlet weak var tableView: UITableView!
     
-    var allChildrenRequestBuilder: SIBAllChildrenRequestBuilder = SIBAllChildrenRequestBuilder()
     @IBOutlet var loadingProgress: UIActivityIndicatorView?
     @IBOutlet var rootButton: UIButton?
     @IBOutlet var reloadButton: UIButton?
@@ -34,17 +32,11 @@ class ViewController: UIViewController, URLSessionDelegate, UITableViewDelegate 
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        self.itemsBrowserController.setTableView(self.tableView)
-        self.itemsBrowserController.setDelegate(self)
-        self.itemsBrowserController.setListModeCellBuilder(self)
-        self.itemsBrowserController.setListModeTheme(self)
-        self.itemsBrowserController.setNextLevelRequestBuilder(allChildrenRequestBuilder)
-        
+        self.startLoading()
         self.createSession {
             self.downloadRootItem()
+            //self.testDownload()
         }
-       
-        
     }
     
     func createSession(completion: @escaping () -> ()){
@@ -55,7 +47,7 @@ class ViewController: UIViewController, URLSessionDelegate, UITableViewDelegate 
         
         let loginRequest = LoginRequest(credentils: credentials)
         
-        self.sscSession!.sendLoginRequest(request: loginRequest) { (response, error) in
+        self.sscSession!.sendLoginRequest(loginRequest) { (response, error) in
             print("\(String(describing: response))")
             completion()
         }
@@ -63,25 +55,26 @@ class ViewController: UIViewController, URLSessionDelegate, UITableViewDelegate 
     
     func downloadRootItem(){
         
+        self.startLoading()
+        
         guard let sscSession = self.sscSession else {
             print("create session first!")
             return
         }
         self.itemsBrowserController.setApiSession(self.sscSession!)
-        self.startLoading()
         
         let itemSource = ItemSource(database: "web", language: "en")
         
         let getItemRequest = GetByIdRequest(
-            itemId: "110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9",
+            itemId: "11111111-1111-1111-1111-111111111111",
             itemSource: itemSource,
             sessionConfig: nil,
             queryParameters: nil,
             standardFields: false
         )
         
-        sscSession.sendGetItemsRequest(request: getItemRequest) { (response, error) in
-            print("\(response?.items[0].displayName))")
+        sscSession.sendGetItemsRequest(getItemRequest) { (response, error) in
+            print("\(String(describing: response?.items[0].displayName)))")
             self.endLoading()
             self.didLoadRootItem((response?.items[0])!)
         }
@@ -104,29 +97,34 @@ class ViewController: UIViewController, URLSessionDelegate, UITableViewDelegate 
         let itemSource = ItemSource(database: "web", language: "en")
 
         let getItemRequest = GetByIdRequest(
-            itemId: "110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9",
+            itemId: "4F20B519-D565-4472-B018-91CB6103C667",
             itemSource: itemSource,
             sessionConfig: nil,
             queryParameters: nil,
             standardFields: false
         )
-        
-        sscSession.sendGetItemsRequest(request: getItemRequest) { (response, error) in
-            print("\(response?.items[0].displayName))")
+
+        sscSession.sendGetItemsRequest(getItemRequest) { (response, error) in
+            print("!!! GET ITEM BY ID !!! \(response?.items[0].displayName))")
+            
+            sscSession.downloadImageForItem((response?.items[0])!, completion: { (image, error) in
+                print(image!)
+            })
         }
         
         let getChildren = GetChildrenRequest(
-            parentId: "110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9",
+            parentId: "4B97F784-338B-4EB7-B4B0-09B870A5E0D7",
             pagingParameters: nil,
             itemSource: itemSource,
             sessionConfig: nil,
             queryParameters: nil,
-            standardFields:false
+            standardFields: false,
+            ignoreCache: false
         )
-        
-        sscSession.sendGetItemsRequest(request: getChildren) { (response, error) in
+
+        sscSession.sendGetItemsRequest(getChildren) { (response, error) in
             print("GET CHILDREN, COUNT: \(response?.items.count)")
-            print("\(response?.items[0].displayName))")
+            if ((response?.items.count)! > 0) { print("\(String(describing: response?.items[0].displayName)))") }
         }
     }
     
@@ -159,10 +157,17 @@ class ViewController: UIViewController, URLSessionDelegate, UITableViewDelegate 
 
     @IBAction func RootTouched(_ sender: Any) {
         
+        guard self.itemsBrowserController.rootItem != nil else {
+            print("root item is not set")
+            return
+        }
+        
+        self.itemsBrowserController.navigateToRootItem()
+        
     }
     
     @IBAction func ReloadTouched(_ sender: Any) {
-        
+        self.itemsBrowserController.forceRefreshData()
     }
 }
 
@@ -171,7 +176,7 @@ extension ViewController: SCItemsBrowserDelegate{
         self.startLoading()
     }
     
-    func itemsBrowser(_ itemsBrowser: Any, levelLoadingFailedWithError error: Error?) {
+    func itemsBrowser(_ itemsBrowser: Any, levelLoadingFailedWithError error: NSError?) {
         print("ups: \(error.debugDescription)")
         self.endLoading()
     }
@@ -195,6 +200,7 @@ extension ViewController: SCItemsBrowserDelegate{
 }
 
 extension ViewController: SIBListModeAppearance{
+    
     func levelHeaderTitleForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> String {
         return "level Header"
     }
@@ -203,31 +209,37 @@ extension ViewController: SIBListModeAppearance{
         return "level Footer"
     }
     
-    func levelHeaderViewForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> UIView {
-        let result = UIButton(type: .infoDark)
-        result.setTitle("header custom Button", for: .normal)
-        return result
-    }
+//    func levelHeaderViewForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> UIView {
+//        let result = UIButton(type: .infoDark)
+//        result.setTitle("header custom Button", for: .normal)
+//        return result
+//    }
+//    
+//    func levelFooterViewForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> UIView {
+//        let result = UIButton(type: .infoDark)
+//        result.setTitle("footer custom Button", for: .normal)
+//        return result
+//    }
     
-    func levelFooterViewForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> UIView {
-        let result = UIButton(type: .infoDark)
-        result.setTitle("footer custom Button", for: .normal)
-        return result
-    }
+//    func levelHeaderHeightForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> CGFloat {
+//     return 100
+//    }
+//    
+//    func levelFooterHeightForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> CGFloat {
+//        return 50
+//    }
     
-    func levelHeaderHeightForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> CGFloat {
-     return 100
-    }
-    
-    func levelFooterHeightForTableViewSectionOfItemsBrowser(_ sender: SCItemListBrowser) -> CGFloat {
-        return 50
-    }
-    
-    func itemsBrowser(_ sender: SCItemListBrowser, levelUpCellHeigtAt indexPath: NSIndexPath) -> CGFloat {
+    func itemsBrowser(_ sender: SCItemListBrowser, levelUpCellHeigtAt indexPath: IndexPath) -> CGFloat {
         return 44
     }
     
-    func itemsBrowser(_ sender: SCItemListBrowser, heightOfCellFor item: ISitecoreItem, at indexPath: NSIndexPath) -> CGFloat {
+    func itemsBrowser(_ sender: SCItemListBrowser, heightOfCellFor item: ISitecoreItem, at indexPath: IndexPath) -> CGFloat {
+        
+        if (item.isMediaImage)
+        {
+            return 200
+        }
+        
         return 44
     }
     
@@ -235,8 +247,6 @@ extension ViewController: SIBListModeAppearance{
 }
 
 extension ViewController: SIBListModeCellFactory{
-    
-    
     
     func createLevelUpCellForListModeOfItemsBrowser(_ sender: SCItemListBrowser) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: LEVEL_UP_CELL_ID)
@@ -246,10 +256,19 @@ extension ViewController: SIBListModeCellFactory{
         return cell
     }
     
-    func itemsBrowser(_ sender: SCItemListBrowser, createListModeCellFor item: ISitecoreItem) -> (UITableViewCell & SCItemCell) {
+    func itemsBrowser(_ sender: SCItemListBrowser, createListModeCellFor item: ISitecoreItem) -> (UITableViewCell & SCItemCell)
+    {
         let cellId: String = self.itemsBrowser(self.itemsBrowserController, itemCellReuseIdentifierFor: item)
-        let cell = SCItemListTextCell(style: .default, reuseIdentifier: cellId)
-        return cell
+        
+        let cell: SCItemListCell?
+        
+        if (item.isMediaImage) {
+            cell = SCMediaItemListCell(style: .default, reuseIdentifier: cellId, customSession: self.sscSession!)
+        } else {
+            cell = SCItemListTextCell(style: .default, reuseIdentifier: cellId)
+        }
+        
+        return cell!
     }
     
     func reuseIdentifierForLevelUpCellOfItemsBrowser(_ sender: SCItemListBrowser) -> String {
@@ -257,6 +276,12 @@ extension ViewController: SIBListModeCellFactory{
     }
     
     func itemsBrowser(_ sender: SCItemListBrowser, itemCellReuseIdentifierFor item: ISitecoreItem) -> String {
+        
+        if (item.isMediaImage)
+        {
+            return IMAGE_CELL_ID
+        }
+        
         return ITEM_CELL_ID
     }
     

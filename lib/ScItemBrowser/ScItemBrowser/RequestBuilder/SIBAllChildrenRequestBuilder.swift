@@ -9,21 +9,22 @@
 import Foundation
 import SitecoreSSC_SDK
 
-public class SIBAllChildrenRequestBuilder: SCItemsLevelRequestBuilder
+public class SIBAllChildrenRequestBuilder: NSObject, SCItemsLevelRequestBuilder
 {
-    public init()
+    public override init()
     {
         
     }
     
-    public func itemsBrowser(_ sender: Any, levelDownRequestFor item: ISitecoreItem) -> IGetChildrenRequest
+    public func itemsBrowser(_ sender: Any, levelDownRequestFor item: ISitecoreItem, ignoreCache: Bool) -> IBaseGetItemsRequest
     {
         let request: GetChildrenRequest = GetChildrenRequest(parentId: item.id,
                                                              pagingParameters: nil,
                                                              itemSource: item.source!,
                                                              sessionConfig: nil,
                                                              queryParameters: nil,
-                                                             standardFields: true)
+                                                             standardFields: true,
+                                                             ignoreCache: ignoreCache)
         return request
     }
 

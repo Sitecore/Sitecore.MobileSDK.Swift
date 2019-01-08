@@ -8,13 +8,13 @@
 
 import Foundation
 
-public protocol IItemSource {
+@objc public protocol IItemSource: NSObjectProtocol {
     var database:       String  { get }
     var language:       String  { get }
-    var versionNumber:  Int?    { get }
+    var versionNumber:  NSNumber?    { get }
 }
 
-public class ItemSource: IItemSource {
+public class ItemSource: NSObject, IItemSource {
     
     public init(
         database:       String,
@@ -29,7 +29,7 @@ public class ItemSource: IItemSource {
     public init(
         database:       String,
         language:       String,
-        versionNumber:  Int?
+        versionNumber:  NSNumber?
     )
     {
         self.database = database
@@ -39,7 +39,7 @@ public class ItemSource: IItemSource {
 
     public let database: String
     public let language: String
-    public let versionNumber: Int?
+    public let versionNumber: NSNumber?
     
     
 }
