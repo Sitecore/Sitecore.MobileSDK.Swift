@@ -65,11 +65,12 @@ extension SCItemListBrowser: UITableViewDataSource {
     
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let level = self.loadedLevel else {
+        guard let loadedLevel = self.loadedLevel else
+        {
             return 0
         }
         
-        return level.levelContentItems.count
+        return loadedLevel.itemsCount
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -109,6 +110,7 @@ extension SCItemListBrowser: UITableViewDataSource {
         }
     }
     
+    //MARK: -
     //MARK: Appearance
     
     public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?

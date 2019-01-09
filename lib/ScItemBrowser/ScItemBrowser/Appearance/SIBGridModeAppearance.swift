@@ -6,7 +6,6 @@
 //  Copyright © 2018 Igor. All rights reserved.
 //
 
-
 import Foundation
 import SitecoreSSC_SDK
 
@@ -15,8 +14,7 @@ import SitecoreSSC_SDK
  
  Override methods of this protocol to forward your values to the UICollectionView and customize its appearance.
  */
-#warning ("@igk all this should be optional")
-protocol SIBGridModeAppearance {
+@objc public protocol SIBGridModeAppearance: NSObjectProtocol {
     
     /**
      Tells the delegate that the item at the specified index path was highlighted. Overloading this method you may do some changes to the cell so that the user gets visual feedback while tapping on it.
@@ -29,7 +27,7 @@ protocol SIBGridModeAppearance {
      @param indexPath NSIndexPath value for the given cell
      
      */
-    func itemsBrowser(_ sender: SCItemGridBrowser, didHighlight cell: UICollectionViewCell, for item:ISitecoreItem, at indexPath: NSIndexPath)
+    @objc optional func itemsBrowser(_ sender: SCItemGridBrowser, didHighlight cell: UICollectionViewCell, for item:ISitecoreItem, at indexPath: IndexPath)
 
     /**
      Tells the delegate that the item at the specified index path was unhighlighted. Overloading this method you may revert the cell's appearance to the initial state so that the user gets visual feedback while finishing tapping on it.
@@ -42,7 +40,7 @@ protocol SIBGridModeAppearance {
      @param indexPath NSIndexPath value for the given cell
      
      */
-    func itemsBrowser(_ sender: SCItemGridBrowser, didUnhighlight cell: UICollectionViewCell, for item:ISitecoreItem, at indexPath: NSIndexPath)
+    @objc optional func itemsBrowser(_ sender: SCItemGridBrowser, didUnhighlight cell: UICollectionViewCell, for item:ISitecoreItem, at indexPath: IndexPath)
     
     /**
      Asks for the custom transition layout to use when moving between the specified layouts.
@@ -54,5 +52,5 @@ protocol SIBGridModeAppearance {
      
      @return The collection view transition layout object to use to perform the transition.
      */
-    func itemsBrowser(_ sender: SCItemGridBrowser, transitionLayoutForOldLayout fromLayout: UICollectionViewLayout, toLayout: UICollectionViewLayout) -> UICollectionViewTransitionLayout
+    @objc optional func itemsBrowser(_ sender: SCItemGridBrowser, transitionLayoutForOldLayout fromLayout: UICollectionViewLayout, toLayout: UICollectionViewLayout) -> UICollectionViewTransitionLayout
 }

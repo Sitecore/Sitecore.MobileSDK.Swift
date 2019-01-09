@@ -17,7 +17,7 @@ import SitecoreSSC_SDK
  1. Register a class or a nib file for the given item
  2. Obtain an item using the [UICollectionView dequeueReusableCellWithReuseIdentifier:forIndexPath:] method of the UICollectionView.
  */
-protocol SIBGridModeCellFactory {
+@objc public protocol SIBGridModeCellFactory: NSObjectProtocol {
     /**
      Provides a new cell for the level up item
      
@@ -27,7 +27,7 @@ protocol SIBGridModeCellFactory {
      @return A new cell.
      
      */
-    func itemsBrowser(_ sender: SCItemGridBrowser, createLevelUpCellAt indexPath: NSIndexPath) -> UICollectionViewCell
+    func itemsBrowser(_ sender: SCItemGridBrowser, createLevelUpCellAt indexPath: IndexPath) -> UICollectionViewCell
 
     /**
      Provides a new cell for the given item.
@@ -40,7 +40,6 @@ protocol SIBGridModeCellFactory {
      
      Do not invoke methods of the SCItemCell protocol directly. SCItemGridBrowser controller will do it for you.
      */
-    #warning ("TODO: @igk must be somethig like this: UICollectionViewCell:SCItemCell")
-    func itemsBrowser(_ sender: SCItemGridBrowser, createGridModeCellFor item: ISitecoreItem, at indexPath: NSIndexPath) -> UICollectionViewCell
+    func itemsBrowser(_ sender: SCItemGridBrowser, createGridModeCellFor item: ISitecoreItem, at indexPath: IndexPath) -> UICollectionViewCell & SCItemCell
 
 }

@@ -72,6 +72,7 @@ public class SCMediaItemListCell: SCItemListCell, SCMediaCellDelegate
         self.progress.center = CGPoint(x: self.frame.size.width / 2, y: self.frame.size.height / 2)
     }
     
+    //MARK: -
     //MARK: SCMediaCellDelegate
 
     func didStartLoadingImageInMediaCellController(sender: SCMediaCellController)

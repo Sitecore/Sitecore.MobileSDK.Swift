@@ -13,7 +13,8 @@ class ScImageLoader {
     private static let cache = NSCache<NSString, NSData>()
     
     
-    //TODO: @igk create persistence/memory cache for big/small images, we have "Width": "100", "Height": "100" in request.mediaItem: ISitecoreItem
+    //TODO: 1 @igk create persistence/memory cache for big/small images, we have "Width": "100", "Height": "100" in request.mediaItem: ISitecoreItem
+    //TODO: 2 @igk impoment download task with progress
     
     static func getImageWithRequest(_ request: IGetImageRequest, session: URLSession, completion: @escaping(_ image: UIImage?, _ error: Error?) -> ()) {
         
@@ -48,6 +49,14 @@ class ScImageLoader {
             
             task.resume()
         }
+    }
+    
+    static func getImageWithRequest(_ request: IGetImageRequest, completion: @escaping(_ image: UIImage?, _ error: Error?) -> ()) {
+        
+        let defaultSession = URLSession(configuration: .default)
+        
+        self.getImageWithRequest(request, session: defaultSession, completion: completion)
+        
     }
     
 }
