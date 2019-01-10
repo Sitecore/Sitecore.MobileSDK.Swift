@@ -22,16 +22,15 @@ class ViewController: UIViewController, URLSessionDelegate {
     
     
     @IBOutlet weak var itemsBrowserController: SCItemListBrowser!
-    @IBOutlet weak var itemPathLabel: UILabel!
     
+    @IBOutlet weak var itemPathLabel: UILabel!
     @IBOutlet var loadingProgress: UIActivityIndicatorView?
     @IBOutlet var rootButton: UIButton?
     @IBOutlet var reloadButton: UIButton?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
+
         self.startLoading()
         self.createSession {
             self.downloadRootItem()

@@ -9,26 +9,30 @@
 import Foundation
 import SitecoreSSC_SDK
 
-class SCMediaItemGridCell: SCItemGridCell
+public protocol SCMediaItemGridCellDelegate {
+    func getCustomSession() -> SscSession
+}
+
+public class SCMediaItemGridCell: SCItemGridCell
 {
     var imageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
     var progress: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
     var imageLoader: SCMediaCellController?
-    
-    init(frame: CGRect, customSession:SscSession)
-    {
-        super.init(frame: frame)
-        self.setupUI()
-        self.imageLoader = SCMediaCellController(customSession: customSession, delegate: self)
-    }
+    var customSession: SscSession?
     
     override init(frame: CGRect)
     {
-        fatalError("init(frame:) has not been implemented, use init(frame:customSession:) instead")
+        super.init(frame: frame)
+        self.setupUI()
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super .init(coder: aDecoder)
+    }
+    
+    public func setCustomSession(_ session: SscSession)
+    {
+        self.customSession = session
     }
     
     func setupUI()
@@ -43,11 +47,12 @@ class SCMediaItemGridCell: SCItemGridCell
         self.contentView.addSubview(progress)
     }
     
-    override func setModel(item: ISitecoreItem) {
+    override public func setModel(item: ISitecoreItem) {
+        self.imageLoader = SCMediaCellController(customSession: self.customSession!, delegate: self)
         self.imageLoader?.setModel(item: item)
     }
     
-    override func reloadData() {
+    override public func reloadData() {
         self.imageLoader?.reloadData()
     }
     

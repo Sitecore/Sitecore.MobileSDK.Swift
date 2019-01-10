@@ -25,14 +25,14 @@ import SitecoreSSC_SDK
  We have added some background color animations to this sub-class to make the demo application UI look more responsive. If you need some advanced effects, please override the [UICollectionViewCell setHighlighted:] method in your sub-classes.
  */
 
-class SCItemGridCell: UICollectionViewCell, SCItemCell, SCHighlightableBackgroundGridCell
+public class SCItemGridCell: UICollectionViewCell, SCItemCell, SCHighlightableBackgroundGridCell
 {
     
     var backgroundColorForNormalState: UIColor?
     
     var backgroundColorForHighlightedState: UIColor?
     
-    override var isHighlighted: Bool {
+    override public var isHighlighted: Bool {
         didSet
         {
             SCGridCellBackgroundHighlightingAnimation.playAnimationForCell(self, toHighlight: self.isHighlighted)
@@ -48,11 +48,11 @@ class SCItemGridCell: UICollectionViewCell, SCItemCell, SCHighlightableBackgroun
         self.backgroundColorForHighlightedState = color
     }
 
-    func setModel(item: ISitecoreItem) {
+    public func setModel(item: ISitecoreItem) {
         doesNotRecognizeSelector(#function)
     }
     
-    func reloadData() {
+    public func reloadData() {
         doesNotRecognizeSelector(#function)
     }
     

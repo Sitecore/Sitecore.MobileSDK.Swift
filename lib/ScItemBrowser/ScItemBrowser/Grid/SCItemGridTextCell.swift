@@ -9,7 +9,7 @@
 import Foundation
 import SitecoreSSC_SDK
 
-class SCItemGridTextCell: SCItemGridCell
+public class SCItemGridTextCell: SCItemGridCell
 {
     var label: UILabel?
     var displayName: String?
@@ -33,15 +33,18 @@ class SCItemGridTextCell: SCItemGridCell
         labelFrame.origin = CGPoint(x: 0, y: 0)
         
         self.label = UILabel(frame: labelFrame)
+        self.label?.numberOfLines = 0
+        self.label?.font = UIFont.systemFont(ofSize: 10)
+        
         self.contentView.addSubview(self.label!)
     }
     
-    override func setModel(item: ISitecoreItem)
+    override public func setModel(item: ISitecoreItem)
     {
         self.displayName = item.displayName
     }
     
-    override func reloadData()
+    override public func reloadData()
     {
         self.label!.text = self.displayName
     }

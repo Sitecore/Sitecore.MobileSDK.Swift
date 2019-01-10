@@ -8,7 +8,7 @@
 
 import Foundation
 
-class SCDefaultLevelUpGridCell: UICollectionViewCell, SCHighlightableBackgroundGridCell
+public class SCDefaultLevelUpGridCell: UICollectionViewCell, SCHighlightableBackgroundGridCell
 {
     var backgroundColorForNormalState: UIColor?
     var backgroundColorForHighlightedState: UIColor?
@@ -36,6 +36,16 @@ class SCDefaultLevelUpGridCell: UICollectionViewCell, SCHighlightableBackgroundG
         self.contentView.addSubview(self.label!)
     }
     
+    public func setLevelUpText(_ text: String)
+    {
+        guard let label = self.label else {
+            return
+        }
+        
+        label.textAlignment = .center
+        label.text = text
+    }
+    
     func setBackgroundColorForNormalState(_ color: UIColor) {
         self.backgroundColorForNormalState = color
         self.backgroundColor = color
@@ -45,7 +55,7 @@ class SCDefaultLevelUpGridCell: UICollectionViewCell, SCHighlightableBackgroundG
         self.backgroundColorForHighlightedState = color
     }
     
-    override var isHighlighted: Bool {
+    override public var isHighlighted: Bool {
         didSet
         {
             SCGridCellBackgroundHighlightingAnimation.playAnimationForCell(self, toHighlight: self.isHighlighted)
