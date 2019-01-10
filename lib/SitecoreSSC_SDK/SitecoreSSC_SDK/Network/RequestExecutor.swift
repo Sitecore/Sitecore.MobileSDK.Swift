@@ -42,7 +42,7 @@ class RequestExecutor: IRequestExecutor {
                 return
             }
             
-            let result = ItemsResponse(json: data, source: parameters.itemSource)
+            let result = ItemsResponse(json: data, source: parameters.itemSource, sessionConfig: parameters.sessionConfig)
             completion(result, nil)
         }
         
@@ -79,7 +79,7 @@ class RequestExecutor: IRequestExecutor {
                 return
             }
             
-            let result = T(json: data, source: nil)
+            let result = T(json: data, source: nil, sessionConfig: parameters.sessionConfig)
             
             let cookies: [HTTPCookie]?
             let rp = response as! HTTPURLResponse

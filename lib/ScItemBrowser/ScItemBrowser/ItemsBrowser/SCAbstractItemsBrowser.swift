@@ -184,6 +184,8 @@ extension SCAbstractItemsBrowser: SCItemsBrowserInitialization {
 
 class SCLevelUpItem : NSObject, ISitecoreItem {
     
+    var sessionConfig: ISessionConfig? = nil
+    
     var isMediaImage: Bool = false
     
     var source: IItemSource? = nil

@@ -43,7 +43,6 @@ class ViewController: UIViewController, URLSessionDelegate
         self.startLoading()
         self.createSession {
             self.downloadRootItem()
-            //self.testDownload()
         }
     }
 
@@ -120,7 +119,7 @@ extension ViewController: SCItemsBrowserDelegate
     }
     
     func itemsBrowser(_ itemsBrowser: Any, levelLoadingFailedWithError error: NSError?) {
-        print("levelLoadingFailedWithError \(error?.description)")
+        print("levelLoadingFailedWithError \(String(describing: error?.description))")
     }
     
     func itemsBrowser(_ itemsBrowser: Any, shouldLoadLevelForItem levelParentItem: ISitecoreItem) -> Bool {
@@ -206,12 +205,11 @@ extension ViewController: SIBGridModeCellFactory
         
         let result = collectionView?.dequeueReusableCell(withReuseIdentifier: reuseId, for: indexPath) as! UICollectionViewCell & SCItemCell
         
-        
-        //@igk spike to transit hacked(no ssl verification) session. I have to do something with this!!!
-        if (item.isMediaImage) {
-            let castedResult: SCMediaItemGridCell = result as! SCMediaItemGridCell
-            castedResult.setCustomSession(self.sscSession!)
-        }
+//        //@igk spike to transit hacked(no ssl verification) session. I have to do something with this!!!
+//        if (item.isMediaImage) {
+//            let castedResult: SCMediaItemGridCell = result as! SCMediaItemGridCell
+//            castedResult.setCustomSession(self.sscSession!)
+//        }
         
         return result
 

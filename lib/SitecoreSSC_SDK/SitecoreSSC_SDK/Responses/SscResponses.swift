@@ -13,7 +13,7 @@ public protocol IBaseResponse {
     
     func isSuccessful() -> Bool
     
-    init(json: Data, source: IItemSource?) 
+    init(json: Data, source: IItemSource?, sessionConfig: ISessionConfig?) 
     
 }
 

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ScImageLoader {
+public class ScImageLoader {
     
     private static let cache = NSCache<NSString, NSData>()
     
@@ -51,12 +51,21 @@ class ScImageLoader {
         }
     }
     
-    static func getImageWithRequest(_ request: IGetImageRequest, completion: @escaping(_ image: UIImage?, _ error: Error?) -> ()) {
+    public static func getImageWithRequest(_ request: IGetImageRequest, completion: @escaping(_ image: UIImage?, _ error: Error?) -> ()) {
         
         let defaultSession = URLSession(configuration: .default)
         
         self.getImageWithRequest(request, session: defaultSession, completion: completion)
         
+    }
+    
+    public static func getImageWithRequest(_ item: ISitecoreItem, completion: @escaping(_ image: UIImage?, _ error: Error?) -> ()) {
+        
+        let hackedurl = item.sessionConfig?.instanceUrl.replacingOccurrences(of: "https:", with: "http:")
+        let hackedSessionConfig = SessionConfig(url: hackedurl!, requestSyntax: item.sessionConfig!.requestSyntax)
+        let imageRequest = GetImageRequest(mediaItem: item, sessionConfig: hackedSessionConfig)
+
+        self.getImageWithRequest(imageRequest, completion: completion)
     }
     
 }

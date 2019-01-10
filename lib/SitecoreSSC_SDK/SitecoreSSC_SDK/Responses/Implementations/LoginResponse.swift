@@ -10,9 +10,10 @@ import Foundation
 
 class LoginResponse: ILoginResponse {
     
-    required init(json: Data, source: IItemSource?) {
+    required init(json: Data, source: IItemSource?, sessionConfig: ISessionConfig?) {
         
     }
+    
     
     #warning("@igk not implemented!!!")
     func isSuccessful() -> Bool {

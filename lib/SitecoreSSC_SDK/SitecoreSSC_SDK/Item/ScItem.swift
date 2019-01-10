@@ -10,7 +10,9 @@ import Foundation
 
 public class ScItem: NSObject, ISitecoreItem {
     
+    #warning ("@igk make all fields readonly!")
     
+    public var sessionConfig: ISessionConfig?
     public var source: IItemSource?
     
     public var displayName: String
@@ -67,20 +69,21 @@ public class ScItem: NSObject, ISitecoreItem {
         }
     }
     
-    
     public let fields: [String : Any]
     
-    init (fields: [String : Any], source: IItemSource?)
+    init (fields: [String : Any], source: IItemSource?, sessionConfig: ISessionConfig?)
     {
         self.fields = fields
         self.source = source
+        self.sessionConfig = sessionConfig
     }
-    
 }
 
 @objc public protocol ISitecoreItem: NSObjectProtocol {
     
     var source:       IItemSource? { get }
+    var sessionConfig: ISessionConfig? { get }
+    
     var displayName:  String      { get }
     var hasChildren:  Bool        { get }
     var id:           String      { get }
@@ -91,6 +94,8 @@ public class ScItem: NSObject, ISitecoreItem {
     var fields:       [String: Any] { get }
     
     var isMediaImage: Bool         { get }
+    
+    
     
 }
 

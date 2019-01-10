@@ -17,7 +17,7 @@ class ItemsResponse: IItemsResponse
     
     var items: [ISitecoreItem]
     
-    required init(json: Data, source: IItemSource?) {
+    required init(json: Data, source: IItemSource?, sessionConfig: ISessionConfig?) {
         
         var jsonString = String(data: json, encoding: .utf8)!
         print("\(jsonString)")
@@ -36,7 +36,7 @@ class ItemsResponse: IItemsResponse
         }
 
         self.items = result.map({ (elem) -> ISitecoreItem in
-            return ScItem(fields: elem , source: source)
+            return ScItem(fields: elem , source: source, sessionConfig: sessionConfig)
         })
 
     }

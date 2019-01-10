@@ -14,10 +14,10 @@ import Foundation
     var requestSyntax: ISscUrlParameters { get } //TODO: @igk make it private
 }
 
-class SessionConfig: ISessionConfig
+public class SessionConfig: ISessionConfig
 {
-    let instanceUrl: String
-    let requestSyntax: ISscUrlParameters
+    public let instanceUrl: String
+    public let requestSyntax: ISscUrlParameters
     
     init (url: String, requestSyntax: ISscUrlParameters){
         self.instanceUrl = url

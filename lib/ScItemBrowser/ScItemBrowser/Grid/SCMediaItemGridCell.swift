@@ -18,7 +18,7 @@ public class SCMediaItemGridCell: SCItemGridCell
     var imageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
     var progress: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
     var imageLoader: SCMediaCellController?
-    var customSession: SscSession?
+    var customSession: SscSession? = nil
     
     override init(frame: CGRect)
     {
@@ -48,7 +48,7 @@ public class SCMediaItemGridCell: SCItemGridCell
     }
     
     override public func setModel(item: ISitecoreItem) {
-        self.imageLoader = SCMediaCellController(customSession: self.customSession!, delegate: self)
+        self.imageLoader = SCMediaCellController(customSession: self.customSession, delegate: self)
         self.imageLoader?.setModel(item: item)
     }
     
