@@ -22,19 +22,14 @@ public class SCMediaItemListCell: SCItemListCell, SCMediaCellDelegate
     private let progress: UIActivityIndicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.gray)
     private var imageLoader: SCMediaCellController?
     
-    public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?, customSession: SscSession) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        self.imageLoader = SCMediaCellController(customSession: customSession, delegate: self)
-    }
-    
     override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.imageLoader = SCMediaCellController(delegate: self)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder)
+    {
         super.init(coder: aDecoder)
         
         self.imageLoader = SCMediaCellController(delegate: self)
@@ -42,6 +37,11 @@ public class SCMediaItemListCell: SCItemListCell, SCMediaCellDelegate
     
     public func setCustomSession(_ session: SscSession)
     {
+        if (self.imageLoader != nil)
+        {
+            self.imageLoader!.cancelImageLoading()
+        }
+        
         self.imageLoader = SCMediaCellController(customSession: session, delegate: self)
     }
 
@@ -57,14 +57,20 @@ public class SCMediaItemListCell: SCItemListCell, SCMediaCellDelegate
     
     func startLoading()
     {
-        self.addSubview(self.progress)
-        self.progress.startAnimating()
+        DispatchQueue.main.async
+        {
+            self.addSubview(self.progress)
+            self.progress.startAnimating()
+        }
     }
     
     func stopLoading()
     {
-        self.progress.stopAnimating()
-        self.progress.removeFromSuperview()
+        DispatchQueue.main.async
+        {
+            self.progress.stopAnimating()
+            self.progress.removeFromSuperview()
+        }
     }
     
     override public func layoutSubviews() {
@@ -79,13 +85,15 @@ public class SCMediaItemListCell: SCItemListCell, SCMediaCellDelegate
     {
         print("mediaCellController didStartLoadingImageInMediaCellController")
         
-        guard let imageView = self.imageView else {
+        guard let imageView = self.imageView else
+        {
             return
         }
         
         imageView.image = nil
         
-        guard let textLabel = self.textLabel else {
+        guard let textLabel = self.textLabel else
+        {
             return
         }
         
@@ -100,12 +108,17 @@ public class SCMediaItemListCell: SCItemListCell, SCMediaCellDelegate
         print("mediaCellController didFinishLoadingImage")
         self.stopLoading()
         
-        guard let imageView = self.imageView else {
-            return
-        }
+        DispatchQueue.main.async
+        {
+            guard let imageView = self.imageView else
+            {
+                return
+            }
+            
+            imageView.image = image
         
-        imageView.image = image
-        self.setNeedsLayout()
+            self.setNeedsLayout()
+        }
     }
     
     func mediaCellController(_ sender: SCMediaCellController, didFailLoadingImageForItem mediaItem: ISitecoreItem?, withError error: Error) {

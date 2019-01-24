@@ -182,7 +182,17 @@ extension SCAbstractItemsBrowser: SCItemsBrowserInitialization {
 }
 
 
-class SCLevelUpItem : NSObject, ISitecoreItem {
+class SCLevelUpItem : NSObject, ISitecoreItem
+{
+    func cancelDataLoading()
+    {
+        doesNotRecognizeSelector(#function)
+    }
+    
+    func getImage(handlers: DataDownloadingProcessing)
+    {
+        doesNotRecognizeSelector(#function)
+    }
     
     var sessionConfig: ISessionConfig? = nil
     
@@ -190,7 +200,7 @@ class SCLevelUpItem : NSObject, ISitecoreItem {
     
     var source: IItemSource? = nil
     
-    var displayName: String = ""
+    var displayName: String = "UP"
     
     var hasChildren: Bool = false
     

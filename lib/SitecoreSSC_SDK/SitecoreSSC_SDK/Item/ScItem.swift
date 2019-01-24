@@ -26,7 +26,8 @@ public class ScItem: NSObject, ISitecoreItem {
     {
         get
         {
-            guard let mimeType: String = self.fields["Mime Type"] as? String else {
+            guard let mimeType: String = self.fields["Mime Type"] as? String else
+            {
                 return false
             }
             
@@ -36,35 +37,40 @@ public class ScItem: NSObject, ISitecoreItem {
     
     public var hasChildren: Bool
     {
-        get{
+        get
+        {
             return NSString(string: self.fields["HasChildren"]! as! String).boolValue
         }
     }
     
     public var id: String
     {
-        get{
+        get
+        {
             return self.fields["ItemID"]! as! String
         }
     }
     
     public var path: String
     {
-        get{
+        get
+        {
             return self.fields["ItemPath"]! as! String
         }
     }
     
     public var templateId: String
     {
-        get{
+        get
+        {
             return self.fields["TemplateID"]! as! String
         }
     }
     
     public var fieldsCount: Int
     {
-        get{
+        get
+        {
             return self.fields.count
         }
     }
@@ -77,10 +83,41 @@ public class ScItem: NSObject, ISitecoreItem {
         self.source = source
         self.sessionConfig = sessionConfig
     }
+
+//MARK: -
+//MARK: working with data
+
+    private var cancelHandler: DownloadCancelationHandler?
+    private var requestToken: RequestToken?
+    
+    public func cancelDataLoading()
+    {
+        guard let requestToken = self.requestToken else
+        {
+            return
+        }
+
+        requestToken.cancel()
+        
+        guard let cancel = self.cancelHandler else
+        {
+            return
+        }
+        
+        cancel()
+    }
+ 
+    public func getImage(handlers: DataDownloadingProcessing)
+    {
+        self.cancelHandler = handlers.downloadCancelationHandler
+        self.requestToken = ScImageLoader.getImageWithRequest(self, completion: handlers)
+    }
 }
 
-@objc public protocol ISitecoreItem: NSObjectProtocol {
-    
+
+
+@objc public protocol ISitecoreItem: NSObjectProtocol
+{
     var source:       IItemSource? { get }
     var sessionConfig: ISessionConfig? { get }
     
@@ -94,9 +131,9 @@ public class ScItem: NSObject, ISitecoreItem {
     var fields:       [String: Any] { get }
     
     var isMediaImage: Bool         { get }
-    
-    
-    
+  
+    func getImage(handlers: DataDownloadingProcessing)
+    func cancelDataLoading()
 }
 
 

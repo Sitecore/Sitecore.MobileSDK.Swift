@@ -51,7 +51,7 @@ public class SCDefaultLevelUpGridCell: UICollectionViewCell, SCHighlightableBack
         self.backgroundColor = color
     }
     
-    func backgroundColorForHighlightedState(_ color: UIColor) {
+    func setbackgroundColorForHighlightedState(_ color: UIColor) {
         self.backgroundColorForHighlightedState = color
     }
     

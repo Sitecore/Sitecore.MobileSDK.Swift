@@ -22,6 +22,7 @@
 		E0A2965521A6EC9200E22754 /* SscSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2965421A6EC9200E22754 /* SscSession.swift */; };
 		E0A2965921A6F7B000E22754 /* SscRequestsProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2965821A6F7B000E22754 /* SscRequestsProtocols.swift */; };
 		E0A2965B21A6F85500E22754 /* SscResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2965A21A6F85500E22754 /* SscResponses.swift */; };
+		E0DA590B21EF673200E229A0 /* RequestToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DA590A21EF673100E229A0 /* RequestToken.swift */; };
 		E0DC022D21AC270F00EB99A4 /* RequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DC022C21AC270F00EB99A4 /* RequestExecutor.swift */; };
 		E0DC023121AC2D4000EB99A4 /* SessionConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DC023021AC2D4000EB99A4 /* SessionConfig.swift */; };
 		E0DC023321AC315000EB99A4 /* SscUrlParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DC023221AC315000EB99A4 /* SscUrlParameters.swift */; };
@@ -58,6 +59,7 @@
 		E0A2965421A6EC9200E22754 /* SscSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SscSession.swift; sourceTree = "<group>"; };
 		E0A2965821A6F7B000E22754 /* SscRequestsProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SscRequestsProtocols.swift; sourceTree = "<group>"; };
 		E0A2965A21A6F85500E22754 /* SscResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SscResponses.swift; sourceTree = "<group>"; };
+		E0DA590A21EF673100E229A0 /* RequestToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestToken.swift; sourceTree = "<group>"; };
 		E0DC022C21AC270F00EB99A4 /* RequestExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestExecutor.swift; sourceTree = "<group>"; };
 		E0DC023021AC2D4000EB99A4 /* SessionConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionConfig.swift; sourceTree = "<group>"; };
 		E0DC023221AC315000EB99A4 /* SscUrlParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SscUrlParameters.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 			children = (
 				E0DC022C21AC270F00EB99A4 /* RequestExecutor.swift */,
 				E01E833921DE56F30057B595 /* ScImageLoader.swift */,
+				E0DA590A21EF673100E229A0 /* RequestToken.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 				E0A2965521A6EC9200E22754 /* SscSession.swift in Sources */,
 				E0A2965921A6F7B000E22754 /* SscRequestsProtocols.swift in Sources */,
 				E01E833C21DE5ECF0057B595 /* GetImageRequest.swift in Sources */,
+				E0DA590B21EF673200E229A0 /* RequestToken.swift in Sources */,
 				E0DC023621AC3CDC00EB99A4 /* GetItemRequest.swift in Sources */,
 				E0DC023121AC2D4000EB99A4 /* SessionConfig.swift in Sources */,
 				E03B8F1121B03759001630A7 /* ScCredentials.swift in Sources */,

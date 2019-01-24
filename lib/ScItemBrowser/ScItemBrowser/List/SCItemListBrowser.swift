@@ -50,11 +50,15 @@ public class SCItemListBrowser: SCAbstractItemsBrowser {
 
 extension SCItemListBrowser: UITableViewDelegate {
 
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
         let selectedItemIndex: Int = indexPath.row
-        let selectedItem = self.loadedLevel?.levelContentItems[selectedItemIndex]
+        guard let selectedItem = self.loadedLevel?.levelContentItems[selectedItemIndex] else
+        {
+            return
+        }
 
-        self.didSelectItem(selectedItem as! ISitecoreItem, at: indexPath)
+        self.didSelectItem(selectedItem, at: indexPath)
     }
     
 }
@@ -90,20 +94,19 @@ extension SCItemListBrowser: UITableViewDataSource {
         }
         else
         {
-            let castedItem = itemForCell as! ISitecoreItem
-            let ITEM_CELL_ID = self.listModeCellBuilder?.itemsBrowser(self, itemCellReuseIdentifierFor: castedItem)
+            let ITEM_CELL_ID = self.listModeCellBuilder?.itemsBrowser(self, itemCellReuseIdentifierFor: itemForCell)
             
             var cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: ITEM_CELL_ID!)
             
             var itemCell: (UITableViewCell & SCItemCell)? = nil
             if nil == cell {
-                itemCell = self.listModeCellBuilder!.itemsBrowser(self, createListModeCellFor: castedItem)
+                itemCell = self.listModeCellBuilder!.itemsBrowser(self, createListModeCellFor: itemForCell)
                 cell = itemCell
             } else {
                 itemCell = cell as? (UITableViewCell & SCItemCell)
             }
 
-            itemCell?.setModel(item: castedItem)
+            itemCell?.setModel(item: itemForCell)
             itemCell?.reloadData()
             
             return cell!
@@ -155,7 +158,10 @@ extension SCItemListBrowser: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
-        let  selectedItem = self.loadedLevel?.levelContentItems[indexPath.row]
+        guard let  selectedItem = self.loadedLevel?.levelContentItems[indexPath.row] else
+        {
+            return -1
+        }
         
         if (type(of: selectedItem) == SCLevelUpItem.self)
         {
@@ -168,7 +174,7 @@ extension SCItemListBrowser: UITableViewDataSource {
         {
             if (self.listModeTheme.responds(to: #selector(SIBListModeAppearance.itemsBrowser(_:heightOfCellFor:at:))))
             {
-                return self.listModeTheme.itemsBrowser!(self, heightOfCellFor: selectedItem as! ISitecoreItem, at: indexPath)
+                return self.listModeTheme.itemsBrowser!(self, heightOfCellFor: selectedItem, at: indexPath)
             }
         }
         

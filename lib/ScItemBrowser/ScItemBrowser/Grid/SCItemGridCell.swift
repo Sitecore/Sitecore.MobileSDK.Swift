@@ -39,12 +39,12 @@ public class SCItemGridCell: UICollectionViewCell, SCItemCell, SCHighlightableBa
         }
     }
     
-    func setBackgroundColorForNormalState(_ color: UIColor) {
+    public func setBackgroundColorForNormalState(_ color: UIColor) {
         self.backgroundColorForNormalState = color
         self.backgroundColor = color
     }
     
-    func backgroundColorForHighlightedState(_ color: UIColor) {
+    public func setbackgroundColorForHighlightedState(_ color: UIColor) {
         self.backgroundColorForHighlightedState = color
     }
 

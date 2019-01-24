@@ -16,65 +16,74 @@ class SCMediaCellController {
     
     public var delegate: SCMediaCellDelegate
 
-    init(delegate: SCMediaCellDelegate) {
+    init(delegate: SCMediaCellDelegate)
+    {
         self.customSession = nil
         self.delegate = delegate
     }
     
-    init(customSession: SscSession?, delegate: SCMediaCellDelegate) {
+    init(customSession: SscSession?, delegate: SCMediaCellDelegate)
+    {
         self.customSession = customSession
         self.delegate = delegate
     }
     
-    func setModel(item: ISitecoreItem){
-        #warning("@igk cancel previous downloads")
+    func setModel(item: ISitecoreItem)
+    {
+        self.cancelImageLoading()
         self.item = item
     }
     
-    func reloadData(){
-        guard let item = self.item else {
-            self.delegate.mediaCellController(self, didFailLoadingImageForItem: self.item!, withError: NSError(domain: "SCMediaCellController", code: 0, userInfo: ["Error" : "item is nil"]))
+    func cancelImageLoading()
+    {
+        guard let item = self.item else { return }
+        
+        item.cancelDataLoading()
+    }
+    
+    func startLoading()
+    {
+        self.delegate.didStartLoadingImageInMediaCellController(sender: self)
+    }
+    
+    
+    func reloadData()
+    {
+        guard let item = self.item else
+        {
+            self.imageLoadFailed(NSError(domain: "SCMediaCellController", code: 0, userInfo: ["Error" : "item is nil"]))
             return
         }
         
         self.startLoading()
         
+        let handlers = DataDownloadingProcessing(completionHandler: imageLoaded,
+                                                 errorHandler: imageLoadFailed,
+                                                 cancelationHandler: imageLoadCanceled)
+        
         if (self.customSession != nil)
         {
-            self.customSession!.downloadImageForItem(item) { (image, error) in
-                
-                guard let image = image else
-                {
-                    self.delegate.mediaCellController(self, didFailLoadingImageForItem: self.item, withError: error!)
-                    return
-                }
-                
-                self.delegate.mediaCellController(self, didFinishLoadingImage: image, forItem: self.item!)
-            }
+            self.customSession!.downloadImageForItem(item, completion: handlers)
         }
         else
         {
-            ScImageLoader.getImageWithRequest(self.item!) { (image, error) in
-                var scError: Error? = error
-                
-                if (image == nil) {
-                    
-                    if (scError == nil){
-                        scError = NSError(domain: "SitecoreSSC", code: 0, userInfo: ["Info": "Can not download image"])
-                    }
-                    
-                    let netError = SscError.networkError(scError)
-                    
-                    self.delegate.mediaCellController(self, didFailLoadingImageForItem: self.item, withError: netError)
-                    
-                } else {
-                    self.delegate.mediaCellController(self, didFinishLoadingImage: image!, forItem: self.item!)
-                }
-            }
+            item.getImage(handlers: handlers)
         }
     }
     
-    func startLoading() {
-        self.delegate.didStartLoadingImageInMediaCellController(sender: self)
+    func imageLoaded(_ image: UIImage)
+    {
+        self.delegate.mediaCellController(self, didFinishLoadingImage: image, forItem: self.item!)
     }
+    
+    func imageLoadFailed(_ error: Error)
+    {
+        self.delegate.mediaCellController(self, didFailLoadingImageForItem: self.item, withError: error)
+    }
+    
+    func imageLoadCanceled()
+    {
+        print("image loading canceled")
+    }
+    
 }

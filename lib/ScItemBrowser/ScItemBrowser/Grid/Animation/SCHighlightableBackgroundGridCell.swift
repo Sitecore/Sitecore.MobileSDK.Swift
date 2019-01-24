@@ -14,6 +14,6 @@ protocol SCHighlightableBackgroundGridCell
     var backgroundColorForHighlightedState: UIColor? {get}
     
     func setBackgroundColorForNormalState(_ color: UIColor)
-    func backgroundColorForHighlightedState(_ color: UIColor)
+    func setbackgroundColorForHighlightedState(_ color: UIColor)
 
 }

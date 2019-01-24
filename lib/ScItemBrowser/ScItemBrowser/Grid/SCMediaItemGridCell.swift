@@ -47,28 +47,37 @@ public class SCMediaItemGridCell: SCItemGridCell
         self.contentView.addSubview(progress)
     }
     
-    override public func setModel(item: ISitecoreItem) {
+    override public func setModel(item: ISitecoreItem)
+    {
         self.imageLoader = SCMediaCellController(customSession: self.customSession, delegate: self)
         self.imageLoader?.setModel(item: item)
     }
     
-    override public func reloadData() {
+    override public func reloadData()
+    {
         self.imageLoader?.reloadData()
     }
     
     func startLoading()
     {
-        self.addSubview(self.progress)
-        self.progress.startAnimating()
+        DispatchQueue.main.async
+        {
+            self.addSubview(self.progress)
+            self.progress.startAnimating()
+        }
     }
     
     func stopLoading()
     {
-        self.progress.stopAnimating()
-        self.progress.removeFromSuperview()
+        DispatchQueue.main.async
+        {
+            self.progress.stopAnimating()
+            self.progress.removeFromSuperview()
+        }
     }
     
-    override public func layoutSubviews() {
+    override public func layoutSubviews()
+    {
         super.layoutSubviews()
         self.progress.center = CGPoint(x: self.frame.size.width / 2, y: self.frame.size.height / 2)
         
@@ -81,16 +90,23 @@ public class SCMediaItemGridCell: SCItemGridCell
 
 extension SCMediaItemGridCell: SCMediaCellDelegate
 {
-    func didStartLoadingImageInMediaCellController(sender: SCMediaCellController) {
-        self.imageView.image = nil
-        self.startLoading()
-        self.setNeedsLayout()
+    func didStartLoadingImageInMediaCellController(sender: SCMediaCellController)
+    {
+        DispatchQueue.main.async
+        {
+            self.imageView.image = nil
+            self.startLoading()
+            self.setNeedsLayout()
+        }
     }
     
     func mediaCellController(_ sender: SCMediaCellController, didFinishLoadingImage image: UIImage, forItem mediaItem: ISitecoreItem) {
         self.stopLoading()
-        self.imageView.image = image
-        self.setNeedsLayout()
+        DispatchQueue.main.async
+        {
+            self.imageView.image = image
+            self.setNeedsLayout()
+        }
     }
     
     func mediaCellController(_ sender: SCMediaCellController, didFailLoadingImageForItem mediaItem: ISitecoreItem?, withError error: Error) {

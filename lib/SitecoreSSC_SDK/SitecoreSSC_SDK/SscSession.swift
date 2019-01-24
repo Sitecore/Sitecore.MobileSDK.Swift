@@ -58,7 +58,8 @@ extension SscSession: ISscAuthSession
         
     }
     
-    func sendLogoutRequest(_ request: ILogoutRequest, completion:@escaping (ILogoutResponse?, SscError?) -> ()) {
+    func sendLogoutRequest(_ request: ILogoutRequest, completion:@escaping (ILogoutResponse?, SscError?) -> ())
+    {
         
     }
 
@@ -67,29 +68,15 @@ extension SscSession: ISscAuthSession
 
 extension SscSession: ISscReadOnlySession
 {
-    public func downloadImageForItem(_ item: ISitecoreItem, completion:@escaping SCDidFinishImageRequestHandler) {
-        
+    public func downloadImageForItem(_ item: ISitecoreItem, completion: DataDownloadingProcessing)
+    {
         let imageRequest = GetImageRequest(mediaItem: item, sessionConfig: self.sessionConfig)
 
-        ScImageLoader.getImageWithRequest(imageRequest, session: self.urlSession) { (image, error) in
-            var scError: Error? = error
-            
-            if (image == nil) {
-                
-                if (scError == nil){
-                    scError = NSError(domain: "SitecoreSSC", code: 0, userInfo: ["Info": "Can not download image"])
-                }
-                
-                let netError = SscError.networkError(scError)
-                completion(nil, netError)
-                
-            } else {
-                completion(image, nil)
-            }
-        }
+        ScImageLoader.getImageWithRequest(imageRequest, session: self.urlSession, completion: completion)
     }
 
-    public func sendGetItemsRequest(_ request: IGetByPathRequest, completion: @escaping SCDidFinishItemsRequestHandler) {
+    public func sendGetItemsRequest(_ request: IGetByPathRequest, completion: @escaping SCDidFinishItemsRequestHandler)
+    {
         //TODO: @igk check for authentication
         // self.proceedLoginAction()
         
@@ -237,7 +224,7 @@ protocol ISscReadOnlySession {
     func sendGetItemsRequest(_ request: ISitecoreSearchRequest, completion:@escaping SCDidFinishItemsRequestHandler)
     func sendGetItemsRequest(_ request: IStoredSitecoreSearchRequest, completion:@escaping SCDidFinishItemsRequestHandler)
     
-    func downloadImageForItem(_ item: ISitecoreItem, completion:@escaping SCDidFinishImageRequestHandler)
+    func downloadImageForItem(_ item: ISitecoreItem, completion: DataDownloadingProcessing)
 
     
 }

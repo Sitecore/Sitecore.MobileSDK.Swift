@@ -12,23 +12,23 @@ class SCGridCellBackgroundHighlightingAnimation
 {
     static func playAnimationForCell(_ cell: (UICollectionViewCell & SCHighlightableBackgroundGridCell), toHighlight: Bool)
     {
-        if (cell.isHighlighted == toHighlight)
-        {
-            return
-        }
+//        if (cell.isHighlighted == toHighlight)
+//        {
+//            return
+//        }
         
-        var newColor: UIColor
+        var newColor: UIColor?
         
         if (toHighlight)
         {
-            newColor = cell.backgroundColorForHighlightedState!
+            newColor = cell.backgroundColorForHighlightedState
         }
         else
         {
-            newColor = cell.backgroundColorForNormalState!
+            newColor = cell.backgroundColorForNormalState
         }
         
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.2) {
             cell.backgroundColor = newColor
         }
     }

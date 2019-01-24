@@ -49,7 +49,7 @@ class ViewController: UIViewController, URLSessionDelegate
     func createSession(completion: @escaping () -> ())
     {
         urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-        sscSession = SscSession(url: "https://tst90170928.test24dk1.dk.sitecore.net", urlSession: urlSession!)
+        sscSession = SscSession(url: "https://cms900.ws-igk1-n-ua.dk.sitecore.net", urlSession: urlSession!)
         
         let credentials = ScCredentials(username: "admin", password: "b", domain: "Sitecore")
         
@@ -189,9 +189,8 @@ extension ViewController: SIBGridModeCellFactory
         collectionView?.register(self.levelUpCellClass(), forCellWithReuseIdentifier: reuseId)
         
         let result: SCDefaultLevelUpGridCell = collectionView?.dequeueReusableCell(withReuseIdentifier: reuseId, for: indexPath) as! SCDefaultLevelUpGridCell
-        
         DispatchQueue.main.async {
-            result.setLevelUpText("UP")
+            result.setLevelUpText("🔙")
         }
         return result
     }
@@ -203,13 +202,10 @@ extension ViewController: SIBGridModeCellFactory
         let collectionView = self.itemsBrowserController.collectionView
         collectionView?.register(self.cellClass(for: item), forCellWithReuseIdentifier: reuseId)
         
-        let result = collectionView?.dequeueReusableCell(withReuseIdentifier: reuseId, for: indexPath) as! UICollectionViewCell & SCItemCell
-        
-//        //@igk spike to transit hacked(no ssl verification) session. I have to do something with this!!!
-//        if (item.isMediaImage) {
-//            let castedResult: SCMediaItemGridCell = result as! SCMediaItemGridCell
-//            castedResult.setCustomSession(self.sscSession!)
-//        }
+        let result = collectionView?.dequeueReusableCell(withReuseIdentifier: reuseId, for: indexPath) as! SCItemGridCell
+
+        result.setBackgroundColorForNormalState(UIColor.white)
+        result.setbackgroundColorForHighlightedState(UIColor.lightGray)
         
         return result
 

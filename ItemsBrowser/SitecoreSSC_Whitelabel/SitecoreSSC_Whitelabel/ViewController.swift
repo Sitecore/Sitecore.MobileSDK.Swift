@@ -40,7 +40,7 @@ class ViewController: UIViewController, URLSessionDelegate {
     
     func createSession(completion: @escaping () -> ()){
         urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-        sscSession = SscSession(url: "https://tst90170928.test24dk1.dk.sitecore.net", urlSession: urlSession!)
+        sscSession = SscSession(url: "https://cms900.ws-igk1-n-ua.dk.sitecore.net", urlSession: urlSession!)
         
         let credentials = ScCredentials(username: "admin", password: "b", domain: "Sitecore")
         
@@ -104,11 +104,7 @@ class ViewController: UIViewController, URLSessionDelegate {
         )
 
         sscSession.sendGetItemsRequest(getItemRequest) { (response, error) in
-            print("!!! GET ITEM BY ID !!! \(response?.items[0].displayName))")
-            
-            sscSession.downloadImageForItem((response?.items[0])!, completion: { (image, error) in
-                print(image!)
-            })
+            print("!!! GET ITEM BY ID !!! \(String(describing: response?.items[0].displayName))")
         }
         
         let getChildren = GetChildrenRequest(
@@ -122,7 +118,7 @@ class ViewController: UIViewController, URLSessionDelegate {
         )
 
         sscSession.sendGetItemsRequest(getChildren) { (response, error) in
-            print("GET CHILDREN, COUNT: \(response?.items.count)")
+            print("GET CHILDREN, COUNT: \(String(describing: response?.items.count))")
             if ((response?.items.count)! > 0) { print("\(String(describing: response?.items[0].displayName)))") }
         }
     }
@@ -236,7 +232,7 @@ extension ViewController: SIBListModeAppearance{
         
         if (item.isMediaImage)
         {
-            return 200
+            return 100
         }
         
         return 44
@@ -250,7 +246,7 @@ extension ViewController: SIBListModeCellFactory{
     func createLevelUpCellForListModeOfItemsBrowser(_ sender: SCItemListBrowser) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: LEVEL_UP_CELL_ID)
         DispatchQueue.main.async {
-            cell.textLabel?.text = "LEVEL_UP_CELL_ID"
+            cell.textLabel?.text = "🔙"
         }
         return cell
     }
@@ -262,7 +258,7 @@ extension ViewController: SIBListModeCellFactory{
         let cell: SCItemListCell?
         
         if (item.isMediaImage) {
-            cell = SCMediaItemListCell(style: .default, reuseIdentifier: cellId, customSession: self.sscSession!)
+            cell = SCMediaItemListCell(style: .default, reuseIdentifier: cellId)
         } else {
             cell = SCItemListTextCell(style: .default, reuseIdentifier: cellId)
         }
