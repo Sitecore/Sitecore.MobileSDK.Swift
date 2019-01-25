@@ -103,7 +103,7 @@ public class ScItem: NSObject, ISitecoreItem {
 
         requestToken.cancel()
         
-        self.cancelDataLoading()
+        self.imageLoadCanceled()
     }
     
  
