@@ -41,61 +41,55 @@ public class ScImageLoader {
     @discardableResult
     static func getImageWithRequest(_ request: IGetImageRequest, session: URLSession, completion: DataDownloadingProcessing) -> RequestToken?
     {
-        var task: URLSessionDataTask?
-        
-        //DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async
-        //{
-            let imagePath = request.buildUrl()
-            
-            if let data = self.cache.object(forKey: imagePath as NSString)
-            {
-                ScImageLoader.convertDataToImage(data as Data, with: completion)
-                return nil
-            }
-            
-            let imageUrl = URL(string: imagePath)!
-            
-            task = session.dataTask(with: imageUrl) { data, response, error in
-                
-                if (error != nil) {
-                    completion.downloadErrorHandler(SscError.networkError(error))
-                    return
-                }
-                
-                guard let data = data else {
-                    print("something went wrong")
-                    completion.downloadErrorHandler(SscError.unknownNetworkError("status code: \(String(describing: response?.statusCode))"))
-                    return
-                }
-                
-                self.cache.setObject(data as NSData, forKey: imageUrl.absoluteString as NSString)
-                
-                self.convertDataToImage(data, with: completion)
-            }
-            
-            task!.resume()
-            
-           
-        //}
-        
-        guard let result = task else {
+        guard let imagePath = request.buildUrl() else
+        {
             return nil
         }
         
-        return RequestToken(result)
+        if let data = self.cache.object(forKey: imagePath as NSString)
+        {
+            ScImageLoader.convertDataToImage(data as Data, with: completion)
+            return nil
+        }
+        
+        guard let imageUrl = URL(string: imagePath) else
+        {
+            return nil
+        }
+        
+        let task = session.dataTask(with: imageUrl) { data, response, error in
+            
+            if (error != nil) {
+                completion.downloadErrorHandler(SscError.networkError(error))
+                return
+            }
+            
+            guard let data = data else {
+                print("something went wrong")
+                completion.downloadErrorHandler(SscError.unknownNetworkError("status code: \(String(describing: response?.statusCode))"))
+                return
+            }
+            
+            self.cache.setObject(data as NSData, forKey: imageUrl.absoluteString as NSString)
+            
+            self.convertDataToImage(data, with: completion)
+        }
+        
+        task.resume()
+        
+        return RequestToken(task)
        
     }
     
     private static func convertDataToImage(_ data: Data, with completion: DataDownloadingProcessing)
     {
-       
             guard let image = UIImage(data: data as Data) else
             {
                 completion.downloadErrorHandler(SscError.runtimeError("ScImageLoader: data can not be converted to an image"))
                 return
             }
-            completion.downloadCompletionHandler( image )
         
+            completion.downloadCompletionHandler( image )
     }
     
     public static func getImageWithRequest(_ request: IGetImageRequest, completion: DataDownloadingProcessing) -> RequestToken?

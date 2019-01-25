@@ -39,27 +39,32 @@ public class LoginRequest: ILoginRequest {
     }
 
     public func buildHTTPRequest() throws -> URLRequest  {
-        
-        guard let sessionConfig = self.sessionConfig else {
-            throw SscError.runtimeError(ErrorDescriptions.canNotBuilUrlFor("LOGIN"))
+
+        guard let urlString = self.buildUrl() else
+        {
+            throw SscError.runtimeError(ErrorDescriptions.canNotBuilUrlFor("AUTH request"))
         }
         
-        let urlString = self.buildUrl()
-        
-        print("LOGIN REQUEST URL:\(urlString)")
+        print("AUTH REQUEST URL:\(urlString)")
         
         guard let url = URL(string: urlString) else {
-            throw SscError.runtimeError(ErrorDescriptions.canNotBuilUrlFor("LOGIN"))
+            throw SscError.runtimeError(ErrorDescriptions.canNotBuilUrlFor("AUTH request"))
         }
         
         return URLRequest(url: url)
     }
     
-    public func buildUrl() -> String {
-        let url = sessionConfig!.instanceUrl
-            + sessionConfig!.requestSyntax.ItemSSCEndpoint
-            + sessionConfig!.requestSyntax.ItemSSCAuthEndpoint
-            + sessionConfig!.requestSyntax.ItemSSCLoginAction
+    public func buildUrl() -> String? {
+        
+        guard let sessionConfig = self.sessionConfig else
+        {
+            return nil
+        }
+        
+        let url = sessionConfig.instanceUrl
+            + sessionConfig.requestSyntax.ItemSSCEndpoint
+            + sessionConfig.requestSyntax.ItemSSCAuthEndpoint
+            + sessionConfig.requestSyntax.ItemSSCLoginAction
         
         return url
     }

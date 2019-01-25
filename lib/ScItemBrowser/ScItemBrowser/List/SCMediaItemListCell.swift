@@ -9,7 +9,7 @@
 import Foundation
 import SitecoreSSC_SDK
 
-protocol SCMediaCellDelegate {
+protocol SCMediaCellDelegate: class {
     
     func didStartLoadingImageInMediaCellController(sender: SCMediaCellController)
     func mediaCellController(_ sender: SCMediaCellController, didFinishLoadingImage image: UIImage, forItem mediaItem: ISitecoreItem)

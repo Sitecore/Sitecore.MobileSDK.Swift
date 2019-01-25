@@ -15,7 +15,12 @@ public class RequestToken {
         self.task = task
     }
     
-    func cancel() {
-        task?.cancel()
+    func cancel()
+    {
+        guard let task = self.task else {
+            return
+        }
+        
+        task.cancel()
     }
 }

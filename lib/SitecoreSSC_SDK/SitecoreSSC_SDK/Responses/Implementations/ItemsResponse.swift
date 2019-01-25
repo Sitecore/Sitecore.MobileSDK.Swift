@@ -27,18 +27,20 @@ class ItemsResponse: IItemsResponse
             jsonString = "[\(jsonString)]"
         }
         
-        var result = Array<[String: Any]>()
-        
-        do {
-            result = try (JSONSerialization.jsonObject(with: jsonString.data(using: .utf8)!, options: []) as? Array<[String: Any]>)!
+        do
+        {
+            let result = try (JSONSerialization.jsonObject(with: jsonString.data(using: .utf8)!, options: []) as? Array<[String: Any]>)!
+            
+            self.items = result.map({ (elem) -> ISitecoreItem in
+                return ScItem(fields: elem , source: source, sessionConfig: sessionConfig)
+            })
+            
         } catch {
+            
             print(error.localizedDescription)
+            self.items = [ISitecoreItem]()
+            
         }
-
-        self.items = result.map({ (elem) -> ISitecoreItem in
-            return ScItem(fields: elem , source: source, sessionConfig: sessionConfig)
-        })
-
     }
  
 }

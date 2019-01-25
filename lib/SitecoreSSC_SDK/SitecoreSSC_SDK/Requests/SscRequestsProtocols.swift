@@ -69,7 +69,7 @@ import Foundation
 @objc public protocol IScRequest {
     
     var sessionConfig: ISessionConfig? { get }
-    func buildUrl() -> String //TODO: @igk make it internal!!!!
+    func buildUrl() -> String? //TODO: @igk make it internal!!!!
     
 }
 

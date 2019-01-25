@@ -84,10 +84,14 @@ public class ScItem: NSObject, ISitecoreItem {
         self.sessionConfig = sessionConfig
     }
 
+    deinit
+    {
+        self.clearResources()
+    }
 //MARK: -
 //MARK: working with data
 
-    private var cancelHandler: DownloadCancelationHandler?
+    private var handlers: DataDownloadingProcessing?
     private var requestToken: RequestToken?
     
     public func cancelDataLoading()
@@ -99,18 +103,58 @@ public class ScItem: NSObject, ISitecoreItem {
 
         requestToken.cancel()
         
-        guard let cancel = self.cancelHandler else
+        self.cancelDataLoading()
+    }
+    
+ 
+    public func getImage(handlers: DataDownloadingProcessing)
+    {
+        self.handlers = handlers
+        
+        let itemHandlers = DataDownloadingProcessing(completionHandler: imageLoaded,
+                                                     errorHandler: imageLoadFailed,
+                                                     cancelationHandler: imageLoadCanceled)
+        
+        self.requestToken = ScImageLoader.getImageWithRequest(self, completion: itemHandlers)
+    }
+    
+    func imageLoaded(_ image: UIImage)
+    {
+        guard let handlers = self.handlers else
         {
             return
         }
         
-        cancel()
+        handlers.downloadCompletionHandler(image)
+        self.clearResources()
     }
- 
-    public func getImage(handlers: DataDownloadingProcessing)
+    
+    func imageLoadFailed(_ error: Error)
     {
-        self.cancelHandler = handlers.downloadCancelationHandler
-        self.requestToken = ScImageLoader.getImageWithRequest(self, completion: handlers)
+        guard let handlers = self.handlers else
+        {
+            return
+        }
+        
+        handlers.downloadErrorHandler(error)
+        self.clearResources()
+    }
+    
+    func imageLoadCanceled()
+    {
+        guard let handlers = self.handlers else
+        {
+            return
+        }
+        
+        handlers.downloadCancelationHandler()
+        self.clearResources()
+    }
+    
+    private func clearResources()
+    {
+        self.handlers = nil
+        self.requestToken = nil
     }
 }
 

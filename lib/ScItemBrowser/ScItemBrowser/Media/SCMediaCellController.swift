@@ -14,7 +14,7 @@ class SCMediaCellController {
     private var customSession: SscSession?
     private(set) var item: ISitecoreItem?
     
-    public var delegate: SCMediaCellDelegate
+    public weak var delegate: SCMediaCellDelegate?
 
     init(delegate: SCMediaCellDelegate)
     {
@@ -43,7 +43,12 @@ class SCMediaCellController {
     
     func startLoading()
     {
-        self.delegate.didStartLoadingImageInMediaCellController(sender: self)
+        guard let delegate = self.delegate else
+        {
+            return
+        }
+        
+        delegate.didStartLoadingImageInMediaCellController(sender: self)
     }
     
     
@@ -73,12 +78,22 @@ class SCMediaCellController {
     
     func imageLoaded(_ image: UIImage)
     {
-        self.delegate.mediaCellController(self, didFinishLoadingImage: image, forItem: self.item!)
+        guard let delegate = self.delegate else
+        {
+            return
+        }
+        
+        delegate.mediaCellController(self, didFinishLoadingImage: image, forItem: self.item!)
     }
     
     func imageLoadFailed(_ error: Error)
     {
-        self.delegate.mediaCellController(self, didFailLoadingImageForItem: self.item, withError: error)
+        guard let delegate = self.delegate else
+        {
+            return
+        }
+        
+        delegate.mediaCellController(self, didFailLoadingImageForItem: self.item, withError: error)
     }
     
     func imageLoadCanceled()
