@@ -41,6 +41,7 @@ public class SCMediaItemGridCell: SCItemGridCell
         imageFrame.origin = CGPoint(x: 0, y: 0)
         
         self.imageView.frame = imageFrame
+        self.imageView.contentMode = .scaleAspectFit
         self.progress.center = CGPoint(x: imageFrame.size.width/2, y: imageFrame.size.height/2)
         
         self.contentView.addSubview(imageView)
@@ -73,6 +74,7 @@ public class SCMediaItemGridCell: SCItemGridCell
         {
             self.progress.stopAnimating()
             self.progress.removeFromSuperview()
+            print("!!! \(self.progress.description) removed from superview")
         }
     }
     
@@ -100,16 +102,18 @@ extension SCMediaItemGridCell: SCMediaCellDelegate
         }
     }
     
-    func mediaCellController(_ sender: SCMediaCellController, didFinishLoadingImage image: UIImage, forItem mediaItem: ISitecoreItem) {
-        self.stopLoading()
+    func mediaCellController(_ sender: SCMediaCellController, didFinishLoadingImage image: UIImage, forItem mediaItem: ISitecoreItem)
+    {
         DispatchQueue.main.async
         {
+            self.stopLoading()
             self.imageView.image = image
             self.setNeedsLayout()
         }
     }
     
-    func mediaCellController(_ sender: SCMediaCellController, didFailLoadingImageForItem mediaItem: ISitecoreItem?, withError error: Error) {
+    func mediaCellController(_ sender: SCMediaCellController, didFailLoadingImageForItem mediaItem: ISitecoreItem?, withError error: Error)
+    {
         self.stopLoading()
         print("image loading failed for item \(String(describing: mediaItem)). Error: \(error.localizedDescription)")
     }

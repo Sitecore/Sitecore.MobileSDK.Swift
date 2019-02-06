@@ -22,21 +22,26 @@ class RequestExecutor: IRequestExecutor {
     {
         var request: URLRequest
         
-        do {
+        do
+        {
             request = try parameters.buildHTTPRequest()
-        } catch {
+        }
+        catch
+        {
             completion(nil, SscError.unknownNetworkError(error.localizedDescription))
             return
         }
         
         let task = session.dataTask(with: request) { data, response, error in
             
-            if (error != nil) {
+            if (error != nil)
+            {
                 completion(nil, SscError.networkError(error))
                 return
             }
             
-            guard let data = data else {
+            guard let data = data else
+            {
                 print("something went wrong")
                 completion(nil, SscError.unknownNetworkError("status code: \(String(describing: response?.statusCode))"))
                 return
@@ -54,9 +59,12 @@ class RequestExecutor: IRequestExecutor {
     {
         var request: URLRequest
         
-        do {
+        do
+        {
             request = try parameters.buildHTTPRequest()
-        } catch {
+        }
+        catch
+        {
             completion(nil, SscError.requesBuilderError(error))
             return
         }
@@ -68,12 +76,14 @@ class RequestExecutor: IRequestExecutor {
         
         let task = session.dataTask(with: request) { data, response, error in
             
-            if (error != nil) {
+            if (error != nil)
+            {
                 completion(nil, SscError.networkError(error))
                 return
             }
             
-            guard let data = data else {
+            guard let data = data else
+            {
                 print("something went wrong")
                 completion(nil, SscError.unknownNetworkError("status code: \(String(describing: response?.statusCode))"))
                 return
@@ -83,7 +93,8 @@ class RequestExecutor: IRequestExecutor {
             
             let cookies: [HTTPCookie]?
             let rp = response as! HTTPURLResponse
-            if let responseHeaders = rp.allHeaderFields as? [String:String] {
+            if let responseHeaders = rp.allHeaderFields as? [String:String]
+            {
                 cookies = HTTPCookie.cookies(withResponseHeaderFields: responseHeaders, for:rp.url!)
                 HTTPCookieStorage.shared.setCookies(cookies!, for: response!.url!, mainDocumentURL: nil)
                 print("LOGIN COOKIES: \(String(describing: cookies))")
@@ -93,16 +104,17 @@ class RequestExecutor: IRequestExecutor {
         }
         
         task.resume()
-        
-        
     }
     
 }
 
-extension URLResponse {
+extension URLResponse
+{
     
-    var statusCode: Int? {
-        if let httpResponse = self as? HTTPURLResponse {
+    var statusCode: Int?
+    {
+        if let httpResponse = self as? HTTPURLResponse
+        {
             return httpResponse.statusCode
         }
         return nil

@@ -21,7 +21,8 @@ public class SCDefaultLevelUpGridCell: UICollectionViewCell, SCHighlightableBack
         self.setupUI()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder)
+    {
         super.init(coder: aDecoder)
         
         self.setupUI()
@@ -38,7 +39,8 @@ public class SCDefaultLevelUpGridCell: UICollectionViewCell, SCHighlightableBack
     
     public func setLevelUpText(_ text: String)
     {
-        guard let label = self.label else {
+        guard let label = self.label else
+        {
             return
         }
         
@@ -46,16 +48,19 @@ public class SCDefaultLevelUpGridCell: UICollectionViewCell, SCHighlightableBack
         label.text = text
     }
     
-    func setBackgroundColorForNormalState(_ color: UIColor) {
+    func setBackgroundColorForNormalState(_ color: UIColor)
+    {
         self.backgroundColorForNormalState = color
         self.backgroundColor = color
     }
     
-    func setbackgroundColorForHighlightedState(_ color: UIColor) {
+    func setbackgroundColorForHighlightedState(_ color: UIColor)
+    {
         self.backgroundColorForHighlightedState = color
     }
     
-    override public var isHighlighted: Bool {
+    override public var isHighlighted: Bool
+    {
         didSet
         {
             SCGridCellBackgroundHighlightingAnimation.playAnimationForCell(self, toHighlight: self.isHighlighted)

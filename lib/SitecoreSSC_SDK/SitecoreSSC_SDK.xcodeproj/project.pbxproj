@@ -19,6 +19,8 @@
 		E050573E21A8371F00A78521 /* ScItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E050573D21A8371F00A78521 /* ScItem.swift */; };
 		E050574021A8438A00A78521 /* SscAuthRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E050573F21A8438A00A78521 /* SscAuthRequests.swift */; };
 		E06C814A21CBCEF0002120B9 /* RequestMerger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06C814921CBCEF0002120B9 /* RequestMerger.swift */; };
+		E09409EC220B13990026AA3F /* KeychainStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09409EB220B13990026AA3F /* KeychainStorage.swift */; };
+		E09409EE220B18DD0026AA3F /* CredentialsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09409ED220B18DD0026AA3F /* CredentialsStorage.swift */; };
 		E0A2965521A6EC9200E22754 /* SscSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2965421A6EC9200E22754 /* SscSession.swift */; };
 		E0A2965921A6F7B000E22754 /* SscRequestsProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2965821A6F7B000E22754 /* SscRequestsProtocols.swift */; };
 		E0A2965B21A6F85500E22754 /* SscResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2965A21A6F85500E22754 /* SscResponses.swift */; };
@@ -56,6 +58,8 @@
 		E050573D21A8371F00A78521 /* ScItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScItem.swift; sourceTree = "<group>"; };
 		E050573F21A8438A00A78521 /* SscAuthRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SscAuthRequests.swift; sourceTree = "<group>"; };
 		E06C814921CBCEF0002120B9 /* RequestMerger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestMerger.swift; sourceTree = "<group>"; };
+		E09409EB220B13990026AA3F /* KeychainStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStorage.swift; sourceTree = "<group>"; };
+		E09409ED220B18DD0026AA3F /* CredentialsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsStorage.swift; sourceTree = "<group>"; };
 		E0A2965421A6EC9200E22754 /* SscSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SscSession.swift; sourceTree = "<group>"; };
 		E0A2965821A6F7B000E22754 /* SscRequestsProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SscRequestsProtocols.swift; sourceTree = "<group>"; };
 		E0A2965A21A6F85500E22754 /* SscResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SscResponses.swift; sourceTree = "<group>"; };
@@ -148,9 +152,9 @@
 		E03B8F0F21B03747001630A7 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				E09409EA220B13740026AA3F /* Credentials */,
 				E0DC023221AC315000EB99A4 /* SscUrlParameters.swift */,
 				E0DC023021AC2D4000EB99A4 /* SessionConfig.swift */,
-				E03B8F1021B03759001630A7 /* ScCredentials.swift */,
 				E03B8F1221B03A02001630A7 /* ItemSource.swift */,
 			);
 			path = Utilities;
@@ -165,6 +169,16 @@
 				E06C814921CBCEF0002120B9 /* RequestMerger.swift */,
 			);
 			path = Requests;
+			sourceTree = "<group>";
+		};
+		E09409EA220B13740026AA3F /* Credentials */ = {
+			isa = PBXGroup;
+			children = (
+				E03B8F1021B03759001630A7 /* ScCredentials.swift */,
+				E09409EB220B13990026AA3F /* KeychainStorage.swift */,
+				E09409ED220B18DD0026AA3F /* CredentialsStorage.swift */,
+			);
+			path = Credentials;
 			sourceTree = "<group>";
 		};
 		E0D585DC21AD7A8C00561639 /* Network */ = {
@@ -315,9 +329,11 @@
 			files = (
 				E0DC022D21AC270F00EB99A4 /* RequestExecutor.swift in Sources */,
 				E03B8F0E21B02759001630A7 /* Errors.swift in Sources */,
+				E09409EC220B13990026AA3F /* KeychainStorage.swift in Sources */,
 				E0DC023321AC315000EB99A4 /* SscUrlParameters.swift in Sources */,
 				E050573E21A8371F00A78521 /* ScItem.swift in Sources */,
 				E03B8F1321B03A02001630A7 /* ItemSource.swift in Sources */,
+				E09409EE220B18DD0026AA3F /* CredentialsStorage.swift in Sources */,
 				E0A2965B21A6F85500E22754 /* SscResponses.swift in Sources */,
 				E01E833A21DE56F30057B595 /* ScImageLoader.swift in Sources */,
 				E03B8F1521B03C23001630A7 /* LoginResponse.swift in Sources */,
@@ -488,7 +504,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = SitecoreSSC_SDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -516,7 +532,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = SitecoreSSC_SDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

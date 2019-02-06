@@ -32,28 +32,23 @@ class ViewController: UIViewController, URLSessionDelegate {
         super.viewDidLoad()
 
         self.startLoading()
-        self.createSession {
-            self.downloadRootItem()
-            //self.testDownload()
-        }
+        self.createSession()
     }
     
-    func createSession(completion: @escaping () -> ()){
+    func createSession()
+    {
         urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-        sscSession = SscSession(url: "https://cms900.ws-igk1-n-ua.dk.sitecore.net", urlSession: urlSession!)
+        sscSession = SscSession(url: "https://cms900.pd-test16-1-dk1.dk.sitecore.net", urlSession: urlSession!)
         
         let credentials = ScCredentials(username: "admin", password: "b", domain: "Sitecore")
         
-        let loginRequest = LoginRequest(credentils: credentials)
+        self.sscSession!.enableAutologinWithCredentials(credentials)
         
-        self.sscSession!.sendLoginRequest(loginRequest) { (response, error) in
-            print("\(String(describing: response))")
-            completion()
-        }
+        self.downloadRootItem()
     }
     
-    func downloadRootItem(){
-        
+    func downloadRootItem()
+    {
         self.startLoading()
         
         guard let sscSession = self.sscSession else {

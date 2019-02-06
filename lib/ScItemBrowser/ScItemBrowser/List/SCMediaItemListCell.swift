@@ -9,7 +9,8 @@
 import Foundation
 import SitecoreSSC_SDK
 
-protocol SCMediaCellDelegate: class {
+protocol SCMediaCellDelegate: class
+{
     
     func didStartLoadingImageInMediaCellController(sender: SCMediaCellController)
     func mediaCellController(_ sender: SCMediaCellController, didFinishLoadingImage image: UIImage, forItem mediaItem: ISitecoreItem)
@@ -22,7 +23,8 @@ public class SCMediaItemListCell: SCItemListCell, SCMediaCellDelegate
     private let progress: UIActivityIndicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.gray)
     private var imageLoader: SCMediaCellController?
     
-    override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?)
+    {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.imageLoader = SCMediaCellController(delegate: self)
@@ -70,10 +72,12 @@ public class SCMediaItemListCell: SCItemListCell, SCMediaCellDelegate
         {
             self.progress.stopAnimating()
             self.progress.removeFromSuperview()
+            print("!!! \(self.progress.description) removed from superview")
         }
     }
     
-    override public func layoutSubviews() {
+    override public func layoutSubviews()
+    {
         super.layoutSubviews()
         self.progress.center = CGPoint(x: self.frame.size.width / 2, y: self.frame.size.height / 2)
     }
@@ -107,7 +111,7 @@ public class SCMediaItemListCell: SCItemListCell, SCMediaCellDelegate
     {
         print("mediaCellController didFinishLoadingImage")
         self.stopLoading()
-        
+
         DispatchQueue.main.async
         {
             guard let imageView = self.imageView else
@@ -115,14 +119,19 @@ public class SCMediaItemListCell: SCItemListCell, SCMediaCellDelegate
                 return
             }
             
+            imageView.contentMode = .scaleAspectFit
             imageView.image = image
-        
             self.setNeedsLayout()
         }
     }
     
-    func mediaCellController(_ sender: SCMediaCellController, didFailLoadingImageForItem mediaItem: ISitecoreItem?, withError error: Error) {
-        self.stopLoading()
+    func mediaCellController(_ sender: SCMediaCellController, didFailLoadingImageForItem mediaItem: ISitecoreItem?, withError error: Error)
+    {
+        DispatchQueue.main.async
+        {
+            self.stopLoading()
+            self.setNeedsLayout()
+        }
         print(error.localizedDescription)
     }
     

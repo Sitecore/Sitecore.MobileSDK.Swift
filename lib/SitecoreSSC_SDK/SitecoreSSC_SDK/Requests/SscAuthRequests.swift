@@ -12,7 +12,7 @@ public class LoginRequest: ILoginRequest {
     
     public init(credentils: IScCredentials)
     {
-        self.credentils = credentils
+        self.credentials = credentils
         self.sessionConfig = nil
     }
     
@@ -21,17 +21,17 @@ public class LoginRequest: ILoginRequest {
         sessionConfig: ISessionConfig
         )
     {
-        self.credentils = credentils
+        self.credentials = credentils
         self.sessionConfig = sessionConfig
     }
     
-    public let credentils: IScCredentials
+    public let credentials: IScCredentials
     public let sessionConfig: ISessionConfig?
     
     public func buildRequestBody() -> Data {
         
         //TODO: @igk refactor this
-        let body = "{\"domain\":\"\(self.credentils.domain)\",\"username\":\"\(self.credentils.username)\",\"password\":\"\(self.credentils.password)\"}"
+        let body = "{\"domain\":\"\(self.credentials.domain)\",\"username\":\"\(self.credentials.username)\",\"password\":\"\(self.credentials.password)\"}"
         
         print("LOGIN REQUEST BODY:\(body)")
         
@@ -74,7 +74,7 @@ public class LoginRequest: ILoginRequest {
 
 public protocol ILoginRequest: IBasePostRequest {
     
-    var credentils: IScCredentials { get }
+    var credentials: IScCredentials { get }
     
 }
 

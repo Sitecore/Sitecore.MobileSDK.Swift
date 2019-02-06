@@ -20,7 +20,12 @@ public class SscSession : NSObject, URLSessionDelegate
     private let requestMerger: RequestMerger
     private let odataApiKey: UUID! = nil
     
-    public init(url: String, urlSession: URLSession) {
+    private var activeUser: String? = nil
+    private let credentialsStorage = CredentialsStorage()
+    
+    
+    public init(url: String, urlSession: URLSession)
+    {
         
         self.sessionConfig = SessionConfig(url: url, requestSyntax: requestSyntax)
         self.urlSession = urlSession
@@ -32,23 +37,17 @@ public class SscSession : NSObject, URLSessionDelegate
 
 extension SscSession: ISscAuthSession
 {
-    public func sendLoginRequest(_ request: ILoginRequest, completion: @escaping (ILoginResponse?, SscError?) -> ()) {
+    public func sendLoginRequest(_ request: ILoginRequest, completion: @escaping (ILoginResponse?, SscError?) -> ())
+    {
         //TODO: @igk check for authentication
         // self.proceedLoginAction()
         
-        //TODO: @igk complete request with default values
-        //let autoCompletedRequest: IGetByIdRequest = self.requestMerger.FillReadItemByIdGaps(requestCopy)
-        
-        
-        //        let urlBuilder = ItemByIdUrlBuilder(self.requestSyntax);
-        //        let taskFlow = GetItemsByIdTasks(urlBuilder);
-        
-        //
-        let autocompletedRequest = LoginRequest(credentils: request.credentils, sessionConfig: self.sessionConfig)
+        let autocompletedRequest = LoginRequest(credentils: request.credentials, sessionConfig: self.sessionConfig)
         
         RequestExecutor.executePostRequest(autocompletedRequest, session: self.urlSession) { (response: LoginResponse?, error) in
-            guard error == nil else {
-                
+            
+            guard error == nil else
+            {
                 completion(nil, error)
                 return
             }
@@ -62,7 +61,86 @@ extension SscSession: ISscAuthSession
     {
         
     }
+    
+    public func enableAutologinWithCredentials(_ credentials: IScCredentials)
+    {
+        self.activeUser = credentials.username
+        self.credentialsStorage.removePassword(for: self.activeUser!)
+        self.credentialsStorage.setPassword(credentials.password, for: self.activeUser!)
+    }
+    
+    func disableAutologin()
+    {
+        guard let activeUser = self.activeUser else
+        {
+            print("Autologin was not enabled")
+            return
+        }
+        
+        self.credentialsStorage.removePassword(for: activeUser)
+        self.activeUser = nil
+    }
+    
+    func autologin(completion: @escaping ()->())
+    {
+        if (self.UserIsLoggedIn)
+        {
+            completion()
+            return
+        }
+        
+        if (AutologinIsActive)
+        {
+            let password = self.credentialsStorage.getPassword(for: self.activeUser!)
+            let credentials = ScCredentials(username: self.activeUser!, password: password!, domain: "Sitecore")
+            
+            let loginRequest = LoginRequest(credentils: credentials)
+            
+            self.sendLoginRequest(loginRequest) { (response, error) in
+                completion()
+            }
+        }
+        else
+        {
+            completion()
+        }
+    }
 
+    var AutologinIsActive: Bool
+    {
+        get
+        {
+            if (self.activeUser != nil)
+            {
+                return true
+            }
+            
+            return false
+        }
+    }
+    
+    var UserIsLoggedIn: Bool
+    {
+        get
+        {
+            let cookies = HTTPCookieStorage.shared.cookies(for: URL(string: self.sessionConfig.instanceUrl)!)
+            let currentDate = Date()
+            for cookie in cookies!
+            {
+                #warning("@igk extract to some king of cookie checker")
+                let isAuthCookie: Bool = (".ASPXAUTH" == cookie.name) || (".AspNet.Cookies" == cookie.name)
+
+                if ( isAuthCookie && cookie.expiresDate! > currentDate)
+                {
+                    return true
+                }
+            }
+            
+            return false
+        }
+    }
+    
+    
     
 }
 
@@ -77,118 +155,94 @@ extension SscSession: ISscReadOnlySession
 
     public func sendGetItemsRequest(_ request: IGetByPathRequest, completion: @escaping SCDidFinishItemsRequestHandler)
     {
-        //TODO: @igk check for authentication
-        // self.proceedLoginAction()
-        
-        //TODO: @igk complete request with default values
-        //let autoCompletedRequest: IGetByIdRequest = self.requestMerger.FillReadItemByIdGaps(requestCopy)
-        
-        
-        //        let urlBuilder = ItemByIdUrlBuilder(self.requestSyntax);
-        //        let taskFlow = GetItemsByIdTasks(urlBuilder);
-        
-        //TODO: @igk make autocompletion
-        let autocompletedRequest = self.requestMerger.mergeGetByPathRequest(request)
-        
-        RequestExecutor.executeGetRequest(autocompletedRequest, session: self.urlSession) { (response, error) in
+        self.autologin {
+            //TODO: @igk check for authentication
+            // self.proceedLoginAction()
             
-            guard error == nil else {
-                completion(nil, error)
-                return
+            //TODO: @igk make autocompletion
+            let autocompletedRequest = self.requestMerger.mergeGetByPathRequest(request)
+            
+            RequestExecutor.executeGetRequest(autocompletedRequest, session: self.urlSession) { (response, error) in
+                self.proceedGetItemsResponse(response, error: error, completion: completion)
             }
-            
-            completion(response, nil)
-        }
 
-    }
-    
-    public func sendGetItemsRequest(_ request: IBaseGetItemsRequest, completion: @escaping SCDidFinishItemsRequestHandler) {
-        
-        let autocompletedRequest = self.requestMerger.mergeGetRequest(request)
-        
-        RequestExecutor.executeGetRequest(autocompletedRequest, session: self.urlSession) { (response, error) in
-            
-            guard error == nil else {
-                completion(nil, error)
-                return
-            }
-            
-            completion(response, nil)
-        }
-        
-    }
-    
-    public func sendGetItemsRequest(_ request: IGetChildrenRequest, completion: @escaping SCDidFinishItemsRequestHandler) {
-        //TODO: @igk check for authentication
-        // self.proceedLoginAction()
-        
-        //TODO: @igk complete request with default values
-        //let autoCompletedRequest: IGetByIdRequest = self.requestMerger.FillReadItemByIdGaps(requestCopy)
-        
-        
-        //        let urlBuilder = ItemByIdUrlBuilder(self.requestSyntax);
-        //        let taskFlow = GetItemsByIdTasks(urlBuilder);
-        
-        //TODO: @igk make autocompletion
-        let autocompletedRequest = self.requestMerger.mergeGetChildrenRequest(request)
-        
-        RequestExecutor.executeGetRequest(autocompletedRequest, session: self.urlSession) { (response, error) in
-            
-            guard error == nil else {
-                completion(nil, error)
-                return
-            }
-            
-            completion(response, nil)
         }
     }
     
-    func sendGetItemsRequest(_ request: ISitecoreSearchRequest, completion: @escaping SCDidFinishItemsRequestHandler) {
-        
-    }
-    
-    func sendGetItemsRequest(_ request: IStoredSitecoreSearchRequest, completion: @escaping SCDidFinishItemsRequestHandler) {
-        
-    }
-    
-    public func sendGetItemsRequest(_ request: IGetByIdRequest, completion:@escaping SCDidFinishItemsRequestHandler){
-        
-        //TODO: @igk check for authentication
-        // self.proceedLoginAction()
-        
-        //TODO: @igk complete request with default values
-        //let autoCompletedRequest: IGetByIdRequest = self.requestMerger.FillReadItemByIdGaps(requestCopy)
-        
-        
-        //        let urlBuilder = ItemByIdUrlBuilder(self.requestSyntax);
-        //        let taskFlow = GetItemsByIdTasks(urlBuilder);
-        
-        //TODO: @igk make autocompletion
-        let autocompletedRequest = GetByIdRequest(
-            itemId: request.itemId.uuidString,
-            itemSource: request.itemSource,
-            sessionConfig: self.sessionConfig,
-            queryParameters: request.queryParameters,
-            standardFields: request.includeStandardTemplateFields
-        )
-        
-        RequestExecutor.executeGetRequest(autocompletedRequest, session: self.urlSession) { (response, error) in
+    public func sendGetItemsRequest(_ request: IBaseGetItemsRequest, completion: @escaping SCDidFinishItemsRequestHandler)
+    {
+        self.autologin {
+            let autocompletedRequest = self.requestMerger.mergeGetRequest(request)
             
-            guard error == nil else {
-                completion(nil, error)
-                return
+            RequestExecutor.executeGetRequest(autocompletedRequest, session: self.urlSession) { (response, error) in
+                self.proceedGetItemsResponse(response, error: error, completion: completion)
             }
-            
-            completion(response, nil)
         }
-
+    }
+    
+    public func sendGetItemsRequest(_ request: IGetChildrenRequest, completion: @escaping SCDidFinishItemsRequestHandler)
+    {
+        self.autologin {
+            //TODO: @igk check for authentication
+            // self.proceedLoginAction()
+            
+            //TODO: @igk make autocompletion
+            let autocompletedRequest = self.requestMerger.mergeGetChildrenRequest(request)
+            
+            RequestExecutor.executeGetRequest(autocompletedRequest, session: self.urlSession) { (response, error) in
+                self.proceedGetItemsResponse(response, error: error, completion: completion)
+            }
+        }
+    }
+    
+    func sendGetItemsRequest(_ request: ISitecoreSearchRequest, completion: @escaping SCDidFinishItemsRequestHandler)
+    {
+        
+    }
+    
+    func sendGetItemsRequest(_ request: IStoredSitecoreSearchRequest, completion: @escaping SCDidFinishItemsRequestHandler)
+    {
+        
+    }
+    
+    public func sendGetItemsRequest(_ request: IGetByIdRequest, completion:@escaping SCDidFinishItemsRequestHandler)
+    {
+        self.autologin {
+            //TODO: @igk check for authentication
+            // self.proceedLoginAction()
+            
+            //TODO: @igk make autocompletion
+            let autocompletedRequest = GetByIdRequest(
+                itemId: request.itemId.uuidString,
+                itemSource: request.itemSource,
+                sessionConfig: self.sessionConfig,
+                queryParameters: request.queryParameters,
+                standardFields: request.includeStandardTemplateFields
+            )
+            
+            RequestExecutor.executeGetRequest(autocompletedRequest, session: self.urlSession) { (response, error) in
+                self.proceedGetItemsResponse(response, error: error, completion: completion)
+            }
+        }
+    }
+    
+    private func proceedGetItemsResponse(_ response: IItemsResponse?, error: SscError?, completion: SCDidFinishItemsRequestHandler)
+    {
+        guard error == nil else
+        {
+            completion(nil, error)
+            return
+        }
+        
+        completion(response, nil)
     }
   
 }
 
 extension SscSession: ISscOdataSession
 {
-    func SetOdataApiKey(_key: UUID) {
+    func SetOdataApiKey(_key: UUID)
+    {
         
     }
     
@@ -199,7 +253,8 @@ extension SscSession: ISscOdataSession
     
 }
 
-protocol ISscOdataSession {
+protocol ISscOdataSession
+{
     
     func SetOdataApiKey(_key: UUID)
     func sendOdataRequest(_ request: IOdataRequest, completion:@escaping SCDidFinishItemsRequestHandler)
@@ -207,15 +262,16 @@ protocol ISscOdataSession {
 }
 
 
-protocol ISscAuthSession {
-    
+protocol ISscAuthSession
+{
+    func enableAutologinWithCredentials(_ credentials: IScCredentials)
     func sendLoginRequest(_ request: ILoginRequest, completion:@escaping (ILoginResponse?, SscError?) -> ())
     func sendLogoutRequest(_ request: ILogoutRequest, completion:@escaping (ILogoutResponse?, SscError?) -> ())
     
 }
 
-protocol ISscReadOnlySession {
-    
+protocol ISscReadOnlySession
+{
     func sendGetItemsRequest(_ request: IGetByIdRequest, completion:@escaping SCDidFinishItemsRequestHandler)
     func sendGetItemsRequest(_ request: IGetByPathRequest, completion:@escaping SCDidFinishItemsRequestHandler)
     func sendGetItemsRequest(_ request: IGetChildrenRequest, completion:@escaping SCDidFinishItemsRequestHandler)
@@ -225,7 +281,5 @@ protocol ISscReadOnlySession {
     func sendGetItemsRequest(_ request: IStoredSitecoreSearchRequest, completion:@escaping SCDidFinishItemsRequestHandler)
     
     func downloadImageForItem(_ item: ISitecoreItem, completion: DataDownloadingProcessing)
-
-    
 }
 

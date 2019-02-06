@@ -41,34 +41,31 @@ class ViewController: UIViewController, URLSessionDelegate
         super.viewDidLoad()
         
         self.startLoading()
-        self.createSession {
-            self.downloadRootItem()
-        }
+        self.createSession()
     }
 
-    func createSession(completion: @escaping () -> ())
+    func createSession()
     {
         urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-        sscSession = SscSession(url: "https://cms900.ws-igk1-n-ua.dk.sitecore.net", urlSession: urlSession!)
+        sscSession = SscSession(url: "https://cms900.pd-test16-1-dk1.dk.sitecore.net", urlSession: urlSession!)
         
         let credentials = ScCredentials(username: "admin", password: "b", domain: "Sitecore")
         
-        let loginRequest = LoginRequest(credentils: credentials)
+        self.sscSession!.enableAutologinWithCredentials(credentials)
         
-        self.sscSession!.sendLoginRequest(loginRequest) { (response, error) in
-            print("\(String(describing: response))")
-            completion()
-        }
+        self.downloadRootItem()
     }
     
-    func downloadRootItem(){
-        
+    func downloadRootItem()
+    {
         self.startLoading()
         
-        guard let sscSession = self.sscSession else {
+        guard let sscSession = self.sscSession else
+        {
             print("create session first!")
             return
         }
+        
         self.itemsBrowserController.setApiSession(self.sscSession!)
         
         let itemSource = ItemSource(database: "web", language: "en")
@@ -82,13 +79,23 @@ class ViewController: UIViewController, URLSessionDelegate
         )
         
         sscSession.sendGetItemsRequest(getItemRequest) { (response, error) in
-            print("\(String(describing: response?.items[0].displayName)))")
-            self.endLoading()
-            self.didLoadRootItem((response?.items[0])!)
+            
+            guard let items = response?.items else
+            {
+                return
+            }
+            
+            
+            if (items.count > 0)
+           {
+                self.endLoading()
+                self.didLoadRootItem(items[0])
+            }
         }
     }
     
-    func didLoadRootItem(_ item: ISitecoreItem){
+    func didLoadRootItem(_ item: ISitecoreItem)
+    {
         self.itemsBrowserController.setRootItem(item)
         self.startLoading()
         self.itemsBrowserController.reloadData()
@@ -96,7 +103,8 @@ class ViewController: UIViewController, URLSessionDelegate
 
     func startLoading()
     {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async
+        {
             self.loadingProgress!.isHidden = false
             self.loadingProgress!.startAnimating()
         }
@@ -104,7 +112,8 @@ class ViewController: UIViewController, URLSessionDelegate
     
     func endLoading()
     {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async
+        {
             self.loadingProgress!.stopAnimating()
             self.loadingProgress!.isHidden = true
         }
@@ -114,15 +123,18 @@ class ViewController: UIViewController, URLSessionDelegate
 
 extension ViewController: SCItemsBrowserDelegate
 {
-    func itemsBrowser(_ itemsBrowser: Any, didReceiveLevelProgressNotification progressInfo: Any) {
+    func itemsBrowser(_ itemsBrowser: Any, didReceiveLevelProgressNotification progressInfo: Any)
+    {
         self.startLoading()
     }
     
-    func itemsBrowser(_ itemsBrowser: Any, levelLoadingFailedWithError error: NSError?) {
+    func itemsBrowser(_ itemsBrowser: Any, levelLoadingFailedWithError error: NSError?)
+    {
         print("levelLoadingFailedWithError \(String(describing: error?.description))")
     }
     
-    func itemsBrowser(_ itemsBrowser: Any, shouldLoadLevelForItem levelParentItem: ISitecoreItem) -> Bool {
+    func itemsBrowser(_ itemsBrowser: Any, shouldLoadLevelForItem levelParentItem: ISitecoreItem) -> Bool
+    {
         return levelParentItem.hasChildren
     }
     
@@ -130,17 +142,18 @@ extension ViewController: SCItemsBrowserDelegate
     {
         self.endLoading()
         
-        DispatchQueue.main.async {
+        DispatchQueue.main.async
+        {
             self.itemPathLabel.text = levelParentItem.path
         }
         
         let top = IndexPath(row: 0, section: 0)
         
-        DispatchQueue.main.async {
+        DispatchQueue.main.async
+        {
             self.itemsBrowserController.collectionView.scrollToItem(at: top, at: .top, animated: false)
         }
     }
-    
     
 }
 

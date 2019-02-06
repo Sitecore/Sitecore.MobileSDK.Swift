@@ -98,6 +98,12 @@ class SCMediaCellController {
     
     func imageLoadCanceled()
     {
+        guard let delegate = self.delegate else
+        {
+            return
+        }
+        
+        delegate.mediaCellController(self, didFailLoadingImageForItem: self.item, withError: NSError(domain: "SCMediaCellController", code: 0, userInfo: ["Info" : "image loading canceled"]))
         print("image loading canceled")
     }
     
