@@ -26,11 +26,16 @@ public class SscSession : NSObject, URLSessionDelegate
     
     public init(url: String, urlSession: URLSession)
     {
-        
         self.sessionConfig = SessionConfig(url: url, requestSyntax: requestSyntax)
         self.urlSession = urlSession
         self.urlSession.configuration.requestCachePolicy = .returnCacheDataElseLoad
         self.requestMerger = RequestMerger(sessionConfig: self.sessionConfig)
+    }
+    
+    public convenience init(url: String, urlSession: URLSession, autologinCredentials: IScCredentials)
+    {
+        self.init(url: url, urlSession: urlSession)
+        self.enableAutologinWithCredentials(autologinCredentials)
     }
 
 }

@@ -38,11 +38,9 @@ class ViewController: UIViewController, URLSessionDelegate {
     func createSession()
     {
         urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-        sscSession = SscSession(url: "https://cms900.pd-test16-1-dk1.dk.sitecore.net", urlSession: urlSession!)
         
         let credentials = ScCredentials(username: "admin", password: "b", domain: "Sitecore")
-        
-        self.sscSession!.enableAutologinWithCredentials(credentials)
+        sscSession = SscSession(url: "https://cms900.pd-test16-1-dk1.dk.sitecore.net", urlSession: urlSession!, autologinCredentials: credentials)
         
         self.downloadRootItem()
     }
