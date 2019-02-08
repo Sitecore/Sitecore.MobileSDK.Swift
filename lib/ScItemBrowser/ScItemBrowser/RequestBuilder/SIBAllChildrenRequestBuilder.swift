@@ -22,7 +22,6 @@ public class SIBAllChildrenRequestBuilder: NSObject, SCItemsLevelRequestBuilder
                                                              pagingParameters: nil,
                                                              itemSource: item.source!,
                                                              sessionConfig: nil,
-                                                             queryParameters: nil,
                                                              standardFields: true,
                                                              ignoreCache: ignoreCache)
         return request

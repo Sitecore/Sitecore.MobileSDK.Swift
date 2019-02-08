@@ -160,11 +160,8 @@ extension SscSession: ISscReadOnlySession
 
     public func sendGetItemsRequest(_ request: IGetByPathRequest, completion: @escaping SCDidFinishItemsRequestHandler)
     {
-        self.autologin {
-            //TODO: @igk check for authentication
-            // self.proceedLoginAction()
-            
-            //TODO: @igk make autocompletion
+        self.autologin
+        {
             let autocompletedRequest = self.requestMerger.mergeGetByPathRequest(request)
             
             RequestExecutor.executeGetRequest(autocompletedRequest, session: self.urlSession) { (response, error) in
@@ -176,7 +173,8 @@ extension SscSession: ISscReadOnlySession
     
     public func sendGetItemsRequest(_ request: IBaseGetItemsRequest, completion: @escaping SCDidFinishItemsRequestHandler)
     {
-        self.autologin {
+        self.autologin
+        {
             let autocompletedRequest = self.requestMerger.mergeGetRequest(request)
             
             RequestExecutor.executeGetRequest(autocompletedRequest, session: self.urlSession) { (response, error) in
@@ -187,11 +185,8 @@ extension SscSession: ISscReadOnlySession
     
     public func sendGetItemsRequest(_ request: IGetChildrenRequest, completion: @escaping SCDidFinishItemsRequestHandler)
     {
-        self.autologin {
-            //TODO: @igk check for authentication
-            // self.proceedLoginAction()
-            
-            //TODO: @igk make autocompletion
+        self.autologin
+        {
             let autocompletedRequest = self.requestMerger.mergeGetChildrenRequest(request)
             
             RequestExecutor.executeGetRequest(autocompletedRequest, session: self.urlSession) { (response, error) in
@@ -207,23 +202,21 @@ extension SscSession: ISscReadOnlySession
     
     func sendGetItemsRequest(_ request: IStoredSitecoreSearchRequest, completion: @escaping SCDidFinishItemsRequestHandler)
     {
-        
+        self.autologin
+            {
+                let autocompletedRequest = self.requestMerger.mergeStoredQueryRequestRequest(request)
+                
+                RequestExecutor.executeGetRequest(autocompletedRequest, session: self.urlSession) { (response, error) in
+                    self.proceedGetItemsResponse(response, error: error, completion: completion)
+                }
+        }
     }
     
     public func sendGetItemsRequest(_ request: IGetByIdRequest, completion:@escaping SCDidFinishItemsRequestHandler)
     {
-        self.autologin {
-            //TODO: @igk check for authentication
-            // self.proceedLoginAction()
-            
-            //TODO: @igk make autocompletion
-            let autocompletedRequest = GetByIdRequest(
-                itemId: request.itemId.uuidString,
-                itemSource: request.itemSource,
-                sessionConfig: self.sessionConfig,
-                queryParameters: request.queryParameters,
-                standardFields: request.includeStandardTemplateFields
-            )
+        self.autologin
+        {
+            let autocompletedRequest = self.requestMerger.mergeGetByIdRequest(request)
             
             RequestExecutor.executeGetRequest(autocompletedRequest, session: self.urlSession) { (response, error) in
                 self.proceedGetItemsResponse(response, error: error, completion: completion)
@@ -251,11 +244,10 @@ extension SscSession: ISscOdataSession
         
     }
     
-    func sendOdataRequest(_ request: IOdataRequest, completion: @escaping SCDidFinishItemsRequestHandler) {
+    func sendOdataRequest(_ request: IOdataRequest, completion: @escaping SCDidFinishItemsRequestHandler)
+    {
         
-    }
-    
-    
+    }    
 }
 
 protocol ISscOdataSession

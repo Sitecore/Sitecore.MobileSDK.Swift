@@ -25,7 +25,8 @@ class RequestMerger {
             result = self.mergeGetChildrenRequest(request as! IGetChildrenRequest)
         case is GetByPathRequest:
             result = self.mergeGetByPathRequest(request as! IGetByPathRequest)
-            
+        case is StoredQueryRequest:
+            result = self.mergeStoredQueryRequestRequest(request as! IStoredSitecoreSearchRequest)
         default:
             print("Type not found request not merged")
             result = request
@@ -41,10 +42,11 @@ class RequestMerger {
             pagingParameters: request.pagingParameters,
             itemSource: request.itemSource,
             sessionConfig: self.sessionConfig,
-            queryParameters: request.queryParameters,
             standardFields: request.includeStandardTemplateFields,
             ignoreCache: request.ignoreCache
         )
+        
+        autocompletedRequest.fields = request.fields
         
         return autocompletedRequest
     }
@@ -55,11 +57,41 @@ class RequestMerger {
             itemPath: request.itemPath,
             itemSource: request.itemSource,
             sessionConfig: self.sessionConfig,
-            queryParameters: request.queryParameters,
             standardFields: request.includeStandardTemplateFields
         )
+        
+        autocompletedRequest.fields = request.fields
+        
+        return autocompletedRequest
+    }
+    
+    public func mergeGetByIdRequest(_ request: IGetByIdRequest) -> GetByIdRequest
+    {
+        let autocompletedRequest = GetByIdRequest(
+            itemId: request.itemId.uuidString,
+            itemSource: request.itemSource,
+            sessionConfig: self.sessionConfig,
+            standardFields: request.includeStandardTemplateFields
+        )
+        
+        autocompletedRequest.fields = request.fields
         
         return autocompletedRequest
     }
 
+    public func mergeStoredQueryRequestRequest(_ request: IStoredSitecoreSearchRequest) -> StoredQueryRequest
+    {
+        let autocompletedRequest = StoredQueryRequest(
+            itemId: request.itemId.uuidString,
+            pagingParameters: request.pagingParameters,
+            itemSource: request.itemSource,
+            sessionConfig: self.sessionConfig,
+            standardFields: request.includeStandardTemplateFields
+        )
+        
+        autocompletedRequest.fields = request.fields
+        
+        return autocompletedRequest
+    }
+    
 }

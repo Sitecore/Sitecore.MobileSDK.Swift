@@ -8,25 +8,27 @@
 
 import Foundation
 
-public class LoginRequest: ILoginRequest {
-    
+public class LoginRequest: ILoginRequest
+{
+    public let credentials: IScCredentials
+    public let sessionConfig: ISessionConfig?
+
     public init(credentils: IScCredentials)
     {
         self.credentials = credentils
         self.sessionConfig = nil
     }
     
-    internal init(
-        credentils: IScCredentials,
-        sessionConfig: ISessionConfig
-        )
+    internal init(credentils: IScCredentials, sessionConfig: ISessionConfig?)
     {
         self.credentials = credentils
         self.sessionConfig = sessionConfig
     }
     
-    public let credentials: IScCredentials
-    public let sessionConfig: ISessionConfig?
+    public func buildUrlParametersString() -> String?
+    {
+        return nil
+    }
     
     public func buildRequestBody() -> Data {
         
@@ -38,9 +40,10 @@ public class LoginRequest: ILoginRequest {
         return body.data(using: .utf8)!
     }
 
-    public func buildHTTPRequest() throws -> URLRequest  {
+    public func buildHTTPRequest() throws -> URLRequest
+    {
 
-        guard let urlString = self.buildUrl() else
+        guard let urlString = self.buildUrlString() else
         {
             throw SscError.runtimeError(ErrorDescriptions.canNotBuilUrlFor("AUTH request"))
         }
@@ -54,7 +57,7 @@ public class LoginRequest: ILoginRequest {
         return URLRequest(url: url)
     }
     
-    public func buildUrl() -> String? {
+    public func buildUrlString() -> String? {
         
         guard let sessionConfig = self.sessionConfig else
         {

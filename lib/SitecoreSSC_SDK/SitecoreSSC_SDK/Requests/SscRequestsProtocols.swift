@@ -9,78 +9,71 @@
 import Foundation
 
 
-@objc public protocol IOdataRequest: IBaseGetItemsRequest {
+@objc public protocol IOdataRequest: IBaseGetItemsRequest
+{
     var odataQuery: String { get }
 }
 
-@objc public protocol IGetByIdRequest: IBaseGetItemsRequest {
+@objc public protocol IGetByIdRequest: IBaseGetItemsRequest
+{
     var itemId: UUID { get }
 }
 
-@objc public protocol IGetByPathRequest: IBaseGetItemsRequest {
+@objc public protocol IGetByPathRequest: IBaseGetItemsRequest
+{
     var itemPath: String { get }
 }
 
-@objc public protocol IGetChildrenRequest: IBaseGetPaggedItemsRequest {
+@objc public protocol IGetChildrenRequest: IBaseGetPaggedItemsRequest
+{
     var parentId: UUID { get }
 }
 
-@objc public protocol ISitecoreSearchRequest: IBaseGetPaggedItemsRequest {
+@objc public protocol ISitecoreSearchRequest: IBaseGetPaggedItemsRequest
+{
     
 }
 
-@objc public protocol IStoredSitecoreSearchRequest: IBaseGetPaggedItemsRequest {
-    
+@objc public protocol IStoredSitecoreSearchRequest: IBaseGetPaggedItemsRequest
+{
+    var itemId: UUID { get }
 }
 
-@objc public protocol IBaseGetPaggedItemsRequest: IBaseGetItemsRequest {
+@objc public protocol IBaseGetPaggedItemsRequest: IBaseGetItemsRequest
+{
     var pagingParameters: IPagingParameters? { get }
 }
 
-@objc public protocol IBaseGetItemsRequest: IBaseRequest {
-    
-    var itemSource: IItemSource { get }
-    var queryParameters: IQueryParameters? { get }
+@objc public protocol IBaseGetItemsRequest: IBaseRequest
+{
+    var itemSource: IItemSource? { get }
     var includeStandardTemplateFields: Bool { get }
+    var fields: [String] {get}
     
     var ignoreCache: Bool { get }
-    
 }
 
-@objc public protocol IBasePostRequest: IBaseRequest {
-    
+@objc public protocol IBasePostRequest: IBaseRequest
+{
     func buildRequestBody() -> Data
-    
 }
 
-@objc public protocol IBaseRequest: IScRequest {
-
+@objc public protocol IBaseRequest: IScRequest
+{
     #warning ("@igk separate request builder required!")
     func buildHTTPRequest() throws -> URLRequest
-    
 }
 
-@objc public protocol IGetImageRequest: IScRequest {
-    
+@objc public protocol IGetImageRequest: IScRequest
+{
     var mediaItem: ISitecoreItem { get }
-    
 }
 
-@objc public protocol IScRequest {
-    
+@objc public protocol IScRequest
+{
     var sessionConfig: ISessionConfig? { get }
-    func buildUrl() -> String? //TODO: @igk make it internal!!!!
     
-}
-
-@objc public protocol IQueryParameters {
-    var fields: [String] { get }
-}
-
-@objc public protocol IPagingParameters {
-    
-    var itemsPerPageCount: Int { get }
-    var pageNumber: Int { get }
-    
+    func buildUrlString() -> String?
+    func buildUrlParametersString() -> String?
 }
 

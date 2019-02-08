@@ -41,7 +41,7 @@ public class ScImageLoader {
     @discardableResult
     static func getImageWithRequest(_ request: IGetImageRequest, session: URLSession, completion: DataDownloadingProcessing) -> RequestToken?
     {
-        guard let imagePath = request.buildUrl() else
+        guard let imagePath = request.buildUrlString() else
         {
             return nil
         }

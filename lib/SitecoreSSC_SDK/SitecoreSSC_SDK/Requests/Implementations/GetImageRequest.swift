@@ -8,8 +8,8 @@
 
 import Foundation
 
-class GetImageRequest: IGetImageRequest {
-    
+class GetImageRequest: IGetImageRequest
+{
     public var mediaItem: ISitecoreItem
     public let ignoreCache: Bool
     public let sessionConfig: ISessionConfig?
@@ -26,7 +26,12 @@ class GetImageRequest: IGetImageRequest {
         self.ignoreCache = ignoreCache
     }
     
-    public func buildUrl() -> String {
+    func buildUrlParametersString() -> String? {
+        return nil
+    }
+    
+    public func buildUrlString() -> String?
+    {
         let url = sessionConfig!.instanceUrl
         let imagePath = self.mediaItem.fields["ItemMedialUrl"]! as! String
         

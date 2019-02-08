@@ -14,17 +14,16 @@ public class GetByIdRequest: BaseGetItemRequest, IGetByIdRequest
 
     public init(
         itemId: String,
-        itemSource: IItemSource,
+        itemSource: IItemSource?,
         sessionConfig: ISessionConfig?,
-        queryParameters: IQueryParameters?,
         standardFields: Bool
         )
     {
         self.itemId = UUID(uuidString: itemId)!
-        super.init(itemSource: itemSource, sessionConfig: sessionConfig, queryParameters: queryParameters, standardFields: standardFields)
+        super.init(itemSource: itemSource, sessionConfig: sessionConfig, standardFields: standardFields)
     }
     
-    public override func buildUrl() -> String {
+    public override func buildUrlString() -> String {
         let url = sessionConfig!.instanceUrl
             + sessionConfig!.requestSyntax.ItemSSCEndpoint
             + sessionConfig!.requestSyntax.ItemSSCItemsEndpoint
@@ -41,31 +40,42 @@ public class GetByPathRequest: BaseGetItemRequest, IGetByPathRequest
     
     public init(
         itemPath: String,
-        itemSource: IItemSource,
+        itemSource: IItemSource?,
         sessionConfig: ISessionConfig?,
-        queryParameters: IQueryParameters?,
         standardFields: Bool
         )
     {
         self.itemPath = itemPath
-        super.init(itemSource: itemSource, sessionConfig: sessionConfig, queryParameters: queryParameters, standardFields: standardFields)
+        super.init(itemSource: itemSource, sessionConfig: sessionConfig, standardFields: standardFields)
     }
 
-    public override func buildUrl() -> String {
-        
-        let escapedPath: String = self.itemPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
-
+    public override func buildUrlString() -> String
+    {
         let url = sessionConfig!.instanceUrl
             + sessionConfig!.requestSyntax.ItemSSCEndpoint
             + sessionConfig!.requestSyntax.ItemSSCItemsEndpoint
-             + sessionConfig!.requestSyntax.urlPathAndParametersSeparator
-            + sessionConfig!.requestSyntax.ItemPathParameterName
-            + sessionConfig!.requestSyntax.urlParmeterAssignSign
-            + escapedPath
         
         return url
     }
    
+    public override func buildUrlParametersString() -> String?
+    {
+        let baseParameters = super.buildUrlParametersString()
+        
+        let escapedPath: String = self.itemPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+
+        var parameters = sessionConfig!.requestSyntax.ItemPathParameterName
+            + sessionConfig!.requestSyntax.urlParmeterAssignSign
+            + escapedPath
+            
+        if (baseParameters != nil)
+        {
+            parameters = parameters + sessionConfig!.requestSyntax.urlParametersSeparator
+                                    + baseParameters!
+        }
+        
+        return parameters
+    }
 }
 
 public class GetChildrenRequest: BaseGetItemRequest, IGetChildrenRequest
@@ -77,19 +87,19 @@ public class GetChildrenRequest: BaseGetItemRequest, IGetChildrenRequest
     public init(
         parentId: String,
         pagingParameters: IPagingParameters?,
-        itemSource: IItemSource,
+        itemSource: IItemSource?,
         sessionConfig: ISessionConfig?,
-        queryParameters: IQueryParameters?,
         standardFields: Bool,
         ignoreCache: Bool
         )
     {
         self.parentId = UUID(uuidString: parentId)!
         self.pagingParameters = pagingParameters
-        super.init(itemSource: itemSource, sessionConfig: sessionConfig, queryParameters: queryParameters, standardFields: standardFields, ignoreCache: ignoreCache)
+        super.init(itemSource: itemSource, sessionConfig: sessionConfig, standardFields: standardFields, ignoreCache: ignoreCache)
     }
     
-    public override func buildUrl() -> String {
+    public override func buildUrlString() -> String
+    {
         let url = sessionConfig!.instanceUrl
             + sessionConfig!.requestSyntax.ItemSSCEndpoint
             + sessionConfig!.requestSyntax.ItemSSCItemsEndpoint
@@ -102,48 +112,3 @@ public class GetChildrenRequest: BaseGetItemRequest, IGetChildrenRequest
     }
 }
 
-public class BaseGetItemRequest: IBaseGetItemsRequest
-{
-    public let ignoreCache: Bool
-    
-    public let itemSource: IItemSource
-    public let queryParameters: IQueryParameters?
-    public let includeStandardTemplateFields: Bool
-    public let sessionConfig: ISessionConfig?
-    
-    public init(
-        itemSource: IItemSource,
-        sessionConfig: ISessionConfig?,
-        queryParameters: IQueryParameters?,
-        standardFields: Bool,
-        ignoreCache: Bool = false
-        )
-    {
-        //TODO: @igk check all input data
-        self.itemSource = itemSource
-        self.sessionConfig = sessionConfig
-        self.queryParameters = queryParameters
-        self.includeStandardTemplateFields = standardFields
-        self.ignoreCache = ignoreCache
-    }
-    
-    public func buildUrl() -> String {
-        return ""
-    }
-    
-    public func buildHTTPRequest() -> URLRequest {
-        //TODO: @igk check for errors
-        let urlString = self.buildUrl()
-        var request = URLRequest(url: URL(string: urlString)!)
-        
-        if (self.ignoreCache) {
-            request.cachePolicy = .reloadIgnoringLocalCacheData
-        } else {
-            request.cachePolicy = .returnCacheDataElseLoad
-        }
-        
-        return request
-    }
-    
-    
-}

@@ -76,7 +76,7 @@ class ItemSSCV1UrlParameters: ISscUrlParameters
         
         self.SitecoreSearchParameterName = "term"
         
-        self.SitecoreQueryParameterName = "query"
+        self.SitecoreQueryParameterName = "/query"
         
         self.ItemSSCEndpoint = "/sitecore/api/ssc"
         
