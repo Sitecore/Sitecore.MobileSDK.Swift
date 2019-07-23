@@ -1,46 +1,34 @@
-//
-//  ItemResponse.swift
-//  SitecoreSSC_SDK
-//
-//  Created by IGK on 11/26/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 
 class ItemsResponse: IItemsResponse
 {
-    func isSuccessful() -> Bool {
-        //TODO: @igk not implemented!!!
-        return false
-    }
+    public internal(set) var itemsPerPage: Int = 0
+    public internal(set) var currentPage: Int = 0
+    
+    internal var statusCode: Int = 0
     
     var items: [ISitecoreItem]
     
-    required init(json: Data, source: IItemSource?, sessionConfig: ISessionConfig?) {
+    required init(items: [ISitecoreItem], statusCode: Int, pagingParameters: IPagingParameters?)
+    {
+        self.items = items
+        self.statusCode = statusCode
         
-        var jsonString = String(data: json, encoding: .utf8)!
-        print("\(jsonString)")
-        
-        //TODO: @igk refactor this!
-        if (!jsonString.starts(with: "[")) {
-            jsonString = "[\(jsonString)]"
-        }
-        
-        do
+        self.itemsPerPage = pagingParameters?.itemsPerPageCount ?? 0
+        self.currentPage = pagingParameters?.pageNumber ?? 0
+    }
+    
+    public func isSuccessful() -> Bool
+    {
+        return self.statusCode > 199 && self.statusCode < 300 //@igk refactor this
+    }
+    
+    public var totalItemsCount: Int
+    {
+        get
         {
-            let result = try (JSONSerialization.jsonObject(with: jsonString.data(using: .utf8)!, options: []) as? Array<[String: Any]>)!
-            
-            self.items = result.map({ (elem) -> ISitecoreItem in
-                return ScItem(fields: elem , source: source, sessionConfig: sessionConfig)
-            })
-            
-        } catch {
-            
-            print(error.localizedDescription)
-            self.items = [ISitecoreItem]()
-            
+            return self.items.count
         }
     }
- 
 }
