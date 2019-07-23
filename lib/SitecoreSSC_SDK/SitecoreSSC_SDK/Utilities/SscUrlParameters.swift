@@ -1,14 +1,7 @@
-//
-//  SscUrlParameters.swift
-//  SitecoreSSC_SDK
-//
-//  Created by IGK on 11/26/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 
-@objc public protocol ISscUrlParameters {
+@objc public protocol ISSCUrlParameters {
     
     var ItemSSCAuthEndpoint:                        String { get }
     var ItemSSCItemsEndpoint:                       String { get }
@@ -57,7 +50,7 @@ import Foundation
 }
 
 
-class ItemSSCV1UrlParameters: ISscUrlParameters
+class ItemSSCV1UrlParameters: ISSCUrlParameters
 {
     init() {
         self.DatabaseParameterName = "database"

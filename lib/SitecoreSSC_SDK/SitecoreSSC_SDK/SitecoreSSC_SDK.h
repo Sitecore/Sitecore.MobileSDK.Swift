@@ -1,10 +1,3 @@
-//
-//  SitecoreSSC_SDK.h
-//  SitecoreSSC_SDK
-//
-//  Created by IGK on 11/16/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 #import <UIKit/UIKit.h>
 
