@@ -1,18 +1,20 @@
-//
-//  File.swift
-//  SitecoreSSC_SDK
-//
-//  Created by IGK on 11/29/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 
-public enum SscError: Error {
+public enum SSCError: Error
+{
+    case badURL
+    case badCredentials
+    case badRequest(String)
+    case unknownNetworkError(Error?)
+    case networkError(Error?)
+    case networkErrorWithStatusCode(String?)
+    
     case runtimeError(String)
     case requesBuilderError(Error)
-    case unknownNetworkError(String)
-    case networkError(Error?)
+    case responseError(Error)
+    
+    case dataError(String?)
 }
 
 public class ErrorDescriptions
@@ -27,7 +29,7 @@ public class ErrorDescriptions
         return "Unknown network error, user info: \(userInfo)"
     }
     
-    static func requesBuilderErrorError(userInfo: String) -> String
+    static func requesBuilderError(userInfo: String) -> String
     {
         return "Can not build request, user info: \(userInfo)"
     }
