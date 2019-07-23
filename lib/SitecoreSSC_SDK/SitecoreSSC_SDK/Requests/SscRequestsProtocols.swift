@@ -1,13 +1,25 @@
-//
-//  SscRequests.swift
-//  SitecoreSSC_SDK
-//
-//  Created by IGK on 11/22/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 
+@objc public protocol IDeleteItemRequest: IGetByIdRequest, IBasePostRequest
+{
+    
+}
+
+@objc public protocol ICreateRequest: IGetByPathRequest, IChangeRequest
+{
+
+}
+
+@objc public protocol IEditRequest: IGetByIdRequest, IChangeRequest
+{
+
+}
+
+@objc public protocol IChangeRequest: IBasePostRequest
+{
+    var fieldsToChangeList: [String: String] { get }
+}
 
 @objc public protocol IOdataRequest: IBaseGetItemsRequest
 {
@@ -24,22 +36,22 @@ import Foundation
     var itemPath: String { get }
 }
 
-@objc public protocol IGetChildrenRequest: IBaseGetPaggedItemsRequest
+@objc public protocol IGetChildrenRequest: IBaseGetItemsRequest
 {
     var parentId: UUID { get }
 }
 
-@objc public protocol ISitecoreSearchRequest: IBaseGetPaggedItemsRequest
+@objc public protocol ISitecoreSearchRequest: IBaseGetPaginatedItemsRequest
 {
     
 }
 
-@objc public protocol IStoredSitecoreSearchRequest: IBaseGetPaggedItemsRequest
+@objc public protocol IStoredSitecoreSearchRequest: IBaseGetPaginatedItemsRequest
 {
     var itemId: UUID { get }
 }
 
-@objc public protocol IBaseGetPaggedItemsRequest: IBaseGetItemsRequest
+@objc public protocol IBaseGetPaginatedItemsRequest: IBaseGetItemsRequest
 {
     var pagingParameters: IPagingParameters? { get }
 }
@@ -48,14 +60,14 @@ import Foundation
 {
     var itemSource: IItemSource? { get }
     var includeStandardTemplateFields: Bool { get }
-    var fields: [String] {get}
+    var fields: [String] { get }
     
     var ignoreCache: Bool { get }
 }
 
 @objc public protocol IBasePostRequest: IBaseRequest
 {
-    func buildRequestBody() -> Data
+    func buildRequestBody() -> Data?
 }
 
 @objc public protocol IBaseRequest: IScRequest
@@ -73,7 +85,7 @@ import Foundation
 {
     var sessionConfig: ISessionConfig? { get }
     
-    func buildUrlString() -> String?
-    func buildUrlParametersString() -> String?
+    func buildUrlString(sessionConfig: ISessionConfig) -> String?
+    func buildUrlParametersString(sessionConfig: ISessionConfig) -> String?
 }
 

@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  SitecoreSSC_SDK
-//
-//  Created by IGK on 11/26/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 
@@ -15,19 +8,38 @@ public class GetByIdRequest: BaseGetItemRequest, IGetByIdRequest
     public init(
         itemId: String,
         itemSource: IItemSource?,
-        sessionConfig: ISessionConfig?,
-        standardFields: Bool
+        sessionConfig: ISessionConfig,
+        fields: [String]?,
+        standardFields: Bool?
         )
     {
-        self.itemId = UUID(uuidString: itemId)!
-        super.init(itemSource: itemSource, sessionConfig: sessionConfig, standardFields: standardFields)
+        guard let itemIdValue: UUID = UUID(uuidString: itemId) else
+        {
+            fatalError("itemId unknown format")
+        }
+        
+        self.itemId = itemIdValue
+        super.init(itemSource: itemSource, sessionConfig: sessionConfig, standardFields: standardFields, fields: fields)
     }
     
-    public override func buildUrlString() -> String {
-        let url = sessionConfig!.instanceUrl
-            + sessionConfig!.requestSyntax.ItemSSCEndpoint
-            + sessionConfig!.requestSyntax.ItemSSCItemsEndpoint
-            + sessionConfig!.requestSyntax.urlPathSeparator
+    public init(
+        itemId: UUID,
+        itemSource: IItemSource?,
+        sessionConfig: ISessionConfig?,
+        fields: [String]?,
+        standardFields: Bool?
+        )
+    {
+        self.itemId = itemId
+        super.init(itemSource: itemSource, sessionConfig: sessionConfig, standardFields: standardFields, fields: fields)
+    }
+    
+    public override func buildUrlString(sessionConfig: ISessionConfig) -> String?
+    {
+        let url = sessionConfig.instanceUrl
+            + sessionConfig.requestSyntax.ItemSSCEndpoint
+            + sessionConfig.requestSyntax.ItemSSCItemsEndpoint
+            + sessionConfig.requestSyntax.urlPathSeparator
             + self.itemId.uuidString
         
         return url
@@ -42,35 +54,36 @@ public class GetByPathRequest: BaseGetItemRequest, IGetByPathRequest
         itemPath: String,
         itemSource: IItemSource?,
         sessionConfig: ISessionConfig?,
-        standardFields: Bool
+        fields: [String]?,
+        standardFields: Bool?
         )
     {
         self.itemPath = itemPath
-        super.init(itemSource: itemSource, sessionConfig: sessionConfig, standardFields: standardFields)
+        super.init(itemSource: itemSource, sessionConfig: sessionConfig, standardFields: standardFields, fields: fields)
     }
 
-    public override func buildUrlString() -> String
+    public override func buildUrlString(sessionConfig: ISessionConfig) -> String?
     {
-        let url = sessionConfig!.instanceUrl
-            + sessionConfig!.requestSyntax.ItemSSCEndpoint
-            + sessionConfig!.requestSyntax.ItemSSCItemsEndpoint
+        let url = sessionConfig.instanceUrl
+            + sessionConfig.requestSyntax.ItemSSCEndpoint
+            + sessionConfig.requestSyntax.ItemSSCItemsEndpoint
         
         return url
     }
    
-    public override func buildUrlParametersString() -> String?
+    public override func buildUrlParametersString(sessionConfig: ISessionConfig) -> String?
     {
-        let baseParameters = super.buildUrlParametersString()
+        let baseParameters = super.buildUrlParametersString(sessionConfig: sessionConfig)
         
         let escapedPath: String = self.itemPath.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
 
-        var parameters = sessionConfig!.requestSyntax.ItemPathParameterName
-            + sessionConfig!.requestSyntax.urlParmeterAssignSign
+        var parameters = sessionConfig.requestSyntax.ItemPathParameterName
+            + sessionConfig.requestSyntax.urlParmeterAssignSign
             + escapedPath
             
         if (baseParameters != nil)
         {
-            parameters = parameters + sessionConfig!.requestSyntax.urlParametersSeparator
+            parameters = parameters + sessionConfig.requestSyntax.urlParametersSeparator
                                     + baseParameters!
         }
         
@@ -82,33 +95,32 @@ public class GetChildrenRequest: BaseGetItemRequest, IGetChildrenRequest
 {
     public let parentId: UUID
     
-    public let pagingParameters: IPagingParameters?
-    
     public init(
-        parentId: String,
-        pagingParameters: IPagingParameters?,
+        parentId: UUID,
         itemSource: IItemSource?,
         sessionConfig: ISessionConfig?,
-        standardFields: Bool,
+        standardFields: Bool?,
+        fields: [String]?,
         ignoreCache: Bool
         )
     {
-        self.parentId = UUID(uuidString: parentId)!
-        self.pagingParameters = pagingParameters
-        super.init(itemSource: itemSource, sessionConfig: sessionConfig, standardFields: standardFields, ignoreCache: ignoreCache)
+        self.parentId = parentId
+        super.init(itemSource: itemSource, sessionConfig: sessionConfig, standardFields: standardFields, fields: fields, ignoreCache: ignoreCache)
     }
     
-    public override func buildUrlString() -> String
+    public override func buildUrlString(sessionConfig: ISessionConfig) -> String?
     {
-        let url = sessionConfig!.instanceUrl
-            + sessionConfig!.requestSyntax.ItemSSCEndpoint
-            + sessionConfig!.requestSyntax.ItemSSCItemsEndpoint
-            + sessionConfig!.requestSyntax.urlPathSeparator
+        let url = sessionConfig.instanceUrl
+            + sessionConfig.requestSyntax.ItemSSCEndpoint
+            + sessionConfig.requestSyntax.ItemSSCItemsEndpoint
+            + sessionConfig.requestSyntax.urlPathSeparator
             + self.parentId.uuidString
-            + sessionConfig!.requestSyntax.urlPathSeparator
-            + sessionConfig!.requestSyntax.ItemSSCChildrenAction
+            + sessionConfig.requestSyntax.urlPathSeparator
+            + sessionConfig.requestSyntax.ItemSSCChildrenAction
         
         return url
     }
+    
+    
 }
 

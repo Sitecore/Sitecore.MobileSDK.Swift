@@ -1,37 +1,32 @@
-//
-//  SearchItemsRequests.swift
-//  SitecoreSSC_SDK
-//
-//  Created by IGK on 2/8/19.
-//  Copyright © 2019 Igor. All rights reserved.
-//
 
 import Foundation
+
 
 public class StoredQueryRequest: BasePaggedGetItemRequest, IStoredSitecoreSearchRequest
 {
     public var itemId: UUID
     
+    #warning ("@igk add 'ignoreCache config'!!!")
     public init(
-        itemId: String,
+        itemId: UUID,
         pagingParameters: IPagingParameters?,
         itemSource: IItemSource?,
         sessionConfig: ISessionConfig?,
+        fields: [String]?,
         standardFields: Bool
         )
     {
-        self.itemId = UUID(uuidString: itemId)!
-        super.init(pagingParameters: pagingParameters, itemSource: itemSource, sessionConfig: sessionConfig, standardFields: standardFields)
+        self.itemId = itemId
+        super.init(pagingParameters: pagingParameters,
+                   itemSource: itemSource,
+                   sessionConfig: sessionConfig,
+                   fields: fields,
+                   standardFields: standardFields
+                   )
     }
     
-    public override func buildUrlString() -> String
+    public override func buildUrlString(sessionConfig: ISessionConfig) -> String?
     {
-        guard let sessionConfig = self.sessionConfig else
-        {
-            #warning ("@igk proceed error!!!")
-            return ""
-        }
-        
         let url = sessionConfig.instanceUrl
             + sessionConfig.requestSyntax.ItemSSCEndpoint
             + sessionConfig.requestSyntax.ItemSSCItemsEndpoint

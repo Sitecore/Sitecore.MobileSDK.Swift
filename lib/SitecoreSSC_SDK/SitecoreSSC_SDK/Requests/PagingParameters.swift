@@ -1,10 +1,3 @@
-//
-//  PagingParameters.swift
-//  SitecoreSSC_SDK
-//
-//  Created by IGK on 2/8/19.
-//  Copyright © 2019 Igor. All rights reserved.
-//
 
 import Foundation
 

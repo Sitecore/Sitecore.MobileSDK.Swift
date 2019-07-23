@@ -1,39 +1,35 @@
-//
-//  GetImageRequest.swift
-//  SitecoreSSC_SDK
-//
-//  Created by IGK on 1/3/19.
-//  Copyright © 2019 Igor. All rights reserved.
-//
 
 import Foundation
 
 class GetImageRequest: IGetImageRequest
 {
-    public var mediaItem: ISitecoreItem
+    public let mediaItem: ISitecoreItem
     public let ignoreCache: Bool
     public let sessionConfig: ISessionConfig?
+    private let mediaUrlFieldTitle: String
     
     public init(
         mediaItem: ISitecoreItem,
         sessionConfig: ISessionConfig?,
-        ignoreCache: Bool = false
+        ignoreCache: Bool = false,
+        mediaUrlFieldTitle: String = SCItemDefaults.ItemMedialUrlFieldTitle
         )
     {
-        #warning ("@igk check all input data")
         self.mediaItem = mediaItem
         self.sessionConfig = sessionConfig
         self.ignoreCache = ignoreCache
+        self.mediaUrlFieldTitle = mediaUrlFieldTitle
     }
     
-    func buildUrlParametersString() -> String? {
+    public func buildUrlParametersString(sessionConfig: ISessionConfig) -> String? {
         return nil
     }
     
-    public func buildUrlString() -> String?
+    public func buildUrlString(sessionConfig: ISessionConfig) -> String?
     {
-        let url = sessionConfig!.instanceUrl
-        let imagePath = self.mediaItem.fields["ItemMedialUrl"]! as! String
+        let url = sessionConfig.instanceUrl
+        
+        let imagePath = self.mediaItem.fields[self.mediaUrlFieldTitle]! as! String
         
         return "\(url)/\(imagePath)"
     }
