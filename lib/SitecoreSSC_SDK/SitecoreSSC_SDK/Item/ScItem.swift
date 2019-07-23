@@ -1,24 +1,34 @@
-//
-//  ScItem.swift
-//  SitecoreSSC_SDK
-//
-//  Created by IGK on 11/23/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 
-public class ScItem: NSObject, ISitecoreItem {
+public class SCItem: NSObject, ISitecoreItem {
     
-    #warning ("@igk make all fields readonly!")
+    public let sessionConfig: ISessionConfig?
+    public let source: IItemSource?
+    public let fields: [String : Any]
     
-    public var sessionConfig: ISessionConfig?
-    public var source: IItemSource?
+    init(fields: [String : Any], sessionConfig: ISessionConfig?, source: IItemSource?)
+    {
+        self.sessionConfig = sessionConfig
+        self.fields = fields
+        self.source = source
+    }
+    
+    deinit
+    {
+        self.clearResources()
+    }
     
     public var displayName: String
     {
-        get{
-            return self.fields["DisplayName"]! as! String
+        get
+        {
+            guard let displayName = self.fields[SCItemDefaults.DisplayNameFieldTitle] as? String else
+            {
+                return ""
+            }
+            
+            return displayName
         }
     }
     
@@ -26,7 +36,7 @@ public class ScItem: NSObject, ISitecoreItem {
     {
         get
         {
-            guard let mimeType: String = self.fields["Mime Type"] as? String else
+            guard let mimeType: String = self.fields[SCItemDefaults.MimeTypeFieldTitle] as? String else
             {
                 return false
             }
@@ -39,15 +49,24 @@ public class ScItem: NSObject, ISitecoreItem {
     {
         get
         {
-            return NSString(string: self.fields["HasChildren"]! as! String).boolValue
+            guard let hasChildren = self.fields[SCItemDefaults.HasChildrenFieldTitle] as? String else
+            {
+                return false
+            }
+            return NSString(string: hasChildren).boolValue
         }
     }
     
-    public var id: String
+    public var id: UUID
     {
         get
         {
-            return self.fields["ItemID"]! as! String
+            guard let itemIdValue: UUID = UUID(uuidString: self.fields[SCItemDefaults.ItemIDFieldTitle]! as! String) else
+            {
+                fatalError("itemId unknown format")
+            }
+            
+            return itemIdValue
         }
     }
     
@@ -55,7 +74,7 @@ public class ScItem: NSObject, ISitecoreItem {
     {
         get
         {
-            return self.fields["ItemPath"]! as! String
+            return self.fields[SCItemDefaults.ItemPathFieldTitle]! as! String
         }
     }
     
@@ -63,7 +82,7 @@ public class ScItem: NSObject, ISitecoreItem {
     {
         get
         {
-            return self.fields["TemplateID"]! as! String
+            return self.fields[SCItemDefaults.TemplateIDFieldTitle]! as! String
         }
     }
     
@@ -74,24 +93,11 @@ public class ScItem: NSObject, ISitecoreItem {
             return self.fields.count
         }
     }
-    
-    public let fields: [String : Any]
-    
-    init (fields: [String : Any], source: IItemSource?, sessionConfig: ISessionConfig?)
-    {
-        self.fields = fields
-        self.source = source
-        self.sessionConfig = sessionConfig
-    }
 
-    deinit
-    {
-        self.clearResources()
-    }
 //MARK: -
 //MARK: working with data
 
-    private var handlers: DataDownloadingProcessing?
+    private var handlers: DataDownloadingProcess?
     private var requestToken: RequestToken?
     
     public func cancelDataLoading()
@@ -107,15 +113,21 @@ public class ScItem: NSObject, ISitecoreItem {
     }
     
  
-    public func getImage(handlers: DataDownloadingProcessing)
+    public func getImage(handlers: DataDownloadingProcess)
     {
         self.handlers = handlers
         
-        let itemHandlers = DataDownloadingProcessing(completionHandler: imageLoaded,
+        let itemHandlers = DataDownloadingProcess(completionHandler: imageLoaded,
                                                      errorHandler: imageLoadFailed,
                                                      cancelationHandler: imageLoadCanceled)
         
-        self.requestToken = ScImageLoader.getImageWithRequest(self, completion: itemHandlers)
+        guard let sessionConfig = self.sessionConfig else
+        {
+            self.imageLoadFailed(SSCError.badRequest("sessionConfig must not be nil"))
+            return
+        }
+        
+        self.requestToken = ScImageLoader.getImageWithRequest(self, sessionConfig: sessionConfig, completion: itemHandlers)
     }
     
     func imageLoaded(_ image: UIImage)
@@ -162,12 +174,13 @@ public class ScItem: NSObject, ISitecoreItem {
 
 @objc public protocol ISitecoreItem: NSObjectProtocol
 {
+    //@IGK actual item source for getChildrenFor(item: ISitecoreItem) like requests
     var source:       IItemSource? { get }
     var sessionConfig: ISessionConfig? { get }
     
     var displayName:  String      { get }
     var hasChildren:  Bool        { get }
-    var id:           String      { get }
+    var id:           UUID        { get }
     var path:         String      { get }
     var templateId:   String      { get }
     var fieldsCount:  Int         { get }
@@ -176,7 +189,8 @@ public class ScItem: NSObject, ISitecoreItem {
     
     var isMediaImage: Bool         { get }
   
-    func getImage(handlers: DataDownloadingProcessing)
+    //@IGK hack to simplify image loading bypassing session
+    func getImage(handlers: DataDownloadingProcess)
     func cancelDataLoading()
 }
 
