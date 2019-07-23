@@ -12,9 +12,9 @@ import ScItemBrowser
 
 class ViewController: UIViewController, URLSessionDelegate
 {
-    private let LEVEL_UP_CELL_ID    = "net.sitecore.MobileSdk.ItemsBrowser.list.LevelUpCell"
-    private let ITEM_CELL_ID        = "net.sitecore.MobileSdk.ItemsBrowser.list.ItemCell"
-    private let IMAGE_CELL_ID       = "net.sitecore.MobileSdk.ItemsBrowser.list.ItemCell.image"
+    private let LEVEL_UP_CELL_ID = "net.sitecore.MobileSdk.ItemsBrowser.list.LevelUpCell"
+    private let ITEM_CELL_ID     = "net.sitecore.MobileSdk.ItemsBrowser.list.ItemCell"
+    private let IMAGE_CELL_ID    = "net.sitecore.MobileSdk.ItemsBrowser.list.ItemCell.image"
     
     @IBOutlet weak var itemsBrowserController: SCItemGridBrowser!
     @IBOutlet weak var allChildrenRequestBuilder: SIBAllChildrenRequestBuilder!
@@ -24,50 +24,63 @@ class ViewController: UIViewController, URLSessionDelegate
     @IBOutlet var rootButton: UIButton?
     @IBOutlet var reloadButton: UIButton?
     
-    var sscSession: SscSession?
+    var sscSession: SSCSession?
     var urlSession: URLSession?
     
-    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        if (challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodClientCertificate) {
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
+    {
+        if (challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodClientCertificate)
+        {
             completionHandler(.rejectProtectionSpace, nil)
         }
-        if (challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
+        
+        if (challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust)
+        {
             let credential = URLCredential(trust: challenge.protectionSpace.serverTrust!)
             completionHandler(.useCredential, credential)
         }
     }
     
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
-        
-//        self.startLoading()
-//        self.createSession()
-        
-        self.test()
+
+        self.createSession()
+        //self.test()
     }
     
     func test()
     {
         urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
         
-        let credentials = ScCredentials(username: "admin", password: "b", domain: "Sitecore")
-        sscSession = SscSession(url: "https://cms900.pd-test16-1-dk1.dk.sitecore.net", urlSession: urlSession!, autologinCredentials: credentials)
+        let credentials = SCCredentials(username: "admin", password: "b", domain: "Sitecore")
+        sscSession = SSCSession(url: "https://cms900.pd-test16-1-dk1.dk.sitecore.net", urlSession: urlSession, autologinCredentials: credentials)
         
-        let itemSource = ItemSource(database: "master", language: "en", versionNumber: nil)
-        let pagingParams = PagingParameters(itemsPerPage: 100, pageNumber: 0)
+//        let itemSource = ItemSource(database: "master", language: "en", versionNumber: nil)
+//        let pagingParams = PagingParameters(itemsPerPage: 100, pageNumber: 0)
+//
+//        let request = ScRequestBuilder.getItemByIdRequest("110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9")
+//        .addFields("Title")
+//        .build()
+//
         
-        let searchItemRequest = StoredQueryRequest(
-            itemId: "3D9F0EE2-C2D7-47C3-BCF0-51C92EB5EB31",
-            pagingParameters: pagingParams,
-            itemSource: itemSource,
-            sessionConfig: nil,
-            standardFields: false
-        )
+//        sscSession!.sendGetItemsRequest(request) { (response, error) in
+//            print("RESPONSE COUNT: \(response!.items.count)")
+//        }
         
-        sscSession!.sendGetItemsRequest(searchItemRequest) { (response, error) in
-            print("RESPONSE COUNT: \(response!.items.count)")
-        }
         
+//        let searchItemRequest = StoredQueryRequest(
+//            itemId: "3D9F0EE2-C2D7-47C3-BCF0-51C92EB5EB31",
+//            pagingParameters: pagingParams,
+//            itemSource: itemSource,
+//            sessionConfig: nil,
+//            standardFields: false
+//        )
+//        
+//        sscSession!.sendGetItemsRequest(request) { (response, error) in
+//            print("RESPONSE COUNT: \(response!.items.count)")
+//        }
+
 //        let getItemRequest = GetByPathRequest(
 //            itemPath: "/sitecore/content/Home/Plan And Book/Destinations/Asia/Japan/Tokyo/Akihabara",
 //            itemSource: itemSource,
@@ -77,17 +90,25 @@ class ViewController: UIViewController, URLSessionDelegate
 ////        getItemRequest.addFieldToReturn("__Owner")
 ////        getItemRequest.addFieldToReturn("Title")
 //
+        
 //        sscSession!.sendGetItemsRequest(getItemRequest) { (response, error) in
 //            print("RESPONSE COUNT: \(response!.items.count)")
 //        }
     }
 
+    func requestFinished(response: IItemsResponse?, error: SSCError?)
+    {
+         print("RESPONSE COUNT: \(response!.items.count)")
+    }
+    
     func createSession()
     {
+        self.startLoading()
+
         urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
         
-        let credentials = ScCredentials(username: "admin", password: "b", domain: "Sitecore")
-        sscSession = SscSession(url: "https://cms900.pd-test16-1-dk1.dk.sitecore.net", urlSession: urlSession!, autologinCredentials: credentials)
+        let credentials = SCCredentials(username: "admin", password: "b", domain: "Sitecore")
+        sscSession = SSCSession(url: "https://cms900.pd-test16-1-dk1.dk.sitecore.net", urlSession: urlSession!, autologinCredentials: credentials)
         
         self.downloadRootItem()
     }
@@ -106,25 +127,22 @@ class ViewController: UIViewController, URLSessionDelegate
         
         let itemSource = ItemSource(database: "web", language: "en")
         
-        let getItemRequest = GetByIdRequest(
-            itemId: "11111111-1111-1111-1111-111111111111",
-            itemSource: itemSource,
-            sessionConfig: nil,
-            standardFields: false
-        )
+        let getItemRequest = ScRequestBuilder.getItemByIdRequest("11111111-1111-1111-1111-111111111111").build()
         
-        sscSession.sendGetItemsRequest(getItemRequest) { (response, error) in
+        sscSession.sendGetItemsRequest(getItemRequest) { result in
             
-            guard let items = response?.items else
+            switch result
             {
-                return
-            }
-            
-            
-            if (items.count > 0)
-            {
-                self.endLoading()
-                self.didLoadRootItem(items[0])
+            case .success(let response):
+                
+                if ((response?.items.count)! > 0)
+                {
+                    self.endLoading()
+                    self.didLoadRootItem((response?.items[0])!)
+                }
+
+            case .failure(let error):
+                print("network error: \(error) ")
             }
         }
     }
@@ -176,16 +194,12 @@ extension ViewController: SCItemsBrowserDelegate
     func itemsBrowser(_ itemsBrowser: Any, didLoadLevelForItem levelParentItem: ISitecoreItem)
     {
         self.endLoading()
-        
-        DispatchQueue.main.async
-        {
-            self.itemPathLabel.text = levelParentItem.path
-        }
-        
+
         let top = IndexPath(row: 0, section: 0)
         
         DispatchQueue.main.async
         {
+            self.itemPathLabel.text = levelParentItem.path
             self.itemsBrowserController.collectionView.scrollToItem(at: top, at: .top, animated: false)
         }
     }
@@ -236,10 +250,14 @@ extension ViewController: SIBGridModeCellFactory
         let collectionView = self.itemsBrowserController.collectionView
         collectionView?.register(self.levelUpCellClass(), forCellWithReuseIdentifier: reuseId)
         
-        let result: SCDefaultLevelUpGridCell = collectionView?.dequeueReusableCell(withReuseIdentifier: reuseId, for: indexPath) as! SCDefaultLevelUpGridCell
-        DispatchQueue.main.async {
-            result.setLevelUpText("🔙")
+        guard let result: SCDefaultLevelUpGridCell = collectionView?.dequeueReusableCell(withReuseIdentifier: reuseId, for: indexPath) as? SCDefaultLevelUpGridCell
+        else
+        {
+            return self.itemsBrowserController.gridModeCellBuilder!.itemsBrowser(sender, createLevelUpCellAt: indexPath)
         }
+
+        result.setLevelUpText("🔙")
+        
         return result
     }
     
@@ -250,12 +268,17 @@ extension ViewController: SIBGridModeCellFactory
         let collectionView = self.itemsBrowserController.collectionView
         collectionView?.register(self.cellClass(for: item), forCellWithReuseIdentifier: reuseId)
         
-        let result = collectionView?.dequeueReusableCell(withReuseIdentifier: reuseId, for: indexPath) as! SCItemGridCell
+        let result = collectionView?.dequeueReusableCell(withReuseIdentifier: reuseId, for: indexPath) as? SCItemGridCell
 
-        result.setBackgroundColorForNormalState(UIColor.white)
-        result.setbackgroundColorForHighlightedState(UIColor.lightGray)
+        guard let resultCell = result else
+        {
+            return self.itemsBrowserController.gridModeCellBuilder!.itemsBrowser(sender, createGridModeCellFor: item, at: indexPath)
+        }
         
-        return result
+        resultCell.setBackgroundColorForNormalState(UIColor.white)
+        resultCell.setbackgroundColorForHighlightedState(UIColor.lightGray)
+        
+        return resultCell
 
     }
     

@@ -185,6 +185,7 @@
 					};
 					E006F2E8219ECD1200011E66 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = E006F2D4219ECD0D00011E66;
 					};
 				};
@@ -334,6 +335,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = "";
 			};
 			name = Debug;
 		};
@@ -388,6 +390,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -406,7 +409,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sitecore.SitecoreSSC-Whitelabel";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -425,7 +428,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sitecore.SitecoreSSC-Whitelabel";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -444,7 +447,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sitecore.SitecoreSSC-WhitelabelTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SitecoreSSC_Whitelabel.app/SitecoreSSC_Whitelabel";
 			};
@@ -464,7 +467,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sitecore.SitecoreSSC-WhitelabelTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SitecoreSSC_Whitelabel.app/SitecoreSSC_Whitelabel";
 			};
