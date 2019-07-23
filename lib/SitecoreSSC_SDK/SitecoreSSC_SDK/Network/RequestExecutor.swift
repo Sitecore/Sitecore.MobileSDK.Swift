@@ -1,34 +1,21 @@
-//
-//  RequestExecutor.swift
-//  SitecoreSSC_SDK
-//
-//  Created by IGK on 11/26/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 
-protocol IRequestExecutor {
+class RequestExecutor
+{
+    //MARK: -
+    //MARK: GET
     
-    static func executePostRequest<T: IBaseResponse>(_ parameters: IBasePostRequest, session: URLSession, completion: @escaping (T?, SscError?) -> () )
-
-    static func executeGetRequest(_ parameters: IBaseGetItemsRequest, session: URLSession, completion: @escaping (IItemsResponse?, SscError?) -> () )
-
-}
-
-class RequestExecutor: IRequestExecutor {
-    
-    static func executeGetRequest(_ parameters: IBaseGetItemsRequest, session: URLSession, completion: @escaping (IItemsResponse?, SscError?) -> () )
+    static private func executeGetRequest(
+        _ parameters: IBaseGetItemsRequest,
+        pagingParameters: IPagingParameters?,
+        parser: IResponseParser,
+        session: URLSession,
+        completion: @escaping (Result<IItemsResponse?, SSCError>) -> ())
     {
-        var request: URLRequest
-        
-        do
+        guard let request: URLRequest = try? parameters.buildHTTPRequest() else
         {
-            request = try parameters.buildHTTPRequest()
-        }
-        catch
-        {
-            completion(nil, SscError.unknownNetworkError(error.localizedDescription))
+            completion(.failure(.badRequest("can not build request: unknown")))
             return
         }
         
@@ -36,71 +23,114 @@ class RequestExecutor: IRequestExecutor {
             
             if (error != nil)
             {
-                completion(nil, SscError.networkError(error))
+                completion(.failure(.networkError(error)))
                 return
             }
             
             guard let data = data else
             {
-                print("something went wrong")
-                completion(nil, SscError.unknownNetworkError("status code: \(String(describing: response?.statusCode))"))
+                completion(.failure(.networkErrorWithStatusCode("status code: \(String(describing: response?.httpStatusCode))")))
                 return
             }
             
-            let result = ItemsResponse(json: data, source: parameters.itemSource, sessionConfig: parameters.sessionConfig)
-            completion(result, nil)
+            let itemsList = parser.parseData(data: data, sessionConfig: parameters.sessionConfig, source: parameters.itemSource)
+            
+            let result = ItemsResponse(
+                items: itemsList,
+                statusCode: response?.httpStatusCode ?? 0,
+                pagingParameters: pagingParameters
+            )
+            
+            completion(.success(result))
         }
         
         task.resume()
-        
     }
     
-    static func executePostRequest<T: IBaseResponse>(_ parameters: IBasePostRequest, session: URLSession, completion: @escaping (T?, SscError?) -> () )
+    static func executeGetRequest(
+        _ parameters: IBaseGetItemsRequest,
+        parser: IResponseParser,
+        session: URLSession,
+        completion: @escaping (Result<IItemsResponse?, SSCError>) -> ())
     {
-        var request: URLRequest
-        
-        do
+        RequestExecutor.executeGetRequest(parameters,
+                                          pagingParameters: nil,
+                                          parser: parser,
+                                          session: session,
+                                          completion: completion)
+    }
+    
+    static func executePaginatedRequest(
+        _ parameters: IBaseGetPaginatedItemsRequest,
+        parser: IResponseParser,
+        session: URLSession,
+        completion: @escaping (Result<IItemsResponse?, SSCError>) -> ()
+        )
+    {
+        RequestExecutor.executeGetRequest(parameters,
+                                          pagingParameters: parameters.pagingParameters,
+                                          parser: parser,
+                                          session: session,
+                                          completion: completion)
+    }
+    
+    //MARK: -
+    //MARK: POST
+    
+    static func executeCreateRequest(_ parameters: ICreateRequest, session: URLSession, completion: @escaping (Result<CreateResponse?, SSCError>) -> ())
+    {
+        RequestExecutor.executeRawRequest(parameters, httpMethod: "POST", session: session, completion: completion)
+    }
+    
+    static func executeAuthRequest(_ parameters: IBasePostRequest, session: URLSession, completion: @escaping (Result<AuthResponse?, SSCError>) -> ())
+    {
+        RequestExecutor.executeRawRequest(parameters, httpMethod: "POST", session: session, completion: completion)
+    }
+    
+    static func executePatchRequest(_ parameters: IEditRequest, session: URLSession, completion: @escaping (Result<UpdateResponse?, SSCError>) -> ())
+    {
+        RequestExecutor.executeRawRequest(parameters, httpMethod: "PATCH", session: session, completion: completion)
+    }
+    
+    static func executeDeleteRequest(_ parameters: IDeleteItemRequest, session: URLSession, completion: @escaping (Result<DeleteResponse?, SSCError>) -> ())
+    {
+        RequestExecutor.executeRawRequest(parameters, httpMethod: "DELETE", session: session, completion: completion)
+    }
+    
+    private static func executeRawRequest<T: IChangeResponse>(_ parameters: IBasePostRequest, httpMethod: String, session: URLSession, completion: @escaping (Result<T?, SSCError>) -> ())
+    {
+        guard var request: URLRequest = try? parameters.buildHTTPRequest() else
         {
-            request = try parameters.buildHTTPRequest()
-        }
-        catch
-        {
-            completion(nil, SscError.requesBuilderError(error))
+            completion(.failure(.badRequest("can not build request: unknown")))
             return
         }
         
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "POST"
         
+        request.httpMethod = httpMethod
         request.httpBody = parameters.buildRequestBody()
         
         let task = session.dataTask(with: request) { data, response, error in
             
             if (error != nil)
             {
-                completion(nil, SscError.networkError(error))
+                completion(.failure(.networkError(error)))
                 return
             }
             
             guard let data = data else
             {
-                print("something went wrong")
-                completion(nil, SscError.unknownNetworkError("status code: \(String(describing: response?.statusCode))"))
+                completion(.failure(.networkErrorWithStatusCode("status code: \(String(describing: response?.httpStatusCode))")))
                 return
             }
+
+            let result = T(
+                        data: data,
+                        headers: (response as? HTTPURLResponse)?.allHeaderFields as? [String:String],
+                        statusCode: response?.httpStatusCode ?? 0
+            )
             
-            let result = T(json: data, source: nil, sessionConfig: parameters.sessionConfig)
-            
-            let cookies: [HTTPCookie]?
-            let rp = response as! HTTPURLResponse
-            if let responseHeaders = rp.allHeaderFields as? [String:String]
-            {
-                cookies = HTTPCookie.cookies(withResponseHeaderFields: responseHeaders, for:rp.url!)
-                HTTPCookieStorage.shared.setCookies(cookies!, for: response!.url!, mainDocumentURL: nil)
-                print("LOGIN COOKIES: \(String(describing: cookies))")
-            }
-            
-            completion(result, nil)
+            completion(.success(result))
         }
         
         task.resume()
@@ -111,7 +141,7 @@ class RequestExecutor: IRequestExecutor {
 extension URLResponse
 {
     
-    var statusCode: Int?
+    var httpStatusCode: Int?
     {
         if let httpResponse = self as? HTTPURLResponse
         {
