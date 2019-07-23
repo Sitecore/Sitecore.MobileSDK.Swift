@@ -1,60 +1,45 @@
-//
-//  SCMediaItemListCell.swift
-//  ScItemBrowser
-//
-//  Created by IGK on 12/20/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 import SitecoreSSC_SDK
 
 protocol SCMediaCellDelegate: class
 {
-    
     func didStartLoadingImageInMediaCellController(sender: SCMediaCellController)
     func mediaCellController(_ sender: SCMediaCellController, didFinishLoadingImage image: UIImage, forItem mediaItem: ISitecoreItem)
     func mediaCellController(_ sender: SCMediaCellController, didFailLoadingImageForItem mediaItem: ISitecoreItem?, withError error: Error)
-    
 }
 
 public class SCMediaItemListCell: SCItemListCell, SCMediaCellDelegate
 {
     private let progress: UIActivityIndicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.gray)
-    private var imageLoader: SCMediaCellController?
+    private var imageLoader: SCMediaCellController = SCMediaCellController()
     
     override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?)
     {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        self.imageLoader = SCMediaCellController(delegate: self)
+        self.imageLoader.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
-        
-        self.imageLoader = SCMediaCellController(delegate: self)
+        self.imageLoader.delegate = self
     }
     
-    public func setCustomSession(_ session: SscSession)
+    public func setCustomSession(_ session: SSCSession)
     {
-        if (self.imageLoader != nil)
-        {
-            self.imageLoader!.cancelImageLoading()
-        }
-        
+        self.imageLoader.cancelImageLoading()
         self.imageLoader = SCMediaCellController(customSession: session, delegate: self)
     }
 
     override public func setModel(item: ISitecoreItem)
     {
-        self.imageLoader!.setModel(item: item)
+        self.imageLoader.setModel(item: item)
     }
     
     override public func reloadData()
     {
-        self.imageLoader!.reloadData()
+        self.imageLoader.reloadData()
     }
     
     func startLoading()
@@ -72,7 +57,6 @@ public class SCMediaItemListCell: SCItemListCell, SCMediaCellDelegate
         {
             self.progress.stopAnimating()
             self.progress.removeFromSuperview()
-            print("!!! \(self.progress.description) removed from superview")
         }
     }
     
@@ -95,13 +79,12 @@ public class SCMediaItemListCell: SCItemListCell, SCMediaCellDelegate
         }
         
         imageView.image = nil
-        
-        guard let textLabel = self.textLabel else
+
+        if  let name = self.imageLoader.item?.displayName,
+            let textLabel = self.textLabel
         {
-            return
+            textLabel.text = name
         }
-        
-        textLabel.text = self.imageLoader!.item!.displayName
         
         self.startLoading()
         self.setNeedsLayout()

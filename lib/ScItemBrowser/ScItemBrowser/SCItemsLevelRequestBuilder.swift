@@ -1,10 +1,3 @@
-//
-//  SCItemsLevelRequestBuilder.swift
-//  ScItemBrowser
-//
-//  Created by IGK on 12/4/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 import SitecoreSSC_SDK
@@ -20,7 +13,8 @@ import SitecoreSSC_SDK
  - SIBBlackListTemplateRequestBuilder
  
  */
-@objc public protocol SCItemsLevelRequestBuilder: NSObjectProtocol {
+@objc public protocol SCItemsLevelRequestBuilder: NSObjectProtocol
+{
     /**
      Override this method to set the parent-child or filtering relationships for the items being browsed.
      

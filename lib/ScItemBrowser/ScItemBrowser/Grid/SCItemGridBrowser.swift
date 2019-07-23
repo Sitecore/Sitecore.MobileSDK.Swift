@@ -1,10 +1,3 @@
-//
-//  SCItemGridBrowser.swift
-//  ScItemBrowser
-//
-//  Created by IGK on 12/5/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 import SitecoreSSC_SDK
@@ -22,7 +15,10 @@ public class SCItemGridBrowser: SCAbstractItemsBrowser, SCAbstractItemsBrowserSu
     
     override func reloadContentView()
     {
-        self.collectionView.reloadData()
+        DispatchQueue.main.async
+            {
+                self.collectionView.reloadData()
+            }
     }
     
     override func reloadDataIgnoringCache(_ shouldIgnoreCache: Bool)
@@ -50,7 +46,8 @@ public class SCItemGridBrowser: SCAbstractItemsBrowser, SCAbstractItemsBrowserSu
     //MARK: -
     //MARK: Appearance
     
-    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath)
+    {
         if (self.gridModeTheme.responds(to: #selector(SIBGridModeAppearance.itemsBrowser(_:didHighlight:for:at:))))
         {
             guard let loadedLevel = self.loadedLevel else
@@ -66,7 +63,8 @@ public class SCItemGridBrowser: SCAbstractItemsBrowser, SCAbstractItemsBrowserSu
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath)
+    {
         if (self.gridModeTheme.responds(to: #selector(SIBGridModeAppearance.itemsBrowser(_:didUnhighlight:for:at:))))
         {
             guard let loadedLevel = self.loadedLevel else
@@ -82,7 +80,8 @@ public class SCItemGridBrowser: SCAbstractItemsBrowser, SCAbstractItemsBrowserSu
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, transitionLayoutForOldLayout fromLayout: UICollectionViewLayout, newLayout toLayout: UICollectionViewLayout) -> UICollectionViewTransitionLayout {
+    public func collectionView(_ collectionView: UICollectionView, transitionLayoutForOldLayout fromLayout: UICollectionViewLayout, newLayout toLayout: UICollectionViewLayout) -> UICollectionViewTransitionLayout
+    {
         if (self.gridModeTheme.responds(to: #selector(SIBGridModeAppearance.itemsBrowser(_:transitionLayoutForOldLayout:toLayout:))))
         {
             return self.gridModeTheme.itemsBrowser!(self, transitionLayoutForOldLayout: fromLayout, toLayout: toLayout)
@@ -94,11 +93,13 @@ public class SCItemGridBrowser: SCAbstractItemsBrowser, SCAbstractItemsBrowserSu
 
 extension SCItemGridBrowser: UICollectionViewDataSource
 {
-    public func numberOfSections(in collectionView: UICollectionView) -> Int {
+    public func numberOfSections(in collectionView: UICollectionView) -> Int
+    {
         return 1
     }
     
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    {
         guard let loadedLevel = self.loadedLevel else
         {
             return 0
@@ -107,7 +108,8 @@ extension SCItemGridBrowser: UICollectionViewDataSource
         return loadedLevel.itemsCount
     }
     
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+    {
         
         assert(nil != loadedLevel, "Invalid parameter not satisfying: nil != loadedLevel")
         
@@ -153,7 +155,8 @@ extension SCItemGridBrowser: UICollectionViewDelegate
         }
     }
     
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    {
         guard let loadedLevel = self.loadedLevel else
         {
             return
@@ -165,4 +168,3 @@ extension SCItemGridBrowser: UICollectionViewDelegate
         self.didSelectItem(itemObject, at: indexPath)
     }
 }
-

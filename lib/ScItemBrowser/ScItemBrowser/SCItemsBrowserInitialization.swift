@@ -1,10 +1,3 @@
-//
-//  SCItemsBrowserInitialization.swift
-//  ScItemBrowser
-//
-//  Created by IGK on 12/4/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 import SitecoreSSC_SDK
@@ -16,12 +9,12 @@ public protocol SCItemsBrowserInitialization {
     /**
      @return The session to communicate with the Sitecore instance.
      */
-    var apiSession: SscSession? { get }
+    var apiSession: SSCSession? { get }
     
     /**
      @param apiSession The session to communicate with the Sitecore instance.
      */
-    func setApiSession(_ apiSession: SscSession)
+    func setApiSession(_ apiSession: SSCSession)
     
     /**
      @return An item to start browsing with.

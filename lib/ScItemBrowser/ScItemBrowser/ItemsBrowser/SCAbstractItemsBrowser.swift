@@ -1,17 +1,11 @@
-//
-//  SCAbstractItemsBrowser.swift
-//  ScItemBrowser
-//
-//  Created by IGK on 12/11/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 import SitecoreSSC_SDK
 
-public class SCAbstractItemsBrowser: NSObject {
+public class SCAbstractItemsBrowser: NSObject
+{
     
-    private var _apiSession: SscSession? = nil
+    private var _apiSession: SSCSession? = nil
     private var _rootItem: ISitecoreItem? = nil
     @IBOutlet public weak var  _nextLevelRequestBuilder: SCItemsLevelRequestBuilder!
     @IBOutlet public weak var  _delegate: SCItemsBrowserDelegate!
@@ -35,101 +29,114 @@ public class SCAbstractItemsBrowser: NSObject {
         }
     }
     
-    func didSelectItem(_ selectedItem: ISitecoreItem, at indexPath: IndexPath){
+    func didSelectItem(_ selectedItem: ISitecoreItem, at indexPath: IndexPath)
+    {
        let isLevelUpItem: Bool = type(of: selectedItem) == SCLevelUpItem.self
         let callbacks = self.newCallbacksForItemsFileManager()
         
-        if (isLevelUpItem){
+        if (isLevelUpItem)
+        {
             self.itemsFileManager!.goToLevelUpNotifyingCallbacks(callbacks)
-        } else {
+        }
+        else
+        {
             let shouldGoDeeper: Bool = self.delegate.itemsBrowser(self, shouldLoadLevelForItem: selectedItem)
-            if (shouldGoDeeper){
+            if (shouldGoDeeper)
+            {
                 self.itemsFileManager?.loadLevelForItem(selectedItem, callbacks: callbacks, ignoringCache: false)
             }
         }
         
     }
     
-    func newCallbacksForItemsFileManager() -> SCItemsFileManagerCallbacks{
-        
-        let callbacks = SCItemsFileManagerCallbacks()
-        do {
-            callbacks.onLevelLoadedBlock = { levelResponse, levelError in
-                if nil == levelResponse {
+    func newCallbacksForItemsFileManager() -> SCItemsFileManagerCallbacks
+    {
+        let onLevelLoadedBlock = { (levelResponse: SCLevelResponse?, levelError: SSCError?) in
+                if nil == levelResponse
+                {
                     self.onLevelReloadFailedWithError(levelError!)
-                } else {
+                }
+                else
+                {
                     self.onLevelReloaded(levelResponse!)
                 }
             }
             
-            callbacks.onLevelProgressBlock = { progressInfo in
-                self.delegate.itemsBrowser(self, didReceiveLevelProgressNotification: progressInfo!)
-            }
-            
+        let onLevelProgressBlock = { progressInfo in
+            self.delegate.itemsBrowser(self, didReceiveLevelProgressNotification: progressInfo)
         }
+        
+        let callbacks = SCItemsFileManagerCallbacks(onLevelLoadedBlock: onLevelLoadedBlock, onLevelProgressBlock: onLevelProgressBlock)
         
         return callbacks
 
     }
     
-    func onLevelReloadFailedWithError(_ levelError: SscError) {
+    func onLevelReloadFailedWithError(_ levelError: SSCError)
+    {
         self.delegate.itemsBrowser(self, levelLoadingFailedWithError: levelError as NSError)
     }
     
-    func onLevelReloaded(_ levelResponse: SCLevelResponse) {        
-        // @adk : order matters
-        
-            self.loadedLevel = levelResponse
-        
-        DispatchQueue.main.async {
-            self.reloadContentView()
-        }
+    func onLevelReloaded(_ levelResponse: SCLevelResponse)
+    {
+        self.loadedLevel = levelResponse
+        self.reloadContentView()
         
         self.delegate.itemsBrowser(self, didLoadLevelForItem: loadedLevel!.levelParentItem)
     }
 
-    func reloadContentView() {
+    func reloadContentView()
+    {
         self.doesNotRecognizeSelector(#function)
     }
     
-    func disposeLazyItemsFileManager(){
+    func disposeLazyItemsFileManager()
+    {
         self._itemsFileManager = nil
     }
 }
 
 //LazyProperties
-extension SCAbstractItemsBrowser  {
+extension SCAbstractItemsBrowser
+{
 
-    var lazyItemsFileManager: SCItemsFileManager? {
-        guard self._apiSession != nil, self._nextLevelRequestBuilder != nil else {
+    var lazyItemsFileManager: SCItemsFileManager?
+    {
+        guard self._apiSession != nil, self._nextLevelRequestBuilder != nil else
+        {
             return nil
         }
         
-        if (self._itemsFileManager == nil) {
+        if (self._itemsFileManager == nil)
+        {
             self._itemsFileManager = SCItemsFileManager(apiSession: self._apiSession!, nextLevelRequestBuilder: self._nextLevelRequestBuilder!)
         }
         
         return self._itemsFileManager!
     }
     
-    var itemsFileManager: SCItemsFileManager? {
+    var itemsFileManager: SCItemsFileManager?
+    {
         return self._itemsFileManager
     }
     
 }
 
-extension SCAbstractItemsBrowser: SCItemsBrowserProtocol {
+extension SCAbstractItemsBrowser: SCItemsBrowserProtocol
+{
     
-    public func reloadData() {
+    public func reloadData()
+    {
         self.reloadDataIgnoringCache(false)
     }
     
-    public func forceRefreshData() {
+    public func forceRefreshData()
+    {
         self.reloadDataIgnoringCache(true)
     }
     
-    public func navigateToRootItem() {
-        
+    public func navigateToRootItem()
+    {
         self.disposeLazyItemsFileManager()
         
         let fmCallbacks: SCItemsFileManagerCallbacks = self.newCallbacksForItemsFileManager()
@@ -137,43 +144,51 @@ extension SCAbstractItemsBrowser: SCItemsBrowserProtocol {
         self.lazyItemsFileManager!.loadLevelForItem(self.rootItem!, callbacks: fmCallbacks, ignoringCache: false)
     }
     
-    
 }
 
-extension SCAbstractItemsBrowser: SCItemsBrowserInitialization {
+extension SCAbstractItemsBrowser: SCItemsBrowserInitialization
+{
     
-    public var apiSession: SscSession? {
+    public var apiSession: SSCSession?
+    {
         return self._apiSession
     }
     
-    public func setApiSession(_ apiSession: SscSession) {
+    public func setApiSession(_ apiSession: SSCSession)
+    {
         assert(nil == self._apiSession, "apiSession can be assigned only once")
         self._apiSession = apiSession
     }
     
-    public var rootItem: ISitecoreItem? {
+    public var rootItem: ISitecoreItem?
+    {
         return self._rootItem
     }
     
-    public func setRootItem(_ rootItem: ISitecoreItem) {
+    public func setRootItem(_ rootItem: ISitecoreItem)
+    {
         assert(nil == self._rootItem, "rootItem can be assigned only once")
         self._rootItem = rootItem
     }
     
-    public var nextLevelRequestBuilder: SCItemsLevelRequestBuilder? {
+    public var nextLevelRequestBuilder: SCItemsLevelRequestBuilder?
+    {
         return self._nextLevelRequestBuilder
     }
     
-    public func setNextLevelRequestBuilder(_ nextLevelRequestBuilder: SCItemsLevelRequestBuilder) {
+    public func setNextLevelRequestBuilder(_ nextLevelRequestBuilder: SCItemsLevelRequestBuilder)
+    {
         assert(nil == self._nextLevelRequestBuilder, "nextLevelRequestBuilder can be assigned only once")
         self._nextLevelRequestBuilder = nextLevelRequestBuilder
     }
     
-    public var delegate: SCItemsBrowserDelegate {
+    public var delegate: SCItemsBrowserDelegate
+    {
         return self._delegate
     }
     
-    public func setDelegate(_ delegate: SCItemsBrowserDelegate) {
+    public func setDelegate(_ delegate: SCItemsBrowserDelegate)
+    {
         assert(nil == self._delegate, "delegate can be assigned only once")
         self._delegate = delegate
     }
@@ -189,7 +204,7 @@ class SCLevelUpItem : NSObject, ISitecoreItem
         doesNotRecognizeSelector(#function)
     }
     
-    func getImage(handlers: DataDownloadingProcessing)
+    func getImage(handlers: DataDownloadingProcess)
     {
         doesNotRecognizeSelector(#function)
     }
@@ -204,7 +219,8 @@ class SCLevelUpItem : NSObject, ISitecoreItem
     
     var hasChildren: Bool = false
     
-    var id: String = ""
+    #warning("@igk refactor this, optional type is not an option")
+    var id: UUID = UUID(uuidString: "00000000-0000-0000-0000-000000000000")! //fake uuid    
     
     var path: String = ""
     

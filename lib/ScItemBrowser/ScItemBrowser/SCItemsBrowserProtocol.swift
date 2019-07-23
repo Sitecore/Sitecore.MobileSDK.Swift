@@ -1,10 +1,3 @@
-//
-//  SCItemsBrowserProtocol.swift
-//  ScItemBrowser
-//
-//  Created by IGK on 12/4/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 

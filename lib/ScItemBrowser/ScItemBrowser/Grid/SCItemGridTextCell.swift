@@ -1,10 +1,3 @@
-//
-//  SCItemGridTextCell.swift
-//  ScItemBrowser
-//
-//  Created by IGK on 1/9/19.
-//  Copyright © 2019 Igor. All rights reserved.
-//
 
 import Foundation
 import SitecoreSSC_SDK
@@ -21,7 +14,8 @@ public class SCItemGridTextCell: SCItemGridCell
         self.setupUI()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder)
+    {
         super.init(coder: aDecoder)
         
         self.setupUI()
@@ -29,10 +23,13 @@ public class SCItemGridTextCell: SCItemGridCell
     
     func setupUI()
     {
+        self.label = nil
+        
         var labelFrame = self.contentView.frame
         labelFrame.origin = CGPoint(x: 0, y: 0)
         
         self.label = UILabel(frame: labelFrame)
+        self.label?.textAlignment = .center
         self.label?.numberOfLines = 0
         self.label?.font = UIFont.systemFont(ofSize: 10)
         
@@ -46,7 +43,7 @@ public class SCItemGridTextCell: SCItemGridCell
     
     override public func reloadData()
     {
-        self.label!.text = self.displayName
+        self.label?.text = self.displayName
     }
 
 }

@@ -1,37 +1,36 @@
-//
-//  SCItemListBrowser.swift
-//  ScItemBrowser
-//
-//  Created by IGK on 12/5/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 import SitecoreSSC_SDK
 
-public class SCItemListBrowser: SCAbstractItemsBrowser {
+public class SCItemListBrowser: SCAbstractItemsBrowser
+{
    
     @IBOutlet public weak var tableView: UITableView!
     @IBOutlet public weak var listModeTheme: SIBListModeAppearance! 
     @IBOutlet public weak var listModeCellBuilder: SIBListModeCellFactory!
 
-    public func setTableView(_ tableView: UITableView){
+    public func setTableView(_ tableView: UITableView)
+    {
         self.tableView = tableView
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.allowsSelection = true
     }
     
-    public func setListModeTheme(_ listModeTheme: SIBListModeAppearance){
+    public func setListModeTheme(_ listModeTheme: SIBListModeAppearance)
+    {
         self.listModeTheme = listModeTheme
     }
     
-    public func setListModeCellBuilder(_ listModeCellBuilder: SIBListModeCellFactory){
+    public func setListModeCellBuilder(_ listModeCellBuilder: SIBListModeCellFactory)
+    {
         self.listModeCellBuilder = listModeCellBuilder
     }
     
-    override func reloadContentView(){
-        DispatchQueue.main.async {
+    override func reloadContentView()
+    {
+        DispatchQueue.main.async
+        {
             self.tableView.reloadData()
         }
     }
@@ -48,7 +47,8 @@ public class SCItemListBrowser: SCAbstractItemsBrowser {
 }
 
 
-extension SCItemListBrowser: UITableViewDelegate {
+extension SCItemListBrowser: UITableViewDelegate
+{
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
@@ -64,11 +64,11 @@ extension SCItemListBrowser: UITableViewDelegate {
 }
 
 
-extension SCItemListBrowser: UITableViewDataSource {
+extension SCItemListBrowser: UITableViewDataSource
+{
     
-    
-    
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
         guard let loadedLevel = self.loadedLevel else
         {
             return 0
@@ -77,7 +77,8 @@ extension SCItemListBrowser: UITableViewDataSource {
         return loadedLevel.itemsCount
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    {
         
         let LEVEL_UP_CELL_ID = self.listModeCellBuilder?.reuseIdentifierForLevelUpCellOfItemsBrowser(self)
         
@@ -85,31 +86,33 @@ extension SCItemListBrowser: UITableViewDataSource {
 
         let itemForCell = loadedLevel!.levelContentItems[itemIndex]
         
-        if (type(of: itemForCell) == SCLevelUpItem.self) {
-            var cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: LEVEL_UP_CELL_ID!)
-            if nil == cell {
-                cell = listModeCellBuilder?.createLevelUpCellForListModeOfItemsBrowser(self)
-            }
-            return cell!
+        if (type(of: itemForCell) == SCLevelUpItem.self)
+        {
+            guard let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: LEVEL_UP_CELL_ID!)
+                else
+                {
+                    return (listModeCellBuilder?.createLevelUpCellForListModeOfItemsBrowser(self))!
+                }
+            
+            return cell
         }
         else
         {
             let ITEM_CELL_ID = self.listModeCellBuilder?.itemsBrowser(self, itemCellReuseIdentifierFor: itemForCell)
             
-            var cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: ITEM_CELL_ID!)
+            let cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: ITEM_CELL_ID!)
             
-            var itemCell: (UITableViewCell & SCItemCell)? = nil
-            if nil == cell {
-                itemCell = self.listModeCellBuilder!.itemsBrowser(self, createListModeCellFor: itemForCell)
-                cell = itemCell
-            } else {
-                itemCell = cell as? (UITableViewCell & SCItemCell)
+            var itemCell: (UITableViewCell & SCItemCell)? = cell as? (UITableViewCell & SCItemCell)
+            
+            if nil == itemCell
+            {
+                itemCell = self.listModeCellBuilder?.itemsBrowser(self, createListModeCellFor: itemForCell)
             }
 
             itemCell?.setModel(item: itemForCell)
             itemCell?.reloadData()
             
-            return cell!
+            return itemCell! //@igk fix this
         }
     }
     

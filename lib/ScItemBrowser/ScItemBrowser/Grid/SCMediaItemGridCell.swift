@@ -1,24 +1,17 @@
-//
-//  SCMediaItemGridCell.swift
-//  ScItemBrowser
-//
-//  Created by IGK on 1/9/19.
-//  Copyright © 2019 Igor. All rights reserved.
-//
 
 import Foundation
 import SitecoreSSC_SDK
 
 public protocol SCMediaItemGridCellDelegate {
-    func getCustomSession() -> SscSession
+    func getCustomSession() -> SSCSession
 }
 
 public class SCMediaItemGridCell: SCItemGridCell
 {
     var imageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
     var progress: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
-    var imageLoader: SCMediaCellController?
-    var customSession: SscSession? = nil
+    var imageLoader: SCMediaCellController = SCMediaCellController()
+    var customSession: SSCSession? = nil
     
     override init(frame: CGRect)
     {
@@ -27,12 +20,13 @@ public class SCMediaItemGridCell: SCItemGridCell
     }
     
     required init?(coder aDecoder: NSCoder) {
-        super .init(coder: aDecoder)
+        super.init(coder: aDecoder)
     }
     
-    public func setCustomSession(_ session: SscSession)
+    public func setCustomSession(_ session: SSCSession)
     {
         self.customSession = session
+        self.imageLoader = SCMediaCellController(customSession: session, delegate: self)
     }
     
     func setupUI()
@@ -51,12 +45,12 @@ public class SCMediaItemGridCell: SCItemGridCell
     override public func setModel(item: ISitecoreItem)
     {
         self.imageLoader = SCMediaCellController(customSession: self.customSession, delegate: self)
-        self.imageLoader?.setModel(item: item)
+        self.imageLoader.setModel(item: item)
     }
     
     override public func reloadData()
     {
-        self.imageLoader?.reloadData()
+        self.imageLoader.reloadData()
     }
     
     func startLoading()
@@ -74,7 +68,6 @@ public class SCMediaItemGridCell: SCItemGridCell
         {
             self.progress.stopAnimating()
             self.progress.removeFromSuperview()
-            print("!!! \(self.progress.description) removed from superview")
         }
     }
     
@@ -117,6 +110,5 @@ extension SCMediaItemGridCell: SCMediaCellDelegate
         self.stopLoading()
         print("image loading failed for item \(String(describing: mediaItem)). Error: \(error.localizedDescription)")
     }
-    
     
 }

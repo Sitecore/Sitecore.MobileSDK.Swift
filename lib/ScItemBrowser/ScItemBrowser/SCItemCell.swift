@@ -1,10 +1,3 @@
-//
-//  SCItemCell.swift
-//  ScItemBrowser
-//
-//  Created by IGK on 12/4/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 import SitecoreSSC_SDK
@@ -19,7 +12,6 @@ import SitecoreSSC_SDK
      
      @param item A sitecore item to render
      */
-    
     func setModel(item: ISitecoreItem)
     
     /**

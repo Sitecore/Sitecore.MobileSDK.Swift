@@ -1,10 +1,3 @@
-//
-//  SCItemGridCell.swift
-//  ScItemBrowser
-//
-//  Created by IGK on 1/9/19.
-//  Copyright © 2019 Igor. All rights reserved.
-//
 
 import Foundation
 import SitecoreSSC_SDK
@@ -27,32 +20,35 @@ import SitecoreSSC_SDK
 
 public class SCItemGridCell: UICollectionViewCell, SCItemCell, SCHighlightableBackgroundGridCell
 {
-    
     var backgroundColorForNormalState: UIColor?
-    
     var backgroundColorForHighlightedState: UIColor?
     
-    override public var isHighlighted: Bool {
+    override public var isHighlighted: Bool
+    {
         didSet
         {
             SCGridCellBackgroundHighlightingAnimation.playAnimationForCell(self, toHighlight: self.isHighlighted)
         }
     }
     
-    public func setBackgroundColorForNormalState(_ color: UIColor) {
+    public func setBackgroundColorForNormalState(_ color: UIColor)
+    {
         self.backgroundColorForNormalState = color
         self.backgroundColor = color
     }
     
-    public func setbackgroundColorForHighlightedState(_ color: UIColor) {
+    public func setbackgroundColorForHighlightedState(_ color: UIColor)
+    {
         self.backgroundColorForHighlightedState = color
     }
 
-    public func setModel(item: ISitecoreItem) {
+    public func setModel(item: ISitecoreItem)
+    {
         doesNotRecognizeSelector(#function)
     }
     
-    public func reloadData() {
+    public func reloadData()
+    {
         doesNotRecognizeSelector(#function)
     }
     

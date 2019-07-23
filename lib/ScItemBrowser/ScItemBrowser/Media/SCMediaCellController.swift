@@ -1,28 +1,20 @@
-//
-//  SCMediaCellController.swift
-//  ScItemBrowser
-//
-//  Created by IGK on 12/20/18.
-//  Copyright © 2018 Igor. All rights reserved.
-//
 
 import Foundation
 import SitecoreSSC_SDK
 
 class SCMediaCellController {
     
-    private var customSession: SscSession?
+    private var customSession: SSCSession?
     private(set) var item: ISitecoreItem?
     
     public weak var delegate: SCMediaCellDelegate?
 
-    init(delegate: SCMediaCellDelegate)
+    init()
     {
         self.customSession = nil
-        self.delegate = delegate
     }
     
-    init(customSession: SscSession?, delegate: SCMediaCellDelegate)
+    init(customSession: SSCSession?, delegate: SCMediaCellDelegate)
     {
         self.customSession = customSession
         self.delegate = delegate
@@ -62,9 +54,9 @@ class SCMediaCellController {
         
         self.startLoading()
         
-        let handlers = DataDownloadingProcessing(completionHandler: imageLoaded,
-                                                 errorHandler: imageLoadFailed,
-                                                 cancelationHandler: imageLoadCanceled)
+        let handlers = DataDownloadingProcess(completionHandler: imageLoaded,
+                                                   errorHandler: imageLoadFailed,
+                                             cancelationHandler: imageLoadCanceled)
         
         if (self.customSession != nil)
         {

@@ -1,10 +1,3 @@
-//
-//  SCAbstractItemsBrowserSubclassing.swift
-//  ScItemBrowser
-//
-//  Created by IGK on 1/9/19.
-//  Copyright © 2019 Igor. All rights reserved.
-//
 
 import Foundation
 
