@@ -10,7 +10,7 @@ class ViewController: UIViewController, URLSessionDelegate
     let ITEM_CELL_ID     = "ios.Sitecore.MobileSdk.ItemsBrowser.List.ItemCell"
     let IMAGE_CELL_ID    = "ios.Sitecore.MobileSdk.ItemsBrowser.List.ItemCell.Image"
     
-    var sscSession: SSCSession?
+    var sscSession: ISSCReadWriteSession?
     var urlSession: URLSession?
     
     @IBOutlet weak var itemsBrowserController: SCItemListBrowser!
@@ -33,10 +33,15 @@ class ViewController: UIViewController, URLSessionDelegate
         urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
         
         let credentials = SCCredentials(username: "admin", password: "b", domain: "Sitecore")
-        sscSession = SSCSession(url: "https://cms900.pd-test16-1-dk1.dk.sitecore.net", urlSession: urlSession, autologinCredentials: credentials)
         
-//        self.downloadRootItem()
-        self.testSearch()
+        sscSession = ScSessionBuilder.readWriteSeeeion("https://cms900.pd-test16-1-dk1.dk.sitecore.net")
+            .customUrlSession(urlSession!)
+            .credentials(credentials)
+            .build()
+        
+       self.downloadRootItem()
+        
+//        self.testSearch()
 //        self.testCreate()
     }
     
@@ -52,9 +57,9 @@ class ViewController: UIViewController, URLSessionDelegate
         self.itemsBrowserController.setApiSession(self.sscSession!)
 
         let getItemRequest = ScRequestBuilder.getItemByIdRequest("11111111-1111-1111-1111-111111111111")
-                .database("web")
-                .language("en")
-                .build()
+                                             .database("web")
+                                             .language("en")
+                                             .build()
         
         sscSession.sendGetItemsRequest(getItemRequest) { result in
             
@@ -79,6 +84,20 @@ class ViewController: UIViewController, URLSessionDelegate
         self.itemsBrowserController.setRootItem(item)
         self.itemsBrowserController.reloadData()
     }
+    
+    func resultReceived(result: Result<IItemsResponse?, SSCError> )
+    {
+        switch result
+        {
+        case .success(let response):
+            
+            let item = response?.items[0]
+            print("item display name: \(String(describing: item?.displayName))")
+            
+        case .failure(let error):
+            print("error received: \(error.localizedDescription)")
+        }
+    }
 
     func testCreate()
     {
@@ -89,12 +108,12 @@ class ViewController: UIViewController, URLSessionDelegate
         }
   
         let createRequest = ScRequestBuilder.createItemByPathRequest("/sitecore/content/home")
-            .database("master")
-            .ItemName("New item name")
-            .TemplateId("76036F5E-CBCE-46D1-AF0A-4143F9B557AA")
-            .addFieldsToChange("new title", forKey: "Title")
-            .addFieldsToChange("my text", forKey: "Text")
-            .build()
+                                            .database("master")
+                                            .ItemName("New item name")
+                                            .TemplateId("76036F5E-CBCE-46D1-AF0A-4143F9B557AA")
+                                            .addFieldsToChange("new title", forKey: "Title")
+                                            .addFieldsToChange("my text", forKey: "Text")
+                                            .build()
 
         sscSession.sendCreateItemRequest(createRequest) { result in
             switch result
@@ -116,8 +135,8 @@ class ViewController: UIViewController, URLSessionDelegate
         }
         
         let deleteRequest = ScRequestBuilder.deleteItemRequest("6818FEC6-01D6-4D18-A5F9-663232507C22")
-            .database("master")
-            .build()
+                                            .database("master")
+                                            .build()
         
         
         sscSession.sendDeleteItemRequest(deleteRequest) { result in
@@ -164,10 +183,10 @@ class ViewController: UIViewController, URLSessionDelegate
         }
         
         let updateRequest = ScRequestBuilder.updateItemRequest("6818FEC6-01D6-4D18-A5F9-663232507C22")
-            .database("master")
-            .addFieldsToChange("blablabla", forKey: "Title")
-            .addFieldsToChange(["Text":"222"])
-            .build()
+                                            .database("master")
+                                            .addFieldsToChange("blablabla", forKey: "Title")
+                                            .addFieldsToChange(["Text":"222"])
+                                            .build()
         
         sscSession.sendUpdateItemRequest(updateRequest) { result in
             switch result
@@ -199,11 +218,11 @@ class ViewController: UIViewController, URLSessionDelegate
                 print("!!! GET ITEM BY ID !!! \(String(describing: response?.items[0].displayName))")
                 
                 let downloadImageRequest = ScRequestBuilder.downloadImageRequestFor(mediaItem: (response?.items[0])!)
-                                                            .build()
+                                                           .build()
                 
                 let handlers = DataDownloadingProcess(completionHandler: self.imageLoaded,
-                                                         errorHandler: self.imageLoadFailed,
-                                                         cancelationHandler: self.imageLoadCanceled)
+                                                           errorHandler: self.imageLoadFailed,
+                                                     cancelationHandler: self.imageLoadCanceled)
                 
                 sscSession.sendDownloadImageRequest(downloadImageRequest, completion: handlers)
                 
@@ -263,28 +282,28 @@ class ViewController: UIViewController, URLSessionDelegate
     func startLoading()
     {
         DispatchQueue.main.async
-            {
-                self.loadingProgress?.isHidden = false
-                self.loadingProgress?.startAnimating()
-            }
+        {
+            self.loadingProgress?.isHidden = false
+            self.loadingProgress?.startAnimating()
+        }
     }
     
     func endLoading()
     {
         DispatchQueue.main.async
-            {
-                self.loadingProgress?.stopAnimating()
-                self.loadingProgress?.isHidden = true
-            }
+        {
+            self.loadingProgress?.stopAnimating()
+            self.loadingProgress?.isHidden = true
+        }
     }
 
     @IBAction func RootTouched(_ sender: Any)
     {
         guard self.itemsBrowserController.rootItem != nil else
-            {
-                print("root item is not set")
-                return
-            }
+        {
+            print("root item is not set")
+            return
+        }
         
         self.itemsBrowserController.navigateToRootItem()
         

@@ -14,10 +14,10 @@ class SCItemsFileManager : ISCItemsFileManager
 {
     var levelsHistory: SCLevelsHistory
     
-    private let apiSession: SSCSession
+    private let apiSession: ISSCReadOnlySession
     private let nextLevelRequestBuilder: SCItemsLevelRequestBuilder
     
-    public init(apiSession: SSCSession, nextLevelRequestBuilder: SCItemsLevelRequestBuilder)
+    public init(apiSession: ISSCReadOnlySession, nextLevelRequestBuilder: SCItemsLevelRequestBuilder)
     {
         self.apiSession = apiSession
         self.nextLevelRequestBuilder = nextLevelRequestBuilder

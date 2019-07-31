@@ -5,7 +5,7 @@ import SitecoreSSC_SDK
 public class SCAbstractItemsBrowser: NSObject
 {
     
-    private var _apiSession: SSCSession? = nil
+    private var _apiSession: ISSCReadOnlySession? = nil
     private var _rootItem: ISitecoreItem? = nil
     @IBOutlet public weak var  _nextLevelRequestBuilder: SCItemsLevelRequestBuilder!
     @IBOutlet public weak var  _delegate: SCItemsBrowserDelegate!
@@ -149,12 +149,12 @@ extension SCAbstractItemsBrowser: SCItemsBrowserProtocol
 extension SCAbstractItemsBrowser: SCItemsBrowserInitialization
 {
     
-    public var apiSession: SSCSession?
+    public var apiSession: ISSCReadOnlySession?
     {
         return self._apiSession
     }
     
-    public func setApiSession(_ apiSession: SSCSession)
+    public func setApiSession(_ apiSession: ISSCReadOnlySession)
     {
         assert(nil == self._apiSession, "apiSession can be assigned only once")
         self._apiSession = apiSession
@@ -199,6 +199,11 @@ extension SCAbstractItemsBrowser: SCItemsBrowserInitialization
 
 class SCLevelUpItem : NSObject, ISitecoreItem
 {
+    func getField(_ key: String) -> String
+    {
+        return fields[key] as? String ?? ""
+    }
+    
     func cancelDataLoading()
     {
         doesNotRecognizeSelector(#function)

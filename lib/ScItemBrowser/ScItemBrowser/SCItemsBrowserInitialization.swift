@@ -9,12 +9,12 @@ public protocol SCItemsBrowserInitialization {
     /**
      @return The session to communicate with the Sitecore instance.
      */
-    var apiSession: SSCSession? { get }
+    var apiSession: ISSCReadOnlySession? { get }
     
     /**
      @param apiSession The session to communicate with the Sitecore instance.
      */
-    func setApiSession(_ apiSession: SSCSession)
+    func setApiSession(_ apiSession: ISSCReadOnlySession)
     
     /**
      @return An item to start browsing with.
