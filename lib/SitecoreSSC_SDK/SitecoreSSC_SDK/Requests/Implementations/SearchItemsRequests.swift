@@ -18,10 +18,10 @@ public class StoredQueryRequest: BasePaggedGetItemRequest, IStoredSitecoreSearch
     {
         self.itemId = itemId
         super.init(pagingParameters: pagingParameters,
-                   itemSource: itemSource,
-                   sessionConfig: sessionConfig,
-                   fields: fields,
-                   standardFields: standardFields
+                   itemSource:       itemSource,
+                   sessionConfig:    sessionConfig,
+                   fields:           fields,
+                   standardFields:   standardFields
                    )
     }
     

@@ -124,6 +124,8 @@ class RequestExecutor
                 return
             }
 
+            print("data!!! = \(String(decoding: data, as: UTF8.self))")
+            
             let result = T(
                         data: data,
                         headers: (response as? HTTPURLResponse)?.allHeaderFields as? [String:String],

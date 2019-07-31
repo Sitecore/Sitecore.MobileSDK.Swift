@@ -1,13 +1,15 @@
 
 import Foundation
 
-public protocol ISCCredentials {
+public protocol ISCCredentials
+{
     var username: String { get }
     var password: String { get }
     var domain: String? { get }
 }
 
-public class SCCredentials: ISCCredentials {
+public class SCCredentials: ISCCredentials
+{
 
     public init (username: String, password: String, domain: String?)
     {

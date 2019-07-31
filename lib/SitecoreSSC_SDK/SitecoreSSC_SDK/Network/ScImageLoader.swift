@@ -93,8 +93,7 @@ public class ScImageLoader
     public static func getImageWithRequest(_ item: ISitecoreItem, sessionConfig: ISessionConfig, completion: DataDownloadingProcess) -> RequestToken?
     {
         //@igk since sitecore's images is always available via http,
-        // we can hack littlebit to avoid certificate issues while testing or etc...
-        #warning("@igk should we remove this in release code!?!")
+        // we can hack littlebit to avoid certificate issues or etc...
         let hackedurl = sessionConfig.instanceUrl.replacingOccurrences(of: "https:", with: "http:")
         let hackedSessionConfig = SessionConfig(url: hackedurl, requestSyntax: sessionConfig.requestSyntax)
         

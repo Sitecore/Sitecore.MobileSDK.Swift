@@ -20,7 +20,7 @@ public class DeleteItemRequest: GetByIdRequest, IDeleteItemRequest
     
     public func buildRequestBody() -> Data?
     {
-        return nil
+        return "".data(using: .utf8)
     }
     
     public override func buildUrlString(sessionConfig: ISessionConfig) -> String?

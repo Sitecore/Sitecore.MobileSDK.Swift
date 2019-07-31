@@ -168,6 +168,16 @@ public class SCItem: NSObject, ISitecoreItem {
         self.handlers = nil
         self.requestToken = nil
     }
+    
+    public func getField(_ key: String) -> String
+    {
+        guard let value = self.fields[key] as? String else
+        {
+            return ""
+        }
+        
+        return value
+    }
 }
 
 
@@ -188,6 +198,8 @@ public class SCItem: NSObject, ISitecoreItem {
     var fields:       [String: Any] { get }
     
     var isMediaImage: Bool         { get }
+    
+    func getField(_ key: String) -> String
   
     //@IGK hack to simplify image loading bypassing session
     func getImage(handlers: DataDownloadingProcess)

@@ -6,7 +6,7 @@ class StringTestData
     //MARK:  -----------
     //MARK: ITEMS
     
-    public static let correctUuidString: String = "110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9"
+    public static let homeItemUuidString: String = "110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9"
     public static let badUuidString: String = "blablabla"
     
     //MARK:  -----------
