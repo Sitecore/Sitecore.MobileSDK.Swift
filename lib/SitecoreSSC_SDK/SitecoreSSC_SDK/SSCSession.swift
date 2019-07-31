@@ -1,13 +1,13 @@
 
 import Foundation
 
-public class SSCSession : NSObject, URLSessionDelegate
+public class SSCSession : NSObject, URLSessionDelegate, ISSCReadWriteSession
 {
-    private let sessionConfig: ISessionConfig
-    private let requestSyntax: ISSCUrlParameters = ItemSSCV1UrlParameters()
-    private let urlSession: URLSession
-    private let requestMerger: RequestMerger
-    private let odataApiKey: UUID! = nil
+    private let sessionConfig:  ISessionConfig
+    private let requestSyntax:  ISSCUrlParameters = ItemSSCV1UrlParameters()
+    private let urlSession:     URLSession
+    private let requestMerger:  RequestMerger
+    private let odataApiKey:    UUID! = nil
     
     private var activeUser: String? = nil
     private var domain: String = CredentialsDefaults.defaultDomain
@@ -31,10 +31,13 @@ public class SSCSession : NSObject, URLSessionDelegate
         self.requestMerger = RequestMerger(sessionConfig: self.sessionConfig)
     }
     
-    public convenience init(url: String, urlSession: URLSession?, autologinCredentials: ISCCredentials)
+    public convenience init(url: String, urlSession: URLSession?, autologinCredentials: ISCCredentials?)
     {
         self.init(url: url, urlSession: urlSession)
-        self.enableAutologinWithCredentials(autologinCredentials)
+        if let credentials = autologinCredentials
+        {
+            self.enableAutologinWithCredentials(credentials)
+        }
     }
     
     public convenience init(url: String, autologinCredentials: ISCCredentials)
@@ -122,7 +125,7 @@ extension SSCSession: ISSCAuthSession
         }
         else
         {
-            completion(SSCError.badCredentials)
+            completion(nil) //anonymous
         }
     }
 
@@ -163,11 +166,13 @@ extension SSCSession: ISSCReadOnlySession
         ScImageLoader.getImageWithRequest(imageRequest, session: self.urlSession, completion: completion)
     }
     
-    public func sendDownloadImageRequest(_ request: IGetImageRequest, completion: DataDownloadingProcess)
+    @discardableResult
+
+    public func sendDownloadImageRequest(_ request: IGetImageRequest, completion: DataDownloadingProcess) -> RequestToken?
     {
         let autocompletedRequest = self.requestMerger.mergeGetRequest(request)
 
-        ScImageLoader.getImageWithRequest(autocompletedRequest, session: self.urlSession, completion: completion)
+        return ScImageLoader.getImageWithRequest(autocompletedRequest, session: self.urlSession, completion: completion)
     }
     
     public func sendGetItemsRequest(_ request: IBaseGetItemsRequest, completion: @escaping (Result<IItemsResponse?, SSCError>) -> ())
@@ -241,7 +246,6 @@ extension SSCSession: ISSCReadOnlySession
                                               completion: completion)
         })
     }
-
 }
 
 extension SSCSession: ISSCWriteSession
@@ -303,7 +307,7 @@ extension SSCSession: ISSCOdataSession
     fileprivate func sendOdataRequest(_ request: IOdataRequest, completion: @escaping (Result<IItemsResponse?, SSCError>) -> ())
     {
         doesNotRecognizeSelector(#function)
-    }    
+    }
 }
 
 private protocol ISSCOdataSession
@@ -312,27 +316,32 @@ private protocol ISSCOdataSession
     func sendOdataRequest(_ request: IOdataRequest, completion:@escaping (Result<IItemsResponse?, SSCError>) -> ())
 }
 
-protocol ISSCAuthSession
+public protocol ISSCAuthSession
 {
     func enableAutologinWithCredentials(_ credentials: ISCCredentials)
     func sendLoginRequest(_ request: ILoginRequest, completion: @escaping (Result<AuthResponse?, SSCError>) -> ())
     func sendLogoutRequest(completion: @escaping (Result<AuthResponse?, SSCError>) -> ())
 }
 
-protocol ISSCReadOnlySession
+public protocol ISSCReadOnlySession
 {
+    func sendGetItemsRequest(_ request: IBaseGetItemsRequest, completion: @escaping (Result<IItemsResponse?, SSCError>) -> ())
     func sendGetItemByPathRequest(_ request: IGetByPathRequest,         completion: @escaping (Result<IItemsResponse?, SSCError>) -> ())
     func sendGetItemByIdRequest(_ request: IGetByIdRequest,             completion: @escaping (Result<IItemsResponse?, SSCError>) -> ())
     func sendGetChildrenRequest(_ request: IGetChildrenRequest,         completion: @escaping (Result<IItemsResponse?, SSCError>) -> ())
     func sendSerchItemsRequest(_ request: IStoredSitecoreSearchRequest, completion: @escaping (Result<IItemsResponse?, SSCError>) -> ())
     func downloadImageForItem(_ item: ISitecoreItem, completion: DataDownloadingProcess)
-    func sendDownloadImageRequest(_ request: IGetImageRequest, completion: DataDownloadingProcess)
+    func sendDownloadImageRequest(_ request: IGetImageRequest, completion: DataDownloadingProcess) -> RequestToken?
 }
 
-protocol ISSCWriteSession
+public protocol ISSCWriteSession
 {
     func sendCreateItemRequest(_ request: ICreateRequest,     completion:@escaping (Result<CreateResponse?, SSCError>) -> ())
     func sendUpdateItemRequest(_ request: IEditRequest,       completion:@escaping (Result<UpdateResponse?, SSCError>) -> ())
     func sendDeleteItemRequest(_ request: IDeleteItemRequest, completion:@escaping (Result<DeleteResponse?, SSCError>) -> ())
 }
 
+public protocol ISSCReadWriteSession: ISSCReadOnlySession, ISSCWriteSession
+{
+    
+}
