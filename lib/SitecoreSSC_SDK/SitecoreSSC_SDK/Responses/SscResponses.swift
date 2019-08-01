@@ -1,12 +1,10 @@
 
 import Foundation
 
-
 public protocol IBaseGetResponse: IBaseResponse
 {
     init(items: [ISitecoreItem], statusCode: Int, pagingParameters: IPagingParameters?)
 }
-
 
 public protocol IBaseResponse
 {

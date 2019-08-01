@@ -12,7 +12,7 @@ class ReadWriteSessionBuilder: BaseSessionBuilder, IReadWriteSessionBuilder
     {
         return SSCSession(url: urlString,
                           urlSession: customUrlSession,
-                          autologinCredentials: credentials) as! ISSCReadWriteSession
+                          autologinCredentials: credentials)
     }
     
 }
