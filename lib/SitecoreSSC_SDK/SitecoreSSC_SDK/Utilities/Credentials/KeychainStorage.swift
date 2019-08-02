@@ -10,8 +10,6 @@ let kSecMatchLimitValue = NSString(format: kSecMatchLimit)
 let kSecReturnDataValue = NSString(format: kSecReturnData)
 let kSecMatchLimitOneValue = NSString(format: kSecMatchLimitOne)
 
-#warning("@igk refactor!!! return type should be 'Result', implement via protocol")
-
 public class KeychainStorage: NSObject
 {
     class func updatePassword(service: String, account:String, data: String)
@@ -55,7 +53,8 @@ public class KeychainStorage: NSObject
             
             let status = SecItemAdd(keychainQuery as CFDictionary, nil)
             
-            if (status != errSecSuccess) {
+            if (status != errSecSuccess)
+            {
                 if let err = SecCopyErrorMessageString(status, nil)
                 {
                     print("Write failed: \(err)")
