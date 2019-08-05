@@ -40,9 +40,6 @@ class ViewController: UIViewController, URLSessionDelegate
             .build()
         
        self.downloadRootItem()
-        
-//        self.testSearch()
-//        self.testCreate()
     }
     
     func downloadRootItem()
@@ -56,26 +53,7 @@ class ViewController: UIViewController, URLSessionDelegate
         }
         self.itemsBrowserController.setApiSession(self.sscSession!)
 
-        let getItemRequest = ScRequestBuilder.getItemByIdRequest("11111111-1111-1111-1111-111111111111")
-                                             .database("web")
-                                             .language("en")
-                                             .build()
-        
-        sscSession.sendGetItemsRequest(getItemRequest) { result in
-            
-            switch result
-            {
-            case .success(let response):
-                
-                print("\(String(describing: response?.items[0].displayName)))")
-                self.endLoading()
-                self.didLoadRootItem((response?.items[0])!)
-                
-            case .failure(let error):
-                print("network error: \(error) ")
-            }
-            
-        }
+         
 
     }
     
@@ -99,171 +77,6 @@ class ViewController: UIViewController, URLSessionDelegate
         }
     }
 
-    func testCreate()
-    {
-        guard let sscSession = self.sscSession else
-        {
-            print("create session first!")
-            return
-        }
-  
-        let createRequest = ScRequestBuilder.createItemByPathRequest("/sitecore/content/home")
-                                            .database("master")
-                                            .ItemName("New item name")
-                                            .TemplateId("76036F5E-CBCE-46D1-AF0A-4143F9B557AA")
-                                            .addFieldsToChange("new title", forKey: "Title")
-                                            .addFieldsToChange("my text", forKey: "Text")
-                                            .build()
-
-        sscSession.sendCreateItemRequest(createRequest) { result in
-            switch result
-            {
-            case .success(let response):
-                print("!!! ItemCREATED !!! new item UUID: \(String(describing: response?.createdItemId))")
-            case .failure(let error):
-                print("network error: \(error) ")
-            }
-        }
-    }
-    
-    func testDelete()
-    {
-        guard let sscSession = self.sscSession else
-        {
-            print("create session first!")
-            return
-        }
-        
-        let deleteRequest = ScRequestBuilder.deleteItemRequest("6818FEC6-01D6-4D18-A5F9-663232507C22")
-                                            .database("master")
-                                            .build()
-        
-        
-        sscSession.sendDeleteItemRequest(deleteRequest) { result in
-            switch result
-            {
-            case .success(let response):
-                print("!!! ItemDELETED !!! \(String(describing: response?.isSuccessful()))")
-            case .failure(let error):
-                print("network error: \(error) ")
-            }
-        }
-    }
-    
-    func testSearch()
-    {
-        guard let sscSession = self.sscSession else
-        {
-            print("create session first!")
-            return
-        }
-        
-        let searchRequest = ScRequestBuilder.runStoredSearchItemRequest("3D9F0EE2-C2D7-47C3-BCF0-51C92EB5EB31")
-                                            .pageNumber(0)
-                                            .itemsPerPageCount(100)
-                                            .build()
-        
-        sscSession.sendSerchItemsRequest(searchRequest) { result in
-            switch result
-            {
-            case .success(let response):
-                print("!!! search successfull !!! \(String(describing: response?.items.count))")
-            case .failure(let error):
-                print("error: \(error) ")
-            }
-        }
-    }
-    
-    func testUpdate()
-    {
-        guard let sscSession = self.sscSession else
-        {
-            print("create session first!")
-            return
-        }
-        
-        let updateRequest = ScRequestBuilder.updateItemRequest("6818FEC6-01D6-4D18-A5F9-663232507C22")
-                                            .database("master")
-                                            .addFieldsToChange("blablabla", forKey: "Title")
-                                            .addFieldsToChange(["Text":"222"])
-                                            .build()
-        
-        sscSession.sendUpdateItemRequest(updateRequest) { result in
-            switch result
-            {
-            case .success(let response):
-                print("!!! ItemUPDATED !!! \(String(describing: response?.isSuccessful()))")
-            case .failure(let error):
-                print("network error: \(error) ")
-            }
-        }
-    }
-    
-    func testDownload()
-    {
-        guard let sscSession = self.sscSession else
-        {
-            print("create session first!")
-            return
-        }
-        
-        let getItemRequest = ScRequestBuilder.getItemByIdRequest("4F20B519-D565-4472-B018-91CB6103C667")
-                                             .build()
-
-        sscSession.sendGetItemsRequest(getItemRequest) { result in
-
-            switch result
-            {
-            case .success(let response):
-                print("!!! GET ITEM BY ID !!! \(String(describing: response?.items[0].displayName))")
-                
-                let downloadImageRequest = ScRequestBuilder.downloadImageRequestFor(mediaItem: (response?.items[0])!)
-                                                           .build()
-                
-                let handlers = DataDownloadingProcess(completionHandler: self.imageLoaded,
-                                                           errorHandler: self.imageLoadFailed,
-                                                     cancelationHandler: self.imageLoadCanceled)
-                
-                sscSession.sendDownloadImageRequest(downloadImageRequest, completion: handlers)
-                
-            case .failure(let error):
-                print("network error: \(error) ")
-            }
-        }
-
-//        let getChildren = ScRequestBuilder.getChildrenByParentIdRequest("110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9")
-//            .build()
-//
-//
-//        sscSession.sendGetItemsRequest(getChildren) { result in
-//
-//            switch result
-//            {
-//            case .success(let response):
-//                print("!!! GET CHILDREN !!! items count: \(String(describing: response?.totalItemsCount))")
-//            case .failure(let error):
-//                print("network error: \(error) ")
-//            }
-//        }
-        
-        
-    }
-    
-    func imageLoaded(_ image: UIImage)
-    {
-        print("image loaded!!! \(image)")
-    }
-    
-    func imageLoadFailed(_ error: Error)
-    {
-        print("loading failed!!! \(error)")
-    }
-    
-    func imageLoadCanceled()
-    {
-        print("image loading canceled")
-    }
-    
     #warning ("!!!IGNORING SSL VERIFICATION!!!")
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
     {
