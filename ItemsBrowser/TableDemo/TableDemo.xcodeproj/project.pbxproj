@@ -45,14 +45,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		E006F2D5219ECD0D00011E66 /* SitecoreSSC_Whitelabel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SitecoreSSC_Whitelabel.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E006F2D5219ECD0D00011E66 /* TableDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TableDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E006F2D8219ECD0D00011E66 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E006F2DA219ECD0D00011E66 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E006F2DD219ECD0D00011E66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E006F2DF219ECD1200011E66 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E006F2E2219ECD1200011E66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E006F2E4219ECD1200011E66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E006F2E9219ECD1200011E66 /* SitecoreSSC_WhitelabelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SitecoreSSC_WhitelabelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E006F2E9219ECD1200011E66 /* TableDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TableDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E006F2ED219ECD1200011E66 /* SitecoreSSC_WhitelabelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SitecoreSSC_WhitelabelTests.swift; sourceTree = "<group>"; };
 		E006F2EF219ECD1200011E66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E006F304219ECD9C00011E66 /* SitecoreSSC_SDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SitecoreSSC_SDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,7 +85,7 @@
 			children = (
 				E01C176321C292FF00F9FFE6 /* ScItemBrowser.framework */,
 				E0DC022821AC1F5B00EB99A4 /* SitecoreSSC_SDK.framework */,
-				E006F2D7219ECD0D00011E66 /* SitecoreSSC_Whitelabel */,
+				E006F2D7219ECD0D00011E66 /* TableDemo */,
 				E006F2EC219ECD1200011E66 /* SitecoreSSC_WhitelabelTests */,
 				E006F2D6219ECD0D00011E66 /* Products */,
 				E006F303219ECD9C00011E66 /* Frameworks */,
@@ -95,13 +95,13 @@
 		E006F2D6219ECD0D00011E66 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E006F2D5219ECD0D00011E66 /* SitecoreSSC_Whitelabel.app */,
-				E006F2E9219ECD1200011E66 /* SitecoreSSC_WhitelabelTests.xctest */,
+				E006F2D5219ECD0D00011E66 /* TableDemo.app */,
+				E006F2E9219ECD1200011E66 /* TableDemoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E006F2D7219ECD0D00011E66 /* SitecoreSSC_Whitelabel */ = {
+		E006F2D7219ECD0D00011E66 /* TableDemo */ = {
 			isa = PBXGroup;
 			children = (
 				E006F2D8219ECD0D00011E66 /* AppDelegate.swift */,
@@ -111,7 +111,7 @@
 				E006F2E1219ECD1200011E66 /* LaunchScreen.storyboard */,
 				E006F2E4219ECD1200011E66 /* Info.plist */,
 			);
-			path = SitecoreSSC_Whitelabel;
+			path = TableDemo;
 			sourceTree = "<group>";
 		};
 		E006F2EC219ECD1200011E66 /* SitecoreSSC_WhitelabelTests */ = {
@@ -134,9 +134,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E006F2D4219ECD0D00011E66 /* SitecoreSSC_Whitelabel */ = {
+		E006F2D4219ECD0D00011E66 /* TableDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E006F2F2219ECD1200011E66 /* Build configuration list for PBXNativeTarget "SitecoreSSC_Whitelabel" */;
+			buildConfigurationList = E006F2F2219ECD1200011E66 /* Build configuration list for PBXNativeTarget "TableDemo" */;
 			buildPhases = (
 				E006F2D1219ECD0D00011E66 /* Sources */,
 				E006F2D2219ECD0D00011E66 /* Frameworks */,
@@ -147,14 +147,14 @@
 			);
 			dependencies = (
 			);
-			name = SitecoreSSC_Whitelabel;
+			name = TableDemo;
 			productName = SitecoreSSC_Whitelabel;
-			productReference = E006F2D5219ECD0D00011E66 /* SitecoreSSC_Whitelabel.app */;
+			productReference = E006F2D5219ECD0D00011E66 /* TableDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		E006F2E8219ECD1200011E66 /* SitecoreSSC_WhitelabelTests */ = {
+		E006F2E8219ECD1200011E66 /* TableDemoTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E006F2F5219ECD1200011E66 /* Build configuration list for PBXNativeTarget "SitecoreSSC_WhitelabelTests" */;
+			buildConfigurationList = E006F2F5219ECD1200011E66 /* Build configuration list for PBXNativeTarget "TableDemoTests" */;
 			buildPhases = (
 				E006F2E5219ECD1200011E66 /* Sources */,
 				E006F2E6219ECD1200011E66 /* Frameworks */,
@@ -165,9 +165,9 @@
 			dependencies = (
 				E006F2EB219ECD1200011E66 /* PBXTargetDependency */,
 			);
-			name = SitecoreSSC_WhitelabelTests;
+			name = TableDemoTests;
 			productName = SitecoreSSC_WhitelabelTests;
-			productReference = E006F2E9219ECD1200011E66 /* SitecoreSSC_WhitelabelTests.xctest */;
+			productReference = E006F2E9219ECD1200011E66 /* TableDemoTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -190,7 +190,7 @@
 					};
 				};
 			};
-			buildConfigurationList = E006F2D0219ECD0D00011E66 /* Build configuration list for PBXProject "SitecoreSSC_Whitelabel" */;
+			buildConfigurationList = E006F2D0219ECD0D00011E66 /* Build configuration list for PBXProject "TableDemo" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -203,8 +203,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E006F2D4219ECD0D00011E66 /* SitecoreSSC_Whitelabel */,
-				E006F2E8219ECD1200011E66 /* SitecoreSSC_WhitelabelTests */,
+				E006F2D4219ECD0D00011E66 /* TableDemo */,
+				E006F2E8219ECD1200011E66 /* TableDemoTests */,
 			);
 		};
 /* End PBXProject section */
@@ -252,7 +252,7 @@
 /* Begin PBXTargetDependency section */
 		E006F2EB219ECD1200011E66 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E006F2D4219ECD0D00011E66 /* SitecoreSSC_Whitelabel */;
+			target = E006F2D4219ECD0D00011E66 /* TableDemo */;
 			targetProxy = E006F2EA219ECD1200011E66 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -401,7 +401,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D43U65QWFK;
-				INFOPLIST_FILE = SitecoreSSC_Whitelabel/Info.plist;
+				INFOPLIST_FILE = TableDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -420,7 +420,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D43U65QWFK;
-				INFOPLIST_FILE = SitecoreSSC_Whitelabel/Info.plist;
+				INFOPLIST_FILE = TableDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -439,7 +439,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = SitecoreSSC_WhitelabelTests/Info.plist;
+				INFOPLIST_FILE = TableDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -449,7 +449,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SitecoreSSC_Whitelabel.app/SitecoreSSC_Whitelabel";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TableDemo.app/TableDemo";
 			};
 			name = Debug;
 		};
@@ -459,7 +459,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = SitecoreSSC_WhitelabelTests/Info.plist;
+				INFOPLIST_FILE = TableDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -469,14 +469,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SitecoreSSC_Whitelabel.app/SitecoreSSC_Whitelabel";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TableDemo.app/TableDemo";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E006F2D0219ECD0D00011E66 /* Build configuration list for PBXProject "SitecoreSSC_Whitelabel" */ = {
+		E006F2D0219ECD0D00011E66 /* Build configuration list for PBXProject "TableDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E006F2F0219ECD1200011E66 /* Debug */,
@@ -485,7 +485,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E006F2F2219ECD1200011E66 /* Build configuration list for PBXNativeTarget "SitecoreSSC_Whitelabel" */ = {
+		E006F2F2219ECD1200011E66 /* Build configuration list for PBXNativeTarget "TableDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E006F2F3219ECD1200011E66 /* Debug */,
@@ -494,7 +494,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E006F2F5219ECD1200011E66 /* Build configuration list for PBXNativeTarget "SitecoreSSC_WhitelabelTests" */ = {
+		E006F2F5219ECD1200011E66 /* Build configuration list for PBXNativeTarget "TableDemoTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E006F2F6219ECD1200011E66 /* Debug */,

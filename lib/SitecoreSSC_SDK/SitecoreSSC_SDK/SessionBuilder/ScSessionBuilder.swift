@@ -8,7 +8,7 @@ public class ScSessionBuilder
         return ReadOnlySessionBuilder(url)
     }
     
-    public static func readWriteSeeeion(_ url: String) -> IReadWriteSessionBuilder
+    public static func readWriteSession(_ url: String) -> IReadWriteSessionBuilder
     {
         return ReadWriteSessionBuilder(url)
     }
