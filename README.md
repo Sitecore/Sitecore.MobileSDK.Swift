@@ -20,7 +20,7 @@ Fetch the default "home" item content.
 ```swift
 let credentials = SCCredentials(username: "admin", password: "b", domain: "Sitecore")
  
-sscSession = ScSessionBuilder.readWriteSeeeion("https://cms900.pd-test16-1-dk1.dk.sitecore.net")
+ sscSession = ScSessionBuilder.readWriteSession("https://my.instance.net")
     .customUrlSession(urlSession!)
     .credentials(credentials)
     .build()

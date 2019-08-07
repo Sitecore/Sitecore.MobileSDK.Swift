@@ -12,6 +12,12 @@ import ScItemBrowser
 
 class ViewController: UIViewController, URLSessionDelegate
 {
+    let instanceUrl = "https://my-site.net"
+    let userName = "myuser"
+    let userPassword = "mypassword"
+    let domain = "Sitecore"
+    
+    
     private let LEVEL_UP_CELL_ID = "net.sitecore.MobileSdk.ItemsBrowser.list.LevelUpCell"
     private let ITEM_CELL_ID     = "net.sitecore.MobileSdk.ItemsBrowser.list.ItemCell"
     private let IMAGE_CELL_ID    = "net.sitecore.MobileSdk.ItemsBrowser.list.ItemCell.image"
@@ -46,59 +52,6 @@ class ViewController: UIViewController, URLSessionDelegate
         super.viewDidLoad()
 
         self.createSession()
-        //self.test()
-    }
-    
-    func test()
-    {
-        urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-        
-        let credentials = SCCredentials(username: "admin", password: "b", domain: "Sitecore")
-        sscSession = SSCSession(url: "https://cms900.pd-test16-1-dk1.dk.sitecore.net", urlSession: urlSession, autologinCredentials: credentials)
-        
-//        let itemSource = ItemSource(database: "master", language: "en", versionNumber: nil)
-//        let pagingParams = PagingParameters(itemsPerPage: 100, pageNumber: 0)
-//
-//        let request = ScRequestBuilder.getItemByIdRequest("110D559F-DEA5-42EA-9C1C-8A5DF7E70EF9")
-//        .addFields("Title")
-//        .build()
-//
-        
-//        sscSession!.sendGetItemsRequest(request) { (response, error) in
-//            print("RESPONSE COUNT: \(response!.items.count)")
-//        }
-        
-        
-//        let searchItemRequest = StoredQueryRequest(
-//            itemId: "3D9F0EE2-C2D7-47C3-BCF0-51C92EB5EB31",
-//            pagingParameters: pagingParams,
-//            itemSource: itemSource,
-//            sessionConfig: nil,
-//            standardFields: false
-//        )
-//        
-//        sscSession!.sendGetItemsRequest(request) { (response, error) in
-//            print("RESPONSE COUNT: \(response!.items.count)")
-//        }
-
-//        let getItemRequest = GetByPathRequest(
-//            itemPath: "/sitecore/content/Home/Plan And Book/Destinations/Asia/Japan/Tokyo/Akihabara",
-//            itemSource: itemSource,
-//            sessionConfig: nil,
-//            standardFields: true)
-//
-////        getItemRequest.addFieldToReturn("__Owner")
-////        getItemRequest.addFieldToReturn("Title")
-//
-        
-//        sscSession!.sendGetItemsRequest(getItemRequest) { (response, error) in
-//            print("RESPONSE COUNT: \(response!.items.count)")
-//        }
-    }
-
-    func requestFinished(response: IItemsResponse?, error: SSCError?)
-    {
-         print("RESPONSE COUNT: \(response!.items.count)")
     }
     
     func createSession()
@@ -107,8 +60,8 @@ class ViewController: UIViewController, URLSessionDelegate
 
         urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
         
-        let credentials = SCCredentials(username: "admin", password: "b", domain: "Sitecore")
-        sscSession = SSCSession(url: "https://cms900.pd-test16-1-dk1.dk.sitecore.net", urlSession: urlSession!, autologinCredentials: credentials)
+        let credentials = SCCredentials(username: userName, password: userPassword, domain: domain)
+        sscSession = SSCSession(url: instanceUrl, urlSession: urlSession!, autologinCredentials: credentials)
         
         self.downloadRootItem()
     }

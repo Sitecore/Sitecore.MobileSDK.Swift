@@ -5,6 +5,12 @@ import ScItemBrowser
 
 class ViewController: UIViewController, URLSessionDelegate
 {
+    let instanceUrl = "https://my-site.net"
+    let userName = "myuser"
+    let userPassword = "mypassword"
+    let domain = "Sitecore"
+    
+    
     let ODATA_API_KEY    = "5EECEACF-9B11-46D6-8DD4-EC440298BA47"
     let LEVEL_UP_CELL_ID = "ios.Sitecore.MobileSdk.ItemsBrowser.List.LevelUpCell"
     let ITEM_CELL_ID     = "ios.Sitecore.MobileSdk.ItemsBrowser.List.ItemCell"
@@ -32,12 +38,12 @@ class ViewController: UIViewController, URLSessionDelegate
     {
         urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
         
-        let credentials = SCCredentials(username: "admin", password: "b", domain: "Sitecore")
+        let credentials = SCCredentials(username: userName, password: userPassword, domain: domain)
         
-        sscSession = ScSessionBuilder.readWriteSeeeion("https://cms900.pd-test16-1-dk1.dk.sitecore.net")
-            .customUrlSession(urlSession!)
-            .credentials(credentials)
-            .build()
+        sscSession = ScSessionBuilder.readWriteSession(instanceUrl)
+                                     .customUrlSession(urlSession!)
+                                     .credentials(credentials)
+                                     .build()
         
        self.downloadRootItem()
     }
@@ -53,7 +59,26 @@ class ViewController: UIViewController, URLSessionDelegate
         }
         self.itemsBrowserController.setApiSession(self.sscSession!)
 
-         
+        let getItemRequest = ScRequestBuilder.getItemByIdRequest("11111111-1111-1111-1111-111111111111")
+                                             .database("web")
+                                             .language("en")
+                                             .build()
+        
+        sscSession.sendGetItemsRequest(getItemRequest) { result in
+            
+            switch result
+            {
+            case .success(let response):
+                
+                print("\(String(describing: response?.items[0].displayName)))")
+                self.endLoading()
+                self.didLoadRootItem((response?.items[0])!)
+                
+            case .failure(let error):
+                print("network error: \(error) ")
+            }
+            
+        }
 
     }
     

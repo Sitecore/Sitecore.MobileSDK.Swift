@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../ItemsBrowser/SitecoreSSC_Whitelabel/SitecoreSSC_Whitelabel.xcodeproj">
+      location = "group:../ItemsBrowser/TableDemo/TableDemo.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:../ItemsBrowser/GridDemo/GridDemo.xcodeproj">
