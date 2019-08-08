@@ -49,4 +49,4 @@ case .failure(let error):
 ```
 
 # Links
-- [Documentation]
+- [Documentation](https://github.com/Sitecore/Sitecore.MobileSDK.Swift/releases/download/1.0/Sitecore_Mobile_SDK_Swift_Developers_Guide.docx)
